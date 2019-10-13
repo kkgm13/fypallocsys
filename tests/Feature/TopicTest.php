@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\User;
+use App\Topic;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -12,14 +14,15 @@ class TopicTest extends TestCase
      * @test
      */
     public function a_topic_is_added(){
+
         $this->withoutExceptionHandling();
+
         $response = $this->post('/topics', [
             'name' => 'Topic Name',
-            'supervisorID' => App\User::find(1),
+            'supervisorID' => User::find(1),
         ]);
 
         $response->assertOk();
-
-        $this->assertCount(1, Book::all());
+        $this->assertCount(1, Topic::all());
     }
 }

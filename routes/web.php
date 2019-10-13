@@ -19,10 +19,11 @@ Route::get('/', function () {
     }
 });
 
-Auth::routes();
+// Auth Routes with particular auth parameters removed
+Auth::routes(['register' => false, 'reset' => false, 'verify' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
+Route::resources([
+    'topics' => 'TopicController'
+]);
