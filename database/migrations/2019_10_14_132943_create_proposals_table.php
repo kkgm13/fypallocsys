@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTopicsTable extends Migration
+class CreateProposalsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreateTopicsTable extends Migration
      */
     public function up()
     {
-        Schema::create('topics', function (Blueprint $table) {
+        Schema::create('proposals', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->comment('Project Name');
-            $table->longText('description')->comment('Project Description');
-            $table->unsignedInteger('studentID')->comment('Foreign Key for STUDENTS');
-            $table->unsignedInteger('supervisorID')->comment('Foreign Key for SUPERVISORS');
-            $table->boolean('isMCApprove')->comment('Boolean: CS Multimedia Approved');
-            $table->boolean('isCBApprove')->comment('Boolean: CS Business Approved');
-            
+            $table->string('name')->comment('Proposal Title');
+            $table->longText('description')->comment('Proposal Description');
+            $table->unsignedInteger('studentID')->comment('Foreign Key to STUDENT');
+            $table->unsignedInteger('supervisorID')->comment('Foreign Key to SUPERVISOR');
             $table->timestamps();
             // Student Relationship
             $table->foreign('studentID')->references('id')->on('users');
@@ -37,6 +34,6 @@ class CreateTopicsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('topics');
+        Schema::dropIfExists('proposals');
     }
 }
