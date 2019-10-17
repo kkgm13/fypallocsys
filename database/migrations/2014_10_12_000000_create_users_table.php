@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('programme')->nullable()->comment('Aston Student Programme');
             $table->enum('role', ['Student', 'Supervisor', 'Module Leader', 'Admin'])->comment('Roles Mechanisms')->default('Student');
             $table->integer('maxProject')->comment('Maximum Project Selection')->default(0); // Limit via Saving and merging
-            // $table->timestamp('email_verified_at')->nullable(); // Not needed
+            $table->timestamp('email_verified_at')->nullable(); // Not needed
             $table->string('password'); // Check with getting the UNIVERSITY DETAILS
             $table->rememberToken();
             $table->timestamps();
