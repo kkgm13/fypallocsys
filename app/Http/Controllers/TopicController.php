@@ -15,7 +15,7 @@ class TopicController extends Controller
      */
     public function index()
     {
-        //
+        return redirect()->route('home');
     }
 
     /**
@@ -38,12 +38,16 @@ class TopicController extends Controller
     public function store(Request $request)
     {
         //
-        $request->
-
-        Topic::create([
-            'title' =>  $request->title,
-
+        $request->supervisorID = Auth::user()->id;
+        
+        $validateData = $request->validate([
+            'name' => 'required|string|max:200',
+            'description' => 'required|string',
+            'isMCApprove' => 'required|boolean',
+            'isCBApprove' => 'required|boolean'
         ]);
+
+        Topic::create($validateData);
     }
 
     /**

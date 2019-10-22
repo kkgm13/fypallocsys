@@ -17,7 +17,7 @@ class CreateTopicsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->comment('Project Name');
             $table->longText('description')->comment('Project Description');
-            $table->unsignedInteger('studentID')->comment('Foreign Key for STUDENTS');
+            $table->unsignedInteger('studentID')->comment('Foreign Key for STUDENTS')->nullable();
             $table->unsignedInteger('supervisorID')->comment('Foreign Key for SUPERVISORS');
             $table->boolean('isMCApprove')->comment('Boolean: CS Multimedia Approved');
             $table->boolean('isCBApprove')->comment('Boolean: CS Business Approved');
