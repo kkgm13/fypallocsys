@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Topic;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TopicController extends Controller
 {
@@ -37,15 +38,16 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $request->supervisorID = Auth::user()->id;
-        
+
         $validateData = $request->validate([
             'name' => 'required|string|max:200',
             'description' => 'required|string',
+            // 'supervisorID' => '',
             'isMCApprove' => 'required|boolean',
             'isCBApprove' => 'required|boolean'
         ]);
+
+        $validateData["supervisorID"] = Auth::id();
 
         Topic::create($validateData);
     }

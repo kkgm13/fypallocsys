@@ -25,6 +25,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        //https://laravel.com/docs/master/authentication#adding-custom-user-providers
     }
 }
