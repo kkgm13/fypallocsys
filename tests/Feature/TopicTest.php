@@ -14,6 +14,7 @@ class TopicTest extends TestCase
     
     /**
      * @test
+     * The 
      */
     public function a_topic_is_added(){
 
@@ -31,7 +32,9 @@ class TopicTest extends TestCase
         $this->assertCount(1, Topic::all());
     }
     
-    /**@test */
+    /**
+     * @test
+     */
     public function a_topic_is_updated(){
         $this->withoutExceptionHandling();
 
@@ -54,5 +57,25 @@ class TopicTest extends TestCase
         ]);
         $this->assertEquals('Updated Topic Name', Topic::first()->title);
         $this->assertEquals('Hello World. I am an updated description which will state the context of what I am conveying', Topic::first()->description);
+    }
+
+    /**
+     * @test
+     * */
+    public function a_topic_is_deleted(){
+        $this->withoutExceptionHandling();
+        $this->post('/topics', [
+            'name' => 'Topic Name',
+            'description' => "Hello World. I am a description which will state the context of what I am conveying",
+            'supervisorID' => User::find(1),
+            'isMCApprove' => 1,
+            'isCBApprove' => 1,
+        ]);
+
+        $topic = Topic::first();
+
+        $this->delete('/topics/'.$topic->id, $topic);
+        
+        $this->assertDatabaseMissing('Topic Name', $topic->name);
     }
 }

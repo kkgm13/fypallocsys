@@ -42,7 +42,6 @@ class TopicController extends Controller
         $validateData = $request->validate([
             'name' => 'required|string|max:200',
             'description' => 'required|string',
-            // 'supervisorID' => '',
             'isMCApprove' => 'required|boolean',
             'isCBApprove' => 'required|boolean'
         ]);
