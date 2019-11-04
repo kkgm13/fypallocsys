@@ -18,15 +18,15 @@ Log In
                         @csrf
 
                         <div class="flex flex-wrap mb-6">
-                            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">
-                                {{ __('E-Mail Address') }}:
+                            <label for="identity" class="block text-gray-700 text-sm font-bold mb-2">
+                                {{ __('Username') }}:
                             </label>
 
-                            <input id="email" type="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline{{ $errors->has('email') ? ' border-red-500' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                            <input id="identity" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline{{ $errors->has('identity') ? ' border-red-500' : '' }}" name="identity" value="{{ old('identity') }}" required autofocus>
 
-                            @if ($errors->has('email'))
+                            @if ($errors->has('identity'))
                                 <p class="text-red-500 text-xs italic mt-4">
-                                    {{ $errors->first('email') }}
+                                    {{ $errors->first('identity') }}
                                 </p>
                             @endif
                         </div>

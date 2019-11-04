@@ -31,14 +31,14 @@
                         @else
                             @if(Auth::user()->role === "Supervisor" )
                                 <a href="£" class="no-underline hover:underline text-gray-300 text-sm p-3">Create a Topic</a>
-                            @elseif(Auth::user->role === "Module Leader")
+                            @elseif(Auth::user()->role === "Module Leader")
                             @else
                                 <a href="£" class="no-underline hover:underline text-gray-300 text-sm p-3">All Topics</a>
                                 <a href="£" class="no-underline hover:underline text-gray-300 text-sm p-3">My Allocations</a>
                                 <a href="£" class="no-underline hover:underline text-gray-300 text-sm p-3">My Choices</a>
                                 <a href="£" class="no-underline hover:underline text-gray-300 text-sm p-3">Create a Proposal</a>
                             @endif
-                            <span class="text-gray-300 text-sm pr-4">{{ Auth::user()->name }}</span>
+                            <!-- <span class="text-gray-300 text-sm pr-4">{{ Auth::user()->name }}</span> -->
                             
                             <a href="{{ route('logout') }}"
                                class="no-underline hover:underline text-gray-300 text-sm p-3"
