@@ -47,7 +47,6 @@ class TopicController extends Controller
         ]);
 
         $validateData["supervisorID"] = Auth::id();
-
         Topic::create($validateData);
     }
 

@@ -6,12 +6,31 @@ use App\User;
 use App\Topic;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class TopicTest extends TestCase
 {
     use RefreshDatabase;
     
+    protected $adminUser;
+
+    /**
+     * 
+     */
+    public function setUp(){
+        parent::setUp();
+
+        $this->adminUser = User::create([
+            'name' => 'Admin User',
+            'username' => 'admin',
+            'email' => 'email@fypalloc.com',
+            'sun' => '123456789',
+            'role' => "Admin",
+            'password' => Hash::make("admin"),
+        ]);
+    }
+
     /**
      * @test
      * The 
@@ -23,7 +42,7 @@ class TopicTest extends TestCase
         $response = $this->post('/topics', [
             'name' => 'Topic Name',
             'description' => "Hello World. I am a description which will state the context of what I am conveying",
-            'supervisorID' => User::find(1),
+            'supervisorID' => $this->adminUser->id,
             'isMCApprove' => 1,
             'isCBApprove' => 1,
         ]);
