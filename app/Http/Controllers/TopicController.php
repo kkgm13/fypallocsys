@@ -38,21 +38,7 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        
-        
-        // Get Current auth user
-        if(Auth::user() == "Supervisor"){
-            dd("hit1");
-            $request->supervisorID = Auth::id(); 
-        } else if(Auth::user() === "Module Leader"){
-            dd("hit");
-            // $request->supervisorID);
-        } else {
-            dd("here");
-        }
-        dd("skips All");
-        // dd($request);
-
+        // Validate the Data
         $validateData = $request->validate([
             'name' => 'required|string|max:200',
             'description' => 'required|string',
@@ -60,7 +46,15 @@ class TopicController extends Controller
             'isCBApprove' => 'required|boolean',
             'supervisorID' => 'required',
         ]);
+        
+        // Get Current auth user
+        if($request->supervisorID->role == "Supervisor"){
+            $validateData['supervisorID'] = Auth::id(); // Get Current Auth
+        } else if($request->supervisorID->role == "Module Leader"){
+            $validateData['supervisorID'] = $request->supervisorID->id; // Get Supervisor Selected auth
+        }
 
+        // Create the Topic
         Topic::create($validateData);
     }
 
@@ -96,7 +90,21 @@ class TopicController extends Controller
      */
     public function update(Request $request, Topic $topic)
     {
-        //
+        // Validate the Data
+        $validateData = $request->validate([
+            'name' => 'required|string|max:200',
+            'description' => 'required|string',
+            'isMCApprove' => 'required|boolean',
+            'isCBApprove' => 'required|boolean',
+        ]);
+        
+        // Get Current auth user
+        if($request->supervisorID->role == "Module Leader"){
+            $validateData['supervisorID'] = $request->supervisorID->id; // Get Supervisor Selected auth
+        }
+
+        // Create the Topic
+        $topic->update($validateData);
     }
 
     /**

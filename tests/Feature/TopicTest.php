@@ -44,14 +44,14 @@ class TopicTest extends TestCase
             'username' => "admin",
             'email' => "email@fypalloc.com",
             'sun' => "123456789",
-            'role' => "Admin",
+            'role' => "Module Leader",
             'password' => Hash::make("admin"),
         ]);
 
         $response = $this->post('/topics', [
             'name' => 'Topic Name',
             'description' => "Hello World. I am a description which will state the context of what I am conveying",
-            'supervisorID' => $this->adminUser->id,
+            'supervisorID' => $this->adminUser,
             'isMCApprove' => 1,
             'isCBApprove' => 1,
         ]);
@@ -63,38 +63,40 @@ class TopicTest extends TestCase
     /**
      * @test
      */
-    // public function a_topic_is_updated(){
-    //     $this->withoutExceptionHandling();
+    public function a_topic_is_updated(){
 
-    //     $this->adminUser = User::create([
-    //         'name' => "Admin User",
-    //         'username' => "admin",
-    //         'email' => "email@fypalloc.com",
-    //         'sun' => "123456789",
-    //         'role' => "Admin",
-    //         'password' => Hash::make("admin"),
-    //     ]);
+        // $this->withoutExceptionHandling();
 
-    //     $this->post('/topics', [
-    //         'name' => 'Topic Name',
-    //         'description' => "Hello World. I am a description which will state the context of what I am conveying",
-    //         'supervisorID' => $this->adminUser->id,
-    //         'isMCApprove' => 1,
-    //         'isCBApprove' => 1,
-    //     ]);
+        $this->adminUser = User::create([
+            'name' => "Admin User",
+            'username' => "admin",
+            'email' => "email@fypalloc.com",
+            'sun' => "123456789",
+            'role' => "Module Leader",
+            'password' => Hash::make("admin"),
+        ]);
 
-    //     $topic = Topic::first();
+        $this->post('/topics', [
+            'name' => 'Topic Name',
+            'description' => "Hello World. I am a description which will state the context of what I am conveying",
+            'supervisorID' => $this->adminUser,
+            'isMCApprove' => 1,
+            'isCBApprove' => 1,
+        ]);
 
-    //     $this->patch('/topics/'.$topic->id, [
-    //         'name' => 'Updated Topic Name',
-    //         'description' => "Hello World. I am an updated description which will state the context of what I am conveying",
-    //         'supervisorID' => $this->adminUser->id,
-    //         'isMCApprove' => 0,
-    //         'isCBApprove' => 1,
-    //     ]);
-    //     $this->assertEquals('Updated Topic Name', Topic::first()->title);
-    //     $this->assertEquals('Hello World. I am an updated description which will state the context of what I am conveying', Topic::first()->description);
-    // }
+        $topic = Topic::first();
+
+        $response = $this->patch('/topics/'.$topic->id, [
+            'name' => 'Updated Name',
+            'description' => "Ive UPDATED",
+            'supervisorID' => $this->adminUser,
+            'isMCApprove' => 0,
+            'isCBApprove' => 1,
+        ]);
+
+        $this->assertEquals('Updated Name', Topic::first()->name);
+        $this->assertEquals('Ive UPDATED', Topic::first()->description);
+    }
 
     // /**
     //  * @test
