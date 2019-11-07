@@ -38,15 +38,29 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
+        
+        
+        // Get Current auth user
+        if(Auth::user() == "Supervisor"){
+            dd("hit1");
+            $request->supervisorID = Auth::id(); 
+        } else if(Auth::user() === "Module Leader"){
+            dd("hit");
+            // $request->supervisorID);
+        } else {
+            dd("here");
+        }
+        dd("skips All");
+        // dd($request);
 
         $validateData = $request->validate([
             'name' => 'required|string|max:200',
             'description' => 'required|string',
             'isMCApprove' => 'required|boolean',
-            'isCBApprove' => 'required|boolean'
+            'isCBApprove' => 'required|boolean',
+            'supervisorID' => 'required',
         ]);
 
-        $validateData["supervisorID"] = Auth::id();
         Topic::create($validateData);
     }
 
@@ -58,7 +72,7 @@ class TopicController extends Controller
      */
     public function show(Topic $topic)
     {
-        //
+        return view('topics.show', compact($topic));
     }
 
     /**
@@ -69,7 +83,8 @@ class TopicController extends Controller
      */
     public function edit(Topic $topic)
     {
-        //
+        $supervisors = User::where('role', '<>', 'Student')->get();
+        return view('topic.edit', compact($topic));
     }
 
     /**

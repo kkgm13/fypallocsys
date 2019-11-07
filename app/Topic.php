@@ -17,6 +17,6 @@ class Topic extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'userID', 'supervisorID'
+        'name', 'description', 'userID', 'supervisorID', 'isMCApprove', 'isCBApprove',
     ];
 }
