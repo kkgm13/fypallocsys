@@ -42,9 +42,10 @@ class TopicController extends Controller
         $validateData = $request->validate([
             'name' => 'required|string|max:200',
             'description' => 'required|string',
-            'isMCApprove' => 'required|boolean',
-            'isCBApprove' => 'required|boolean',
-            'supervisorID' => 'required',
+            'prequisites' => 'sometimes|required|string',
+            'isMCApprove' => 'sometimes|required|boolean',
+            'isCBApprove' => 'sometimes|required|boolean',
+            'supervisorID' => 'sometimes|required',
         ]);
         
         // Get Current auth user
@@ -55,7 +56,11 @@ class TopicController extends Controller
         }
 
         // Create the Topic
-        Topic::create($validateData);
+        $topic = Topic::create($validateData);
+        
+        // Redirect
+        // return redirect()->route('topics.show', compact($topic))->with('success', "The topic has been successfully added");
+        return redirect()->route('topics.index')->with('success', "The topic has been successfully added");
     }
 
     /**
@@ -105,6 +110,8 @@ class TopicController extends Controller
 
         // Create the Topic
         $topic->update($validateData);
+        // return redirect()->route('topics.show', compact($topic))->with('success', "The topic has been successfully updated");
+        return redirect()->route('topics.index')->with('success', "The topic has been successfully updated");
     }
 
     /**
@@ -115,6 +122,7 @@ class TopicController extends Controller
      */
     public function destroy(Topic $topic)
     {
-        //
+        $topic->delete();
+        return redirect()->route('topics.index')->with('success', "The topic has been successfully deleted");
     }
 }

@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title') - {{config('app.name', 'Allocation System') }}</title>
+    <title>@yield('title') - {{config('app.name', 'Aston CS Allocation System') }}</title>
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
@@ -30,13 +30,17 @@
                             @endif
                         @else
                             @if(Auth::user()->role === "Supervisor" )
-                                <a href="£" class="no-underline hover:underline text-gray-300 text-sm p-3">Create a Topic</a>
+                                <a href="{{route('topics.create')}}" class="no-underline hover:underline text-gray-300 text-sm p-3">Create a Topic</a>
+                                <a href="#" class="no-underline hover:underline text-gray-300 text-sm p-3">View Proposal Requests</a>
+                                
                             @elseif(Auth::user()->role === "Module Leader")
+                                <a href="{{route('topics.create')}}" class="no-underline hover:underline text-gray-300 text-sm p-3">Create a Topic</a>
+                                <a href="#" class="no-underline hover:underline text-gray-300 text-sm p-3">View Proposal Requests</a>
+                                <a href="#" class="no-underline hover:underline text-gray-300 text-sm p-3">All Allocations</a>
                             @else
-                                <a href="£" class="no-underline hover:underline text-gray-300 text-sm p-3">All Topics</a>
-                                <a href="£" class="no-underline hover:underline text-gray-300 text-sm p-3">My Allocations</a>
-                                <a href="£" class="no-underline hover:underline text-gray-300 text-sm p-3">My Choices</a>
-                                <a href="£" class="no-underline hover:underline text-gray-300 text-sm p-3">Create a Proposal</a>
+                                <a href="#" class="no-underline hover:underline text-gray-300 text-sm p-3">My Allocations</a>
+                                <a href="#" class="no-underline hover:underline text-gray-300 text-sm p-3">My Choices</a>
+                                <a href="#" class="no-underline hover:underline text-gray-300 text-sm p-3">Create a Proposal</a>
                             @endif
                             <!-- <span class="text-gray-300 text-sm pr-4">{{ Auth::user()->name }}</span> -->
                             

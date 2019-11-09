@@ -16,22 +16,6 @@ class TopicTest extends TestCase
     protected $adminUser;
 
     /**
-     * 
-     */
-    // public function setUp(){
-    //     parent::setUp();
-
-    //     $this->adminUser = User::create([
-    //         'name' => 'Admin User',
-    //         'username' => 'admin',
-    //         'email' => 'email@fypalloc.com',
-    //         'sun' => '123456789',
-    //         'role' => "Admin",
-    //         'password' => Hash::make("admin"),
-    //     ]);
-    // }
-
-    /**
      * @test
      * The 
      */
@@ -56,8 +40,12 @@ class TopicTest extends TestCase
             'isCBApprove' => 1,
         ]);
 
-        $response->assertOk();
+        $topic = Topic::first();
+
         $this->assertCount(1, Topic::all());
+        // $response->assertRedirect('/topics/'.$topic->id);
+        $response->assertRedirect('/topics/');
+
     }
     
     /**
@@ -65,7 +53,7 @@ class TopicTest extends TestCase
      */
     public function a_topic_is_updated(){
 
-        // $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $this->adminUser = User::create([
             'name' => "Admin User",
@@ -96,25 +84,40 @@ class TopicTest extends TestCase
 
         $this->assertEquals('Updated Name', Topic::first()->name);
         $this->assertEquals('Ive UPDATED', Topic::first()->description);
+        // $response->assertRedirect('/topics/'.$topic->id);
+        $response->assertRedirect('/topics/');
     }
 
-    // /**
-    //  * @test
-    //  * */
-    // public function a_topic_is_deleted(){
-    //     $this->withoutExceptionHandling();
-    //     $this->post('/topics', [
-    //         'name' => 'Topic Name',
-    //         'description' => "Hello World. I am a description which will state the context of what I am conveying",
-    //         'supervisorID' => User::find(1),
-    //         'isMCApprove' => 1,
-    //         'isCBApprove' => 1,
-    //     ]);
+    /**
+     * @test
+     * */
+    public function a_topic_is_deleted(){
 
-    //     $topic = Topic::first();
-
-    //     $this->delete('/topics/'.$topic->id, $topic);
+        $this->withoutExceptionHandling();
         
-    //     $this->assertDatabaseMissing('Topic Name', $topic->name);
-    // }
+        $this->adminUser = User::create([
+            'name' => "Admin User",
+            'username' => "admin",
+            'email' => "email@fypalloc.com",
+            'sun' => "123456789",
+            'role' => "Module Leader",
+            'password' => Hash::make("admin"),
+        ]);
+
+        $this->post('/topics', [
+            'name' => 'Topic Name',
+            'description' => "Hello World. I am a description which will state the context of what I am conveying",
+            'supervisorID' => $this->adminUser,
+            'isMCApprove' => 1,
+            'isCBApprove' => 1,
+        ]);
+
+        $topic = Topic::first();
+        $this->assertCount(1, Topic::all());
+
+        $response = $this->delete('/topics/'.$topic->id);
+
+        $this->assertCount(0, Topic::all());
+        $response->assertRedirect('/topics/');
+    }
 }
