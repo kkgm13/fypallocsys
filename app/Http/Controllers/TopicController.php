@@ -38,29 +38,33 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the Data
-        $validateData = $request->validate([
-            'name' => 'required|string|max:200',
-            'description' => 'required|string',
-            'prequisites' => 'sometimes|required|string',
-            'isMCApprove' => 'sometimes|required|boolean',
-            'isCBApprove' => 'sometimes|required|boolean',
-            'supervisorID' => 'sometimes|required',
-        ]);
-        
-        // Get Current auth user
-        if($request->supervisorID->role == "Supervisor"){
-            $validateData['supervisorID'] = Auth::id(); // Get Current Auth
-        } else if($request->supervisorID->role == "Module Leader"){
-            $validateData['supervisorID'] = $request->supervisorID->id; // Get Supervisor Selected auth
-        }
+        // if($request->role->role != "Student"){
+            // Validate the Data
+            $validateData = $request->validate([
+                'name' => 'required|string|max:200',
+                'description' => 'required|string',
+                'prequisites' => 'sometimes|required|string',
+                'isMCApprove' => 'sometimes|required|boolean',
+                'isCBApprove' => 'sometimes|required|boolean',
+                'supervisorID' => 'sometimes|required',
+            ]);
+            
+            // Get Current auth user
+            if($request->supervisorID->role == "Supervisor"){
+                $validateData['supervisorID'] = Auth::id(); // Get Current Auth
+            } else if($request->supervisorID->role == "Module Leader"){
+                $validateData['supervisorID'] = $request->supervisorID->id; // Get Supervisor Selected auth
+            }
 
-        // Create the Topic
-        $topic = Topic::create($validateData);
-        
-        // Redirect
-        // return redirect()->route('topics.show', compact($topic))->with('success', "The topic has been successfully added");
-        return redirect()->route('topics.index')->with('success', "The topic has been successfully added");
+            // Create the Topic
+            $topic = Topic::create($validateData);
+            
+            // Redirect
+            // return redirect()->route('topics.show', compact($topic))->with('success', "The topic has been successfully added");
+            return redirect()->route('topics.index')->with('success', "The topic has been successfully added");
+        // } else {
+            // return abort('403', "You are unauthorized");
+        // }
     }
 
     /**
