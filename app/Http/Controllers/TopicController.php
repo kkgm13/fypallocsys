@@ -26,8 +26,12 @@ class TopicController extends Controller
      */
     public function create()
     {
-        $supervisors = User::where('role', '<>', 'Student')->get();
-        return view('topics.create', compact($supervisors));
+        if(Auth::user()->role != "Student"){
+            $supervisors = User::where('role', '<>', 'Student')->get();
+            return view('topics.create', compact($supervisors));
+        } else {
+            return abort(403, " NOT ALLOWED");
+        }
     }
 
     /**
@@ -38,7 +42,7 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        // if($request->role->role != "Student"){
+        if(Auth::user()->role != "Student"){
             // Validate the Data
             $validateData = $request->validate([
                 'name' => 'required|string|max:200',
@@ -50,9 +54,9 @@ class TopicController extends Controller
             ]);
             
             // Get Current auth user
-            if($request->supervisorID->role == "Supervisor"){
+            if(Auth::user()->role == "Supervisor"){
                 $validateData['supervisorID'] = Auth::id(); // Get Current Auth
-            } else if($request->supervisorID->role == "Module Leader"){
+            } else {
                 $validateData['supervisorID'] = $request->supervisorID->id; // Get Supervisor Selected auth
             }
 
@@ -62,9 +66,9 @@ class TopicController extends Controller
             // Redirect
             // return redirect()->route('topics.show', compact($topic))->with('success', "The topic has been successfully added");
             return redirect()->route('topics.index')->with('success', "The topic has been successfully added");
-        // } else {
-            // return abort('403', "You are unauthorized");
-        // }
+        } else {
+            return abort('403', "You are unauthorized");
+        }
     }
 
     /**
@@ -86,8 +90,13 @@ class TopicController extends Controller
      */
     public function edit(Topic $topic)
     {
-        $supervisors = User::where('role', '<>', 'Student')->get();
-        return view('topic.edit', compact($topic));
+        if(Auth::id() === $topic->supervisorID || Auth::user()->role === "Module Leader"){
+            $supervisors = User::where('role', '<>', 'Student')->get();
+            return view('topic.edit', compact($topic));
+        } else {
+            return abort(403, "Forbidden");
+        }
+        
     }
 
     /**
@@ -99,23 +108,27 @@ class TopicController extends Controller
      */
     public function update(Request $request, Topic $topic)
     {
-        // Validate the Data
-        $validateData = $request->validate([
-            'name' => 'required|string|max:200',
-            'description' => 'required|string',
-            'isMCApprove' => 'required|boolean',
-            'isCBApprove' => 'required|boolean',
-        ]);
-        
-        // Get Current auth user
-        if($request->supervisorID->role == "Module Leader"){
-            $validateData['supervisorID'] = $request->supervisorID->id; // Get Supervisor Selected auth
-        }
+        if(Auth::id() === $topic->supervisorID || Auth::user()->role === "Module Leader"){
+            // Validate the Data
+            $validateData = $request->validate([
+                'name' => 'required|string|max:200',
+                'description' => 'required|string',
+                'isMCApprove' => 'required|boolean',
+                'isCBApprove' => 'required|boolean',
+            ]);
+            
+            // Get Current auth user
+            if($request->supervisorID->role == "Module Leader"){
+                $validateData['supervisorID'] = $request->supervisorID->id; // Get Supervisor Selected auth
+            }
 
-        // Create the Topic
-        $topic->update($validateData);
-        // return redirect()->route('topics.show', compact($topic))->with('success', "The topic has been successfully updated");
-        return redirect()->route('topics.index')->with('success', "The topic has been successfully updated");
+            // Create the Topic
+            $topic->update($validateData);
+            // return redirect()->route('topics.show', compact($topic))->with('success', "The topic has been successfully updated");
+            return redirect()->route('topics.index')->with('success', "The topic has been successfully updated");
+        } else {
+            return abort(403, "Forbidden");
+        }
     }
 
     /**
@@ -126,7 +139,11 @@ class TopicController extends Controller
      */
     public function destroy(Topic $topic)
     {
-        $topic->delete();
-        return redirect()->route('topics.index')->with('success', "The topic has been successfully deleted");
+        if(Auth::id() === $topic->supervisorID || Auth::user()->role === "Module Leader"){
+            $topic->delete();
+            return redirect()->route('topics.index')->with('success', "The topic has been successfully deleted");
+        } else {
+            return abort(403, "Forbidden");
+        }
     }
 }

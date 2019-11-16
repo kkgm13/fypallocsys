@@ -22,5 +22,14 @@ class UserSeeder extends Seeder
             'role' => "Module Leader",
             'password' => Hash::make('admin'),
         ]);
+
+        User::create([
+            'name' => "Student 1",
+            'username' => "student",
+            'email' => "student@fypalloc.com",
+            'sun' => '987654321',
+            'role' => "Student",
+            'password' => Hash::make('student'),
+        ]);
     }
 }
