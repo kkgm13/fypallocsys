@@ -34,7 +34,7 @@ class HomeController extends Controller
             $topics = Topic::where('supervisorID', '=', Auth::id())->get();
             $proposals = Proposal::where('supervisorID', '=', Auth::id())->get();
         } else {
-            $topic = Topics::all();
+            $topics = Topic::all();
             $proposals = Proposal::where('studentID', '=', Auth::id())->get();
         }
         return view('home', ['topics' => $topics, 'proposals' => $proposals]);

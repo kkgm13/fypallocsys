@@ -67,6 +67,7 @@ Create a New Topic
             </div>
         </fieldset>
         @endif
+        <br>
         <hr class="py-2">
         <div class="flex flex-wrap">
             <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
