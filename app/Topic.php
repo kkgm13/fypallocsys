@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Topic Model
  * 
- * This is the Model that provides context with a 
+ * This is a Model containing the characteristics of a Topic, provided by the Supervisors
  */
 class Topic extends Model
 {

@@ -120,7 +120,7 @@ class TopicTest extends TestCase
         $response = $this->actingAs($this->adminUser)
             // Delete Topic
             ->delete('/topics/'.$topic->id);
-
+        
         // Assert 
         $this->assertCount(0, Topic::all());
         $response->assertRedirect('/topics/');
@@ -204,5 +204,12 @@ class TopicTest extends TestCase
             ->get(route('topics.edit', $topic));
         // Assert the Response Code
         $response->assertStatus(403);
+    }
+
+    /** @test */
+    public function public_can_view_topics_create_page(){
+        $response = $this->get(route('topics.create'));
+
+        $response->assertRedirect('/login');
     }
 }

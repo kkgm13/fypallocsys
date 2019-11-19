@@ -15,7 +15,8 @@ Route::get('/', function () {
     if(Auth::user()){
         return redirect()->route('home');
     } else {
-        return view('auth.login');
+        // return view('auth.login');
+        return redirect()->route('login');
     }
 });
 
@@ -25,5 +26,6 @@ Auth::routes(['register' => false, 'reset' => false, 'verify' => false]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resources([
-    'topics' => 'TopicController'
+    'topics' => 'TopicController',
+    'proposals' => 'ProposalController',
 ]);
