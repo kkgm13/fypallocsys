@@ -15,21 +15,43 @@ class UserSeeder extends Seeder
     {
         //
         User::create([
-            'name' => "FYP Admin",
+            'firstName' => "FYP",
+            'lastName' => 'Admin',
             'username' => "fypadmin",
             'email' => "admin@fypalloc.com",
-            'sun' => '123456789',
+            'sun' => null,
             'role' => "Module Leader",
             'password' => Hash::make('admin'),
         ]);
 
         User::create([
-            'name' => "Student 1",
-            'username' => "student",
-            'email' => "student@fypalloc.com",
+            'firstName' => "Supervisor",
+            'lastName' => 'User',
+            'username' => "supervisor",
+            'email' => "supervisor@fypalloc.com",
+            'sun' => null,
+            'role' => "Supervisor",
+            'password' => Hash::make("supervisor"),
+        ]);
+
+        User::create([
+            'firstName' => "Student 1",
+            'lastName' => 'User',
+            'username' => "student1",
+            'email' => "student1@fypalloc.com",
             'sun' => '987654321',
             'role' => "Student",
-            'password' => Hash::make('student'),
+            'password' => Hash::make('student1'),
+        ]);
+
+        User::create([
+            'firstName' => "Student2",
+            'lastName' => 'User',
+            'username' => "student2",
+            'email' => "student2@fypalloc.com",
+            'sun' => '197461038',
+            'role' => "Student",
+            'password' => Hash::make('student1'),
         ]);
     }
 }

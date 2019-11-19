@@ -37,26 +37,41 @@ Create a New Topic
         <fieldset>
             <div class="md:flex mx-5 mb-6">
                 <label class=" block text-gray-500 font-bold">
-                <input class="mr-2 leading-tight" type="checkbox" name="isMCApprove">
+                <input class="mr-2 leading-tight" type="checkbox" name="isMCApprove" value="1">
                 <span for="isMCApprove" class="text-sm">Suitable for MC</span>
                 </label>
             </div>
             <div class="md:flex mx-5 mb-6">
                 <label class=" block text-gray-500 font-bold">
-                <input class="mr-2 leading-tight" type="checkbox" name="isCBApprove">
+                <input class="mr-2 leading-tight" type="checkbox" name="isCBApprove" value='1'>
                 <span for="isCBApprove" class="text-sm">Suitable for BC</span>
                 </label>
             </div>
         </fieldset>
-        @if(auth()->user()->role === "Module Leader")
-        <!-- Supervisor Users -->
+        @if(Auth::user()->role == "Module Leader")
+        <fieldset>
+            <div class="w-full px-5 md:mb-0">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
+                    Appointed Supervisor
+                </label>
+                <div class="relative">
+                    <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="supervisorID" id="grid-state">
+                        @foreach($supervisors as $supervisor)
+                            <option value="{{$supervisor->id}}">{{$supervisor->firstName." ". $supervisor->lastName}}</option>
+                        @endforeach
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
         @endif
-        <hr>
-        <br>
+        <hr class="py-2">
         <div class="flex flex-wrap">
             <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
             <div class="w-full md:w-1/2 px-2">
-                <input type="submit" value="Create Topic" class="w-full bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+                <input type="submit" value="Create Topic" class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
             </div>
             <div class="w-full md:w-1/2 px-2">
                 <input type="reset" value="Reset" class="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">

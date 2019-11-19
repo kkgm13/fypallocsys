@@ -23,7 +23,8 @@ class TopicTest extends TestCase
         // $this->withoutExceptionHandling();
 
         $this->adminUser = User::create([
-            'name' => "Admin User",
+            'firstName' => "Admin",
+            'lastName' => 'User',
             'username' => "admin",
             'email' => "email@fypalloc.com",
             'sun' => "123456789",
@@ -55,7 +56,8 @@ class TopicTest extends TestCase
         // $this->withoutExceptionHandling();
 
         $this->adminUser = User::create([
-            'name' => "Admin User",
+            'firstName' => "Admin",
+            'lastName' => 'User',
             'username' => "admin",
             'email' => "email@fypalloc.com",
             'sun' => "123456789",
@@ -96,7 +98,8 @@ class TopicTest extends TestCase
         
         // Create Admin User
         $this->adminUser = User::create([
-            'name' => "Admin User",
+            'firstName' => "Admin",
+            'lastName' => 'User',
             'username' => "admin",
             'email' => "email@fypalloc.com",
             'sun' => "123456789",
@@ -131,7 +134,8 @@ class TopicTest extends TestCase
 
         // Create a student
         $this->studentUser = User::create([
-            'name' => "Student User",
+            'firstName' => "Student",
+            'lastName' => 'User',
             'username' => "student",
             'email' => "student@fypalloc.com",
             'sun' => "987654321",
@@ -170,7 +174,8 @@ class TopicTest extends TestCase
     public function other_supervisor_attempt_to_edit_another_supervisor_topic(){
         // Create Admin User
         $this->adminUser = User::create([
-            'name' => "Admin User",
+            'firstName' => "Admin",
+            'lastName' => 'User',
             'username' => "admin",
             'email' => "email@fypalloc.com",
             'sun' => "123456789",
@@ -180,7 +185,8 @@ class TopicTest extends TestCase
 
         // Create Supervisor User
         $this->supervisorUser = User::create([
-            'name' => "Supervisor User",
+            'firstName' => "Supervisor",
+            'lastName' => 'User',
             'username' => "supervisor",
             'email' => "supervisor@fypalloc.com",
             'sun' => "192837465",

@@ -17,6 +17,18 @@ class Topic extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'userID', 'supervisorID', 'isMCApprove', 'isCBApprove', 'prequisites', 'isMCApprove', 'isCBApprove'
+        'name', 'description', 'studentID', 'supervisorID', 'isMCApprove', 'isCBApprove', 'prequisites', 'isMCApprove', 'isCBApprove'
     ];
+
+    public function supervisor(){
+        return $this->belongsTo('App\User', 'supervisorID');
+    }
+
+    public function students(){
+        return $this->hasMany('App\User', 'studentID');
+    }
+
+    public function chosenStudent(){
+        return $this->belongsTo('App\User', 'studentID');
+    }
 }

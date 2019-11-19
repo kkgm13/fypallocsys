@@ -78,7 +78,7 @@ class ProposalController extends Controller
      */
     public function show(Proposal $proposal)
     {
-        return view('proposals.show', compact($proposal));
+        return view('proposals.show', ['proposal' => $proposal]);
     }
 
     /**

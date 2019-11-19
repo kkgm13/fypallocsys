@@ -20,8 +20,8 @@ class CreateTopicsTable extends Migration
             $table->unsignedBigInteger('studentID')->comment('Foreign Key for STUDENTS')->nullable();
             $table->unsignedBigInteger('supervisorID')->comment('Foreign Key for SUPERVISORS');
             $table->longText('prequisites')->comment('Topic Prequisites')->nullable();
-            $table->boolean('isMCApprove')->comment('Boolean: CS Multimedia Approved');
-            $table->boolean('isCBApprove')->comment('Boolean: CS Business Approved');
+            $table->boolean('isMCApprove')->comment('Boolean: CS Multimedia Approved')->default(0);
+            $table->boolean('isCBApprove')->comment('Boolean: CS Business Approved')->default(0);
             
             $table->timestamps();
             // Student Relationship

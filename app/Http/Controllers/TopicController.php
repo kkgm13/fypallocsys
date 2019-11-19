@@ -39,7 +39,7 @@ class TopicController extends Controller
     {
         if(Auth::user()->role != "Student"){
             $supervisors = User::where('role', '<>', 'Student')->get();
-            return view('topics.create', compact($supervisors));
+            return view('topics.create', ['supervisors' => $supervisors]);
         } else {
             return abort(403, " NOT ALLOWED");
         }
@@ -59,19 +59,29 @@ class TopicController extends Controller
                 'name' => 'required|string|max:200',
                 'description' => 'required|string',
                 'prequisites' => 'sometimes|required|string',
-                'isMCApprove' => 'sometimes|required|boolean',
-                'isCBApprove' => 'sometimes|required|boolean',
+                'isMCApprove' => 'sometimes|required|accepted',
+                'isCBApprove' => 'sometimes|required|accepted',
                 'supervisorID' => 'sometimes|required',
             ]);
+
+            // dd($validateData);
             
+            // $topic = new Topic();
+            // $topic->name = $validateData['name'];
+            // $topic->description = $validateData['description'];
+            // $topic->prequisites = $validateData['prequisites'];
+            // $validateData['isMCApprove'] == 'on' ? $topic->isMCApprove = 1 : $topic->isMCApprove = 0;
+
+
             // Get Current auth user
             if(Auth::user()->role == "Supervisor"){
                 $validateData['supervisorID'] = Auth::id(); // Get Current Auth
             } else {
-                $validateData['supervisorID'] = $request->supervisorID->id; // Get Supervisor Selected auth
-            }
+                $validateData['supervisorID'] = $request->supervisorID; // Get Supervisor Selected auth
+            }           
 
             // Create the Topic
+                // Issue with Checkbox due to 'on' value
             $topic = Topic::create($validateData);
             
             // Redirect
@@ -90,7 +100,7 @@ class TopicController extends Controller
      */
     public function show(Topic $topic)
     {
-        return view('topics.show', compact($topic));
+        return view('topics.show', ['topic' => $topic]);
     }
 
     /**
@@ -124,8 +134,8 @@ class TopicController extends Controller
             $validateData = $request->validate([
                 'name' => 'required|string|max:200',
                 'description' => 'required|string',
-                'isMCApprove' => 'required|boolean',
-                'isCBApprove' => 'required|boolean',
+                'isMCApprove' => 'required|accepted',
+                'isCBApprove' => 'required|accepted',
             ]);
             
             // Get Current auth user

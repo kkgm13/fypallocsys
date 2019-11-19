@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Proposal;
+use App\Topic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,7 +26,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $topics = null; $proposals = null;
+        if(Auth::user()->role == "Module Leader"){
+            $topics = Topic::all();
+            $proposals = Proposal::all();
+        } else if (Auth::user()->role == "Supervisor"){
+            $topics = Topic::where('supervisorID', '=', Auth::id())->get();
+            $proposals = Proposal::where('supervisorID', '=', Auth::id())->get();
+        } else {
+            $topic = Topics::all();
+            $proposals = Proposal::where('studentID', '=', Auth::id())->get();
+        }
+        return view('home', ['topics' => $topics, 'proposals' => $proposals]);
     }
 
     /**
