@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'username', 'sun','role'
+        'firstName','lastName', 'email', 'password', 'username', 'sun','role'
     ];
 
     /**
@@ -34,9 +34,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        // 'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Topic Associated to a user
+     */
     public function topics(){
         return $this->hasMany('App\Topic', 'id');
     }

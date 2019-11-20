@@ -58,20 +58,10 @@ class TopicController extends Controller
             $validateData = $request->validate([
                 'name' => 'required|string|max:200',
                 'description' => 'required|string',
-                'prequisites' => 'sometimes|required|string',
                 'isMCApprove' => 'sometimes|required|accepted',
                 'isCBApprove' => 'sometimes|required|accepted',
                 'supervisorID' => 'sometimes|required',
             ]);
-
-            // dd($validateData);
-            
-            // $topic = new Topic();
-            // $topic->name = $validateData['name'];
-            // $topic->description = $validateData['description'];
-            // $topic->prequisites = $validateData['prequisites'];
-            // $validateData['isMCApprove'] == 'on' ? $topic->isMCApprove = 1 : $topic->isMCApprove = 0;
-
 
             // Get Current auth user
             if(Auth::user()->role == "Supervisor"){
@@ -79,14 +69,11 @@ class TopicController extends Controller
             } else {
                 $validateData['supervisorID'] = $request->supervisorID; // Get Supervisor Selected auth
             }           
-
             // Create the Topic
                 // Issue with Checkbox due to 'on' value
             $topic = Topic::create($validateData);
-            
-            // Redirect
-            // return redirect()->route('topics.show', compact($topic))->with('success', "The topic has been successfully added");
-            return redirect()->route('topics.index')->with('success', "The topic has been successfully added");
+
+            return redirect()->route('topics.show', $topic)->with('message', "The topic has been successfully added")->with('status', "success");
         } else {
             return abort('403', "You are unauthorized");
         }
@@ -111,7 +98,7 @@ class TopicController extends Controller
      */
     public function edit(Topic $topic)
     {
-        if(Auth::id() === $topic->supervisorID || Auth::user()->role === "Module Leader"){
+        if(Auth::id() == $topic->supervisorID || Auth::user()->role === "Module Leader" ){
             $supervisors = User::where('role', '<>', 'Student')->get();
             return view('topic.edit', compact($topic));
         } else {
@@ -129,24 +116,22 @@ class TopicController extends Controller
      */
     public function update(Request $request, Topic $topic)
     {
-        if(Auth::id() === $topic->supervisorID || Auth::user()->role === "Module Leader"){
+        if(Auth::id() == $topic->supervisorID || Auth::user()->role === "Module Leader"){
             // Validate the Data
             $validateData = $request->validate([
                 'name' => 'required|string|max:200',
                 'description' => 'required|string',
-                'isMCApprove' => 'required|accepted',
-                'isCBApprove' => 'required|accepted',
             ]);
-            
+
             // Get Current auth user
-            if($request->supervisorID->role == "Module Leader"){
-                $validateData['supervisorID'] = $request->supervisorID->id; // Get Supervisor Selected auth
+            if(Auth::user()->role == "Module Leader"){
+                $validateData['supervisorID'] = $request->supervisorID; // Get Supervisor Selected auth
             }
 
             // Create the Topic
             $topic->update($validateData);
-            // return redirect()->route('topics.show', compact($topic))->with('success', "The topic has been successfully updated");
-            return redirect()->route('topics.index')->with('success', "The topic has been successfully updated");
+
+            return redirect()->route('topics.show', $topic)->with('message', "The topic has been successfully updated")->with('status', "success");
         } else {
             return abort(403, "Forbidden");
         }

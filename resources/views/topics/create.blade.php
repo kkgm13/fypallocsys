@@ -37,25 +37,25 @@ Create a New Topic
         <fieldset>
             <div class="md:flex mx-5 mb-6">
                 <label class=" block text-gray-500 font-bold">
-                <input class="mr-2 leading-tight" type="checkbox" name="isMCApprove" value="1">
-                <span for="isMCApprove" class="text-sm">Suitable for MC</span>
+                    <input class="mr-2 leading-tight" type="checkbox" name="isMCApprove" value="1">
+                    <span for="isMCApprove" class="text-sm">Suitable for MC</span>
                 </label>
             </div>
             <div class="md:flex mx-5 mb-6">
                 <label class=" block text-gray-500 font-bold">
-                <input class="mr-2 leading-tight" type="checkbox" name="isCBApprove" value='1'>
-                <span for="isCBApprove" class="text-sm">Suitable for BC</span>
+                    <input class="mr-2 leading-tight" type="checkbox" name="isCBApprove" value='1'>
+                    <span for="isCBApprove" class="text-sm">Suitable for BC</span>
                 </label>
             </div>
         </fieldset>
         @if(Auth::user()->role == "Module Leader")
         <fieldset>
             <div class="w-full px-5 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="supervisorID">
                     Appointed Supervisor
                 </label>
                 <div class="relative">
-                    <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="supervisorID" id="grid-state">
+                    <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="supervisorID" id="supervisorID">
                         @foreach($supervisors as $supervisor)
                             <option value="{{$supervisor->id}}">{{$supervisor->firstName." ". $supervisor->lastName}}</option>
                         @endforeach

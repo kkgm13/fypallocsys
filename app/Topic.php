@@ -20,14 +20,23 @@ class Topic extends Model
         'name', 'description', 'studentID', 'supervisorID', 'isMCApprove', 'isCBApprove', 'prequisites', 'isMCApprove', 'isCBApprove'
     ];
 
+    /**
+     * Supervisor Relationship
+     */
     public function supervisor(){
         return $this->belongsTo('App\User', 'supervisorID');
     }
 
+    /**
+     * Interested Students Relationship
+     */
     public function students(){
         return $this->hasMany('App\User', 'studentID');
     }
 
+    /**
+     * Chosen Student Relationship
+     */
     public function chosenStudent(){
         return $this->belongsTo('App\User', 'studentID');
     }

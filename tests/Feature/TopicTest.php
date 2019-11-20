@@ -15,9 +15,7 @@ class TopicTest extends TestCase
     
     protected $adminUser, $studentUser, $supervisorUser;
 
-    /**
-     * @test
-     */
+    /** @test */
     public function a_topic_is_added(){
 
         // $this->withoutExceptionHandling();
@@ -35,7 +33,7 @@ class TopicTest extends TestCase
         $response = $this->actingAs($this->adminUser)->post('/topics', [
             'name' => 'Topic Name',
             'description' => "Hello World. I am a description which will state the context of what I am conveying",
-            'supervisorID' => $this->adminUser,
+            'supervisorID' => $this->adminUser->id,
             'isMCApprove' => 1,
             'isCBApprove' => 1,
         ]);
@@ -43,8 +41,7 @@ class TopicTest extends TestCase
         $topic = Topic::first();
 
         $this->assertCount(1, Topic::all());
-        // $response->assertRedirect('/topics/'.$topic->id);
-        $response->assertRedirect('/topics/');
+        $response->assertRedirect('/topics/'.$topic->id);
 
     }
     
@@ -68,7 +65,7 @@ class TopicTest extends TestCase
         $this->actingAs($this->adminUser)->post('/topics', [
             'name' => 'Topic Name',
             'description' => "Hello World. I am a description which will state the context of what I am conveying",
-            'supervisorID' => $this->adminUser,
+            'supervisorID' => $this->adminUser->id,
             'isMCApprove' => 1,
             'isCBApprove' => 1,
         ]);
@@ -78,7 +75,7 @@ class TopicTest extends TestCase
         $response = $this->actingAs($this->adminUser)->patch('/topics/'.$topic->id, [
             'name' => 'Updated Name',
             'description' => "Ive UPDATED",
-            'supervisorID' => $this->adminUser,
+            'supervisorID' => $this->adminUser->id,
             'isMCApprove' => 0,
             'isCBApprove' => 1,
         ]);
@@ -86,7 +83,7 @@ class TopicTest extends TestCase
         $this->assertEquals('Updated Name', Topic::first()->name);
         $this->assertEquals('Ive UPDATED', Topic::first()->description);
         // $response->assertRedirect('/topics/'.$topic->id);
-        $response->assertRedirect('/topics/');
+        $response->assertRedirect('/topics/'.$topic->id);
     }
 
     /**
@@ -111,7 +108,7 @@ class TopicTest extends TestCase
         $this->actingAs($this->adminUser)->post('/topics', [
             'name' => 'Topic Name',
             'description' => "Hello World. I am a description which will state the context of what I am conveying",
-            'supervisorID' => $this->adminUser,
+            'supervisorID' => $this->adminUser->id,
             'isMCApprove' => 1,
             'isCBApprove' => 1,
         ]);
@@ -155,7 +152,8 @@ class TopicTest extends TestCase
 
         // Create a student
         $this->studentUser = User::create([
-            'name' => "Student User",
+            'firstName' => "Student",
+            'lastName' => "User",
             'username' => "student",
             'email' => "student@fypalloc.com",
             'sun' => "987654321",
@@ -198,7 +196,7 @@ class TopicTest extends TestCase
         $this->actingAs($this->adminUser)->post('/topics', [
             'name' => 'Topic Name',
             'description' => "Hello World. I am a description which will state the context of what I am conveying",
-            'supervisorID' => $this->adminUser,
+            'supervisorID' => $this->adminUser->id,
             'isMCApprove' => 1,
             'isCBApprove' => 1,
         ]);
@@ -215,7 +213,11 @@ class TopicTest extends TestCase
     /** @test */
     public function public_can_view_topics_create_page(){
         $response = $this->get(route('topics.create'));
-
         $response->assertRedirect('/login');
+    }
+
+    /**  */
+    public function student_selecting_topic(){
+
     }
 }

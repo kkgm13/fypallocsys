@@ -19,7 +19,8 @@ class ProposalTest extends TestCase
     public function a_proposal_is_added(){
 
         $this->studentUser = User::create([
-            'name' => "Student User",
+            'firstName' => "Student",
+            'lastName' => "User",
             'username' => "student",
             'email' => "student@fypalloc.com",
             'sun' => "987654321",
@@ -28,7 +29,8 @@ class ProposalTest extends TestCase
         ]);
 
         $this->supervisorUser = User::create([
-            'name' => "Supervisor User",
+            'firstName' => "Supervisor",
+            'lastName' => 'User',
             'username' => "supervisor",
             'email' => "supervisor@fypalloc.com",
             'sun' => "2468013579",
@@ -56,7 +58,8 @@ class ProposalTest extends TestCase
     /** @test */
     public function student_or_supervisor_edits_a_proposal(){
         $this->studentUser = User::create([
-            'name' => "Student User",
+            'firstName' => "Student",
+            'lastName' => "User",
             'username' => "student",
             'email' => "student@fypalloc.com",
             'sun' => "987654321",
@@ -65,7 +68,8 @@ class ProposalTest extends TestCase
         ]);
 
         $this->supervisorUser = User::create([
-            'name' => "Supervisor User",
+            'firstName' => "Supervisor",
+            'lastName' => 'User',
             'username' => "supervisor",
             'email' => "supervisor@fypalloc.com",
             'sun' => "2468013579",
@@ -93,7 +97,8 @@ class ProposalTest extends TestCase
     public function student_or_supervisor_updates_a_proposal(){
         
         $this->studentUser = User::create([
-            'name' => "Student User",
+            'firstName' => "Student",
+            'lastName' => "User",
             'username' => "student",
             'email' => "student@fypalloc.com",
             'sun' => "987654321",
@@ -102,7 +107,8 @@ class ProposalTest extends TestCase
         ]);
 
         $this->supervisorUser = User::create([
-            'name' => "Supervisor User",
+            'firstName' => "Supervisor",
+            'lastName' => 'User',
             'username' => "supervisor",
             'email' => "supervisor@fypalloc.com",
             'sun' => "2468013579",
@@ -142,7 +148,8 @@ class ProposalTest extends TestCase
     // Shown
     public function show_proposal_of_a_student_to_directed_supervisor(){
         $this->studentUser = User::create([
-            'name' => "Student User",
+            'firstName' => "Student",
+            'lastName' => "User",
             'username' => "student",
             'email' => "student@fypalloc.com",
             'sun' => "987654321",
@@ -151,7 +158,8 @@ class ProposalTest extends TestCase
         ]);
 
         $this->supervisorUser = User::create([
-            'name' => "Supervisor User",
+            'firstName' => "Supervisor",
+            'lastName' => 'User',
             'username' => "supervisor",
             'email' => "supervisor@fypalloc.com",
             'sun' => "2468013579",
@@ -159,7 +167,20 @@ class ProposalTest extends TestCase
             'password' => Hash::make("supervisor"),
         ]);
 
+        $this->actingAs($this->studentUser)->post('/proposals', [
+            'name' => 'Proposal name',
+            'description' => 'Hello World. I am a description which will state the context of what I am conveying',
+            'studentID' => $this->studentUser,
+            'supervisorID' => $this->supervisorUser->id,
+        ]);
 
+        $proposal = Proposal::first();
+
+        $this->assertCount(1, Proposal::all());
+
+        $response = $this->get(route('proposals.show', $proposal));
+
+        $response->assertOk();
     }
     // Deleted
     // Supervisors Seeing directed proposals

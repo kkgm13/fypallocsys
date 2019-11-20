@@ -7,17 +7,24 @@
 @section('content')
 <div class="container mx-auto px-4 w-full">
     @if(session()->has('message'))
-        <div class="alert alert-success">
-            {{ session()->get('message') }}
+        <div class="bg-green-100 border border-greeen-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <span class="font-bold">{{ucfirst(session()->get('status'))}}!</span>
+            <span class="text-sm">{{ session()->get('message') }}</span>
         </div>
     @endif
     <h1 class="text-4xl p-4 text-center">{{$topic->name}}</h1>
-    <hr/>
-    <p>Supervisor: <a href="mailto:{{$topic->supervisor->email}}">{{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</a></p>
-    <h6 class="py-3 text-md">Topic Description</h6>
-    <p class="p-4">{{$topic->description}}</p>
-    <h3 class="text-lg py-3">Topic Prequisites</h3>
-    <p class="p-4">{{$topic->prequisites}}</p>
+    <p class="py-2 text-center">Project Supervisor: <a href="mailto:{{$topic->supervisor->email}}">{{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</a></p>
+    <hr class="py-1">
+    <h6 class="py-3 text-lg font-semibold">Topic Description</h6>
+    <p class="p-4 text-base">{{$topic->description}}</p>
+    <h3 class="text-lg py-3 font-semibold">Topic Prequisites</h3>
+    <p class="p-4 text-base">
+        @if(! is_null($topic->prequisites))
+            {{$topic->prequisites}}
+        @else
+            No prequisites availiable.
+        @endif
+    </p>
     <p>Suitable for MC: <span>{{$topic->isMCApprove ? 'Yes' : 'No'}}</span></p>
     <p>Suitable for BC: <span>{{$topic->isCBApprove ? 'Yes' : 'No'}}</span></p>
     <hr class="py-2">

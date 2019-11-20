@@ -37,13 +37,13 @@ Edit {{$topic->name}}
         <fieldset>
             <div class="md:flex mx-5 mb-6">
                 <label class=" block text-gray-500 font-bold">
-                <input class="mr-2 leading-tight" type="checkbox" name="isMCApprove" {{$topic->isMCApprove ? "checked":""}}>
+                <input class="mr-2 leading-tight" type="checkbox" name="isMCApprove" {{$topic->isMCApprove ? "checked":""}} value="{{old('isMCApprove')}}">
                 <span for="isMCApprove" class="text-sm">Suitable for MC</span>
                 </label>
             </div>
             <div class="md:flex mx-5 mb-6">
                 <label class=" block text-gray-500 font-bold">
-                <input class="mr-2 leading-tight" type="checkbox" name="isCBApprove" {{$topic->isCBApprove ? "checked":""}}>
+                <input class="mr-2 leading-tight" type="checkbox" name="isCBApprove" {{$topic->isCBApprove ? "checked":""}} value="{{old('isCBApprove')}}">
                 <span for="isCBApprove" class="text-sm">Suitable for BC</span>
                 </label>
             </div>
