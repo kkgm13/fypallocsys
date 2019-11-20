@@ -100,7 +100,7 @@ class TopicController extends Controller
     {
         if(Auth::id() == $topic->supervisorID || Auth::user()->role === "Module Leader" ){
             $supervisors = User::where('role', '<>', 'Student')->get();
-            return view('topic.edit', compact($topic));
+            return view('topics.edit', compact($topic));
         } else {
             return abort(403, "Forbidden");
         }
