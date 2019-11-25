@@ -123,7 +123,21 @@ class ProposalController extends Controller
         // if(Auth::user()->role != "Student"){
             
         // } else {
-            // return abort('403', "Forbidden");
+            return abort('403', "Forbidden");
         // }
+    }
+
+    
+    public function decision(Request $request, Proposal $proposal){
+        if(Auth::user()->role == "Student" || Auth::id() == $proposal->supervisorID){
+            if($request->decision === "accepted"){
+
+            } else {
+
+            }
+            return redirect()->route('proposals.index')->with('success', "The proposal has been successfully sent off to the proposed supervisor");;
+        } else {
+            return abort(403, "Forbidden");
+        }
     }
 }

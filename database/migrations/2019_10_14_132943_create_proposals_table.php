@@ -19,6 +19,7 @@ class CreateProposalsTable extends Migration
             $table->longText('description')->comment('Proposal Description');
             $table->unsignedBigInteger('studentID')->comment('Foreign Key to STUDENT');
             $table->unsignedBigInteger('supervisorID')->comment('Foreign Key to SUPERVISOR');
+            $table->boolean('hasAccepted')->comment('Has accepted the ');
             $table->timestamps();
             // Student Relationship
             $table->foreign('studentID')->references('id')->on('users');
