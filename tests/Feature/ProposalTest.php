@@ -221,6 +221,7 @@ class ProposalTest extends TestCase
         $response->assertStatus(403);
     }
 
+    // Supervisors accepting proposal
     public function supervisor_can_accept_proposal(){
         $this->studentUser = User::create([
             'firstName' => "Student",
@@ -256,6 +257,5 @@ class ProposalTest extends TestCase
         $this->actingAs($this->supervisor)
             ->decision($proposal);
     }
-    // Supervisors accepting proposal
     // Supervisors rejecting proposal
 }

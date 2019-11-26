@@ -19,7 +19,7 @@ class ProposalController extends Controller
     }
     
     /**
-     * Display a listing of the resource.
+     * Display a listing of the proposals.
      *
      * @return \Illuminate\Http\Response
      */
@@ -29,7 +29,7 @@ class ProposalController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new proposal.
      *
      * @return \Illuminate\Http\Response
      */
@@ -44,14 +44,13 @@ class ProposalController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created proposal in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        // dd(Auth::user()->role);
         if(Auth::user()->role == "Student"){
             $validateData = $request->validate([
                 'name' => 'required|string|max:200',
@@ -62,8 +61,9 @@ class ProposalController extends Controller
             // Create proposal
             $proposal = Proposal::create($validateData);
 
+            // Notify Supervisor about proposal
+
             // Redirect
-            // return redirect()->route('topics.show', compact($topic))->with('success', "The topic has been successfully added");
             return redirect()->route('proposals.index')->with('success', "The proposal has been successfully sent off to the proposed supervisor");
         } else {
             return abort('403', "Forbidden");
@@ -71,7 +71,7 @@ class ProposalController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified proposal.
      *
      * @param  \App\Proposal  $proposal
      * @return \Illuminate\Http\Response
@@ -82,7 +82,7 @@ class ProposalController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified proposal.
      *
      * @param  \App\Proposal  $proposal
      * @return \Illuminate\Http\Response
@@ -97,7 +97,7 @@ class ProposalController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified proposal in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Proposal  $proposal
@@ -113,7 +113,7 @@ class ProposalController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified proposal from storage.
      *
      * @param  \App\Proposal  $proposal
      * @return \Illuminate\Http\Response
@@ -127,7 +127,13 @@ class ProposalController extends Controller
         // }
     }
 
-    
+    /**
+     * Supervisor's Decision of the specified Proposal.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Proposal  $proposal
+     * @return \Illuminate\Http\Response
+     */
     public function decision(Request $request, Proposal $proposal){
         if(Auth::user()->role == "Student" || Auth::id() == $proposal->supervisorID){
             if($request->decision === "accepted"){
@@ -140,4 +146,7 @@ class ProposalController extends Controller
             return abort(403, "Forbidden");
         }
     }
+
+    // Private accepted
+    // Private rejected
 }
