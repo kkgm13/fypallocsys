@@ -70,8 +70,9 @@ class TopicController extends Controller
                 $validateData['supervisorID'] = $request->supervisorID; // Get Supervisor Selected auth
             }           
             // Create the Topic
-                // Issue with Checkbox due to 'on' value
             $topic = Topic::create($validateData);
+
+            // Create the Topic Documents and associate with the topic
 
             return redirect()->route('topics.show', $topic)->with('message', "The topic has been successfully added")->with('status', "success");
         } else {
