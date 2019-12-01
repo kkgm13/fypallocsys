@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,71 +9,85 @@
 
     <title>@yield('title') - {{config('app.name', 'Aston CS Allocation System') }}</title>
 
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
     <!-- Styles -->
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('css')
 </head>
-<body class="bg-gray-100 h-screen antialiased leading-none">
+<body>
     <div id="app">
-        <nav class="flex items-center justify-between flex-wrap bg-purple-600 shadow mb-8 py-6">
-            <div class="container mx-auto px-6 md:px-0">
-                <div class="flex items-center justify-center">
-                    <div class="mr-6">
-                        <a href="{{ url('/') }}" class="text-lg font-semibold text-gray-100 no-underline">
-                            {{ config('app.name', 'Aston CS FYP Allocation System') }}
-                        </a>
-                    </div>
-                    <div class="block md:hidden">
-                        <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white" onclick="toggle()">
-                        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
-                        </button>
-                    </div>
-                    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-                        <div class="text-right lg:flex-grow">
-                            @guest
-                                <a class="no-underline hover:underline text-gray-300 text-sm p-3" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                @if (Route::has('register'))
-                                    <a class="no-underline hover:underline text-gray-300 text-sm p-3" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                @endif
-                            @else
-                                @if(Auth::user()->role === "Supervisor" )
-                                    <a href="{{route('topics.create')}}" class="no-underline hover:underline text-gray-300 text-sm p-3">Create a Topic</a>
-                                    <a href="#" class="no-underline hover:underline text-gray-300 text-sm p-3">View Proposal Requests</a>
-                                    
+        <nav class="navbar navbar-expand-md navbar-dark shadow-sm aston">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                {{ config('app.name', 'Aston CS FYP Allocation System') }}
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->username }} <span class="caret"></span>
+                                </a>
+                                @if(Auth::user()->role === "Supervisor")
+                                    <!-- Create a Topic -->
+                                    <!-- View Proposal Requests -->
                                 @elseif(Auth::user()->role === "Module Leader")
-                                    <a href="{{route('topics.create')}}" class="no-underline hover:underline text-gray-300 text-sm p-3">Create a Topic</a>
-                                    <a href="#" class="no-underline hover:underline text-gray-300 text-sm p-3">View Proposal Requests</a>
-                                    <a href="#" class="no-underline hover:underline text-gray-300 text-sm p-3">All Allocations</a>
+                                    <!-- Create a Topic -->
+                                    <!-- View Proposal Requests -->
+                                    <!-- All Allocations -->
                                 @else
-                                    <a href="#" class="no-underline hover:underline text-gray-300 text-sm p-3">My Allocations</a>
-                                    <a href="#" class="no-underline hover:underline text-gray-300 text-sm p-3">My Choices</a>
-                                    <a href="#" class="no-underline hover:underline text-gray-300 text-sm p-3">Create a Proposal</a>
+                                    <!-- My Allocations -->
+                                    <!-- My Choices -->
+                                    <!-- Create a Proposal -->
                                 @endif
-                                <!-- <span class="text-gray-300 text-sm pr-4">{{ Auth::user()->name }}</span> -->
-                                
-                                <a href="{{ route('logout') }}"
-                                class="no-underline hover:underline text-gray-300 text-sm p-3"
-                                onclick="event.preventDefault();
-                                        document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                                    {{ csrf_field() }}
-                                </form>
-                            @endguest
-                        </div>
-                    </div>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
                 </div>
             </div>
         </nav>
 
-        @yield('content')
+        <main class="py-4">
+            @yield('content')
+        </main>
     </div>
-
-    <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}"></script>
-    <script>
-        const menu = document.getElementById('menu');
-        const toggle = () => menu.classList.toggle("hidden");
-    </script>
-    @yield('js')
 </body>
 </html>

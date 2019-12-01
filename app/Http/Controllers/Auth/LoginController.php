@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -50,8 +52,35 @@ class LoginController extends Controller
         $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
         // Merge the request 
         request()->merge([$field => $login]);
-
+        
         return $field;
         // return 'email';
+    }
+
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function validateLogin(Request $request)
+    {
+        $messages = [
+            'identity.required' => 'Email or username cannot be empty',
+            'email.exists' => 'Email or username already registered',
+            'username.exists' => 'Username is already registered',
+            'password.required' => 'Password cannot be empty',
+        ];
+
+        // dd(request()->all(), $messages);
+
+        $request->validate([
+            'identity' => 'required|string',
+            'password' => 'required|string',
+            'email' => 'string|exists:users',
+            'username' => 'string|exists:users',
+        ], $messages);
     }
 }

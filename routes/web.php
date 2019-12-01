@@ -20,7 +20,7 @@ Route::get('/', function () {
 });
 
 // Auth Routes with particular auth parameters removed
-Auth::routes(['register' => false, 'reset' => false, 'verify' => false]);
+Auth::routes(['register' => false, 'reset' => false, 'verify' => false, 'confirm' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
