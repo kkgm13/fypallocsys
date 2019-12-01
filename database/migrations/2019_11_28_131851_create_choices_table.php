@@ -15,6 +15,10 @@ class CreateChoicesTable extends Migration
     {
         Schema::create('choices', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('topicID')->comment('Foreign Key to TOPICS');
+            $table->unsignedBigInteger('studentID')->comment('Foreign key to Student USERS');
+            $table->integer('ranking')->comment("Student Ranking");
+            $table->string('pitch')->comment("Student Pitch");
             $table->timestamps();
         });
     }
