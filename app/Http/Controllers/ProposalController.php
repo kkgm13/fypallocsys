@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Proposal;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,7 +37,7 @@ class ProposalController extends Controller
     public function create()
     {
         if(Auth::user()->role === "Student"){
-            $supervisors = Users::where('role', '<>', 'Student')->get();
+            $supervisors = User::where('role', '<>', 'Student')->get();
             return view('proposals.create', compact($supervisors));
         } else {
             return abort('403', "Forbidden");

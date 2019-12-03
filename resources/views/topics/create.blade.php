@@ -6,7 +6,7 @@ Create a New Topic
 <div class="container mx-auto px-4 w-full">
     <h1 class="text-center py-1">Create a Topic</h1>
     @if($errors->any())
-        <div class="alert alert-danger">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul style="margin:0;">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -14,7 +14,7 @@ Create a New Topic
             </ul>
         </div>
     @endif
-    <form action="{{route('topics.store')}}" method="post" class="py-1">
+    <form action="{{route('topics.store')}}" method="post" class="py-1" enctype="multipart/form-data">
         <hr>
         @csrf
         <fieldset>
@@ -47,15 +47,26 @@ Create a New Topic
             </div>
         </fieldset>
         <fieldset>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="1" id="isMCApprove" name="isMCApprove">
-                <label class="form-check-label" for="isMCApprove">Suitable for MC</label>
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Topic Suitablity</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="isMCApprove" name="isMCApprove">
+                        <label class="form-check-label" for="isMCApprove">Suitable for MC Students</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="isCBApprove" name="isCBApprove">
+                        <label class="form-check-label" for="isCBApprove">Suitable for BC Students</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="topicDocuments">Related Topic Documents</label>
+                        <input type="file" class="form-control-file" id="topicDocuments" name="topicDocuments" aria-describedby="topicDocuments" multiple>
+                        <small id="topicDocuments" class="form-text text-muted">If required, upload relevant files and images. Images will be resized when necessary.</small>
+                    </div>
+                </div>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="1" id="isCBApprove" name="isCBApprove">
-                <label class="form-check-label" for="isCBApprove">Suitable for BC</label>
-            </div>
-            <br>
         </fieldset>
         @if(Auth::user()->role == "Module Leader")
         <fieldset>
@@ -80,10 +91,10 @@ Create a New Topic
         <hr>
         <div class="row">
             <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-            <div class="col-md-6 col-sm-12">
+            <div class="col-md-6 col-sm-12 py-1">
                 <input type="submit" value="Create Topic" class="btn btn-success btn-block">
             </div>
-            <div class="col-md-6 col-sm-12">
+            <div class="col-md-6 col-sm-12 py-1">
                 <input type="reset" value="Reset" class="btn btn-danger btn-block">
             </div>
         </div>

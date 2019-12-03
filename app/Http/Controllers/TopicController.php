@@ -53,39 +53,29 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request, $request->hasFile('topicDocuments'));
         if(Auth::user()->role != "Student"){
-            
-            $rules = [
-                'name' => 'required|string|unique:topics,name|max:200',
-                'description' => 'required|string',
-                'prequisites' => 'sometimes|nullable|string',
-                'corequisites' => 'sometimes|nullable|string',
-                'isMCApprove' => 'sometimes|required|accepted',
-                'isCBApprove' => 'sometimes|required|accepted',
-                'supervisorID' => 'sometimes|required',
-            ];
-
-            $customMessages = [
-                'name.required' => 'A Topic Name is required.',
-                'description.required' => 'A Topic Description is required.',
-                'name.unique' => 'This topic name is already being used by a different supervisor.',    
-            ];
 
             // Validate the Data
-            $validateData = $this->validate($request, $rules, $customMessages);        
+            $validateData = $this->validate($request, Topic::validationRules(), Topic::validationMessages());        
 
             // Get Current auth user
             if(Auth::user()->role == "Supervisor"){
                 $validateData['supervisorID'] = Auth::id(); // Get Current Auth
             } else {
                 $validateData['supervisorID'] = $request->supervisorID; // Get Supervisor Selected auth
-            }           
+            }
+
+            dd($request->hasFile('topicDocuments'), $request);
+
             // Create the Topic
             $topic = Topic::create($validateData);
 
             // Create the Topic Documents and associate with the topic
-
-
+            if($request->hasFile('topicDocuments')){
+                
+            }
+            // Redirection
             return redirect()->route('topics.show', $topic)->with('status', "The topic has been successfully added");
         } else {
             return abort('403', "You are unauthorized");

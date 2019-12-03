@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\User;
 use App\Topic;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
@@ -42,9 +44,55 @@ class TopicTest extends TestCase
 
         $this->assertCount(1, Topic::all());
         $response->assertRedirect('/topics/'.$topic->id);
-
+        $this->assertDatabaseHas('topics', [
+            'name' => 'Topic Name',
+            'isMCApprove' => 1,
+        ]);
     }
     
+    /** @test */
+    public function a_topic_with_documents_is_added(){
+        
+        Storage::fake('documents');
+
+        $this->adminUser = User::create([
+            'firstName' => "Admin",
+            'lastName' => 'User',
+            'username' => "admin",
+            'email' => "email@fypalloc.com",
+            'sun' => "123456789",
+            'role' => "Module Leader",
+            'password' => Hash::make("admin"),
+        ]);
+
+        $file = UploadedFile::fake()->image('imageTest.jpg');
+
+        dd($file);
+
+        $response = $this->actingAs($this->adminUser)->post('/topics', [
+            'name' => 'Topic Name',
+            'description' => "Hello World. I am a description which will state the context of what I am conveying",
+            'supervisorID' => $this->adminUser->id,
+            'isMCApprove' => 1,
+            'isCBApprove' => 1,
+            'topicDocuments' => $file,
+        ]);
+
+        $topic = Topic::first();
+
+        $this->assertCount(1, Topic::all());
+        $this->assertDatabaseHas('topics', [
+            'name' => 'Topic Name',
+            'isMCApprove' => 1,
+        ]);
+        $this->assertDatabaseHas('topic_documents', [
+            'topicID' => $topic->id,
+            'fileName' => $file->hashName()
+        ]);
+        Storage::disk('documents')->assertExists($file->hashName());
+        $response->assertRedirect('/topics/'.$topic->id);
+    }
+
     /**
      * @test
      */
@@ -70,6 +118,11 @@ class TopicTest extends TestCase
             'isCBApprove' => 1,
         ]);
 
+        $this->assertDatabaseHas('topics', [
+            'name' => 'Topic Name',
+            'isMCApprove' => 1,
+        ]);
+
         $topic = Topic::first();
 
         $response = $this->actingAs($this->adminUser)->patch('/topics/'.$topic->id, [
@@ -80,9 +133,14 @@ class TopicTest extends TestCase
             'isCBApprove' => 1,
         ]);
 
+        $this->assertDatabaseMissing('topics', [
+            'name' => 'Topic Name',
+            'isMCApprove' => 1,
+        ]);
+
         $this->assertEquals('Updated Name', Topic::first()->name);
         $this->assertEquals('Ive UPDATED', Topic::first()->description);
-        // $response->assertRedirect('/topics/'.$topic->id);
+        
         $response->assertRedirect('/topics/'.$topic->id);
     }
 
@@ -124,6 +182,10 @@ class TopicTest extends TestCase
         // Assert 
         $this->assertCount(0, Topic::all());
         $response->assertRedirect('/topics/');
+        $this->assertDatabaseMissing('topics', [
+            'name' => 'Topic Name',
+            'isMCApprove' => 1,
+        ]);
     }
 
     /** @test */

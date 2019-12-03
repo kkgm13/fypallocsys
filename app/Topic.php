@@ -47,4 +47,34 @@ class Topic extends Model
     public function documents(){
         return $this->hasMany('App\TopicDocument', 'topicID');
     }
+
+    /**
+     * Form Validation Rules for Topic Forms
+     */
+    public static function validationRules(){
+        return [
+            'name' => 'required|string|unique:topics,name|max:200',
+            'description' => 'required|string',
+            'prequisites' => 'sometimes|nullable|string',
+            'corequisites' => 'sometimes|nullable|string',
+            'isMCApprove' => 'sometimes|required|accepted',
+            'isCBApprove' => 'sometimes|required|accepted',
+            'supervisorID' => 'sometimes|required',
+            'topicDocuments' => 'sometimes|nullable|file|mimes:jpeg,jpg,png,bmp,doc,docx,pdf|max:1048576'
+        ];
+        //
+    }
+
+    /**
+     * Form Error Messages for Topic Forms
+     */
+    public static function validationMessages(){
+        return [
+            'name.required' => 'A Topic Name is required.',
+            'description.required' => 'A Topic Description is required.',
+            'name.unique' => 'This topic name is already being used by a different supervisor.',
+            'topicDocuments.mimes' => 'Supported files only are JPEG, PNG & BMP images, Word and PDF documents only ',
+            'topicDocuments.max' => 'The Document is large to save. Make sure it\'s within 128MB',
+        ];
+    }
 }
