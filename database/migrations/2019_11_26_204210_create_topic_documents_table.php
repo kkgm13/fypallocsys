@@ -19,6 +19,7 @@ class CreateTopicDocumentsTable extends Migration
             $table->string('fileName')->comment('File Name');
             $table->timestamps();
 
+           // Foreign I
             $table->foreign('topicID')->references('id')->on('topics');
         });
     }

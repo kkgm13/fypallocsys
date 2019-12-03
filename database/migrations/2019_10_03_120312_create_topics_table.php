@@ -15,7 +15,7 @@ class CreateTopicsTable extends Migration
     {
         Schema::create('topics', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->comment('Project Name');
+            $table->string('name')->comment('Project Name')->unique();
             $table->longText('description')->comment('Project Description');
             $table->unsignedBigInteger('studentID')->comment('Foreign Key for STUDENTS')->nullable();
             $table->unsignedBigInteger('supervisorID')->comment('Foreign Key for SUPERVISORS');
@@ -23,8 +23,9 @@ class CreateTopicsTable extends Migration
             $table->longText('corequisites')->comment('Topic Corequisites for the year')->nullable();
             $table->boolean('isMCApprove')->comment('Boolean: CS Multimedia Approved')->default(0);
             $table->boolean('isCBApprove')->comment('Boolean: CS Business Approved')->default(0);
-            
+            $table->unsignedBigInteger('secondAssessor')->comment('Foreign Key for ASSESSOR SUPERVISORS')->nullable();
             $table->timestamps();
+
             // Student Relationship
             $table->foreign('studentID')->references('id')->on('users');
             // Supervisor Relationship

@@ -1,5 +1,11 @@
 <?php
-
+// use Illuminate\Http\Request;
+// $context;
+// if(Request::is('topics/*')){
+//     $context = "Topic Name";
+// } else if(Request::is('proposals/*')){
+//     $context = "Proposal Title";
+// }
 return [
 
     /*
@@ -131,6 +137,7 @@ return [
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
+            'rule-name' => 'custom-message',
         ],
     ],
 
@@ -145,6 +152,8 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        // 'name' => $context,
+    ],
 
 ];

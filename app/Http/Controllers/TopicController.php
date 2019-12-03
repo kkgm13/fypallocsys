@@ -54,14 +54,25 @@ class TopicController extends Controller
     public function store(Request $request)
     {
         if(Auth::user()->role != "Student"){
-            // Validate the Data
-            $validateData = $request->validate([
-                'name' => 'required|string|max:200',
+            
+            $rules = [
+                'name' => 'required|string|unique:topics,name|max:200',
                 'description' => 'required|string',
+                'prequisites' => 'sometimes|nullable|string',
+                'corequisites' => 'sometimes|nullable|string',
                 'isMCApprove' => 'sometimes|required|accepted',
                 'isCBApprove' => 'sometimes|required|accepted',
                 'supervisorID' => 'sometimes|required',
-            ]);
+            ];
+
+            $customMessages = [
+                'name.required' => 'A Topic Name is required.',
+                'description.required' => 'A Topic Description is required.',
+                'name.unique' => 'This topic name is already being used by a different supervisor.',    
+            ];
+
+            // Validate the Data
+            $validateData = $this->validate($request, $rules, $customMessages);        
 
             // Get Current auth user
             if(Auth::user()->role == "Supervisor"){
@@ -74,7 +85,8 @@ class TopicController extends Controller
 
             // Create the Topic Documents and associate with the topic
 
-            return redirect()->route('topics.show', $topic)->with('message', "The topic has been successfully added")->with('status', "success");
+
+            return redirect()->route('topics.show', $topic)->with('status', "The topic has been successfully added");
         } else {
             return abort('403', "You are unauthorized");
         }
@@ -132,7 +144,7 @@ class TopicController extends Controller
             // Create the Topic
             $topic->update($validateData);
 
-            return redirect()->route('topics.show', $topic)->with('message', "The topic has been successfully updated")->with('status', "success");
+            return redirect()->route('topics.show', $topic)->with('status', "The topic has been successfully updated");
         } else {
             return abort(403, "Forbidden");
         }

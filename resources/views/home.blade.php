@@ -43,27 +43,21 @@
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                    <th class="w-1/2 px-4 py-2">Title</th>
-                                    <th class="w-1/4 px-4 py-2">Author</th>
-                                    <th class="w-1/4 px-4 py-2">Views</th>
+                                        <th scope="col">Topic Title</th>
+                                        <th scope="col">Author</th>
+                                        <th scope="col">Views</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                    <td class="border px-4 py-2">Intro to CSS</td>
-                                    <td class="border px-4 py-2">Adam</td>
-                                    <td class="border px-4 py-2">858</td>
-                                    </tr>
-                                    <tr class="bg-gray-100">
-                                    <td class="border px-4 py-2">A Long and Winding Tour of the History of UI Frameworks and Tools and the Impact on Design</td>
-                                    <td class="border px-4 py-2">Adam</td>
-                                    <td class="border px-4 py-2">112</td>
-                                    </tr>
-                                    <tr>
-                                    <td class="border px-4 py-2">Into to JavaScript</td>
-                                    <td class="border px-4 py-2">Chris</td>
-                                    <td class="border px-4 py-2">1,280</td>
-                                    </tr>
+                                    @forelse($topics as $topic)
+                                        <tr scope="row">
+                                            <td class="border px-4 py-2">{{$topic->name}}</td>
+                                            <td class="border px-4 py-2">{{$topic->description}}</td>
+                                            <td class="border px-4 py-2">858</td>
+                                        </tr>
+                                    @empty
+                                        <tr><h4 class="text-center">No topics avaliable</h4></tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

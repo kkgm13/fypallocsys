@@ -40,4 +40,11 @@ class Topic extends Model
     public function chosenStudent(){
         return $this->belongsTo('App\User', 'studentID');
     }
+
+    /**
+     * Get all relevant documents of this topic
+     */
+    public function documents(){
+        return $this->hasMany('App\TopicDocument', 'topicID');
+    }
 }

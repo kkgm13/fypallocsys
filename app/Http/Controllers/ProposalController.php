@@ -56,6 +56,7 @@ class ProposalController extends Controller
                 'name' => 'required|string|max:200',
                 'description' => 'required|string',
                 'supervisorID' => 'required',
+                'reasoning' => 'string',
             ]);
             $validateData['studentID'] = Auth::id();
             // Create proposal
@@ -64,7 +65,7 @@ class ProposalController extends Controller
             // Notify Supervisor about proposal
 
             // Redirect
-            return redirect()->route('proposals.index')->with('success', "The proposal has been successfully sent off to the proposed supervisor");
+            return redirect()->route('proposals.index')->with('success', "Your $proposal->name proposal has been successfully sent off to the proposed supervisor");
         } else {
             return abort('403', "Forbidden");
         }

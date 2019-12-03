@@ -74,9 +74,7 @@ class LoginController extends Controller
             'password.required' => 'Password cannot be empty',
         ];
 
-        // dd(request()->all(), $messages);
-
-        $request->validate([
+        $this->validate($request, [
             'identity' => 'required|string',
             'password' => 'required|string',
             'email' => 'string|exists:users',

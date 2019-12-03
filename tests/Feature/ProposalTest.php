@@ -44,8 +44,8 @@ class ProposalTest extends TestCase
             'description' => 'Hello World. I am a description which will state the context of what I am conveying',
             'studentID' => $this->studentUser,
             'supervisorID' => $this->supervisorUser->id,
+            'reasoning' => "This is my reason",
         ]);
-
         $proposal = Proposal::first();
 
         $this->assertCount(1, Proposal::all());
@@ -81,6 +81,7 @@ class ProposalTest extends TestCase
             'description' => 'Hello World. I am a description which will state the context of what I am conveying',
             'studentID' => $this->studentUser,
             'supervisorID' => $this->supervisorUser->id,
+            'reasoning' => "This is my reasoning",
         ]);
 
         $proposal = Proposal::first();
@@ -120,6 +121,7 @@ class ProposalTest extends TestCase
             'description' => 'Hello World. I am a description which will state the context of what I am conveying',
             'studentID' => $this->studentUser,
             'supervisorID' => $this->supervisorUser->id,
+            'reasoning' => "This is my reasoning"
         ]);
 
         $proposal = Proposal::first();
@@ -209,6 +211,7 @@ class ProposalTest extends TestCase
             'description' => 'Hello World. I am a description which will state the context of what I am conveying',
             'studentID' => $this->studentUser,
             'supervisorID' => $this->supervisorUser->id,
+            'reasoning' => 'This is my reasoning',
         ]);
 
         $proposal = Proposal::first();

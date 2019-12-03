@@ -22,7 +22,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark shadow-sm aston">
+        <nav class="navbar navbar-expand-lg navbar-dark shadow-sm aston">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                 {{ config('app.name', 'Aston CS FYP Allocation System') }}
@@ -50,25 +50,30 @@
                                 </li>
                             @endif
                         @else
+                            @if(Auth::user()->role === "Supervisor")
+                                <li class="nav-item"><a class="nav-link" href="{{ route('topics.create') }}">Create a Topic</a></li>
+                                <li class="nav-item"><a class="nav-link" href="">View Proposal Requests</a></li>
+                            @elseif(Auth::user()->role === "Module Leader")
+                                <li class="nav-item"><a class="nav-link" href="{{ route('topics.create') }}">Create a Topic</a></li>
+                                <li class="nav-item"><a class="nav-link" href="">View Proposal Requests</a></li>
+                                <li class="nav-item"><a class="nav-link" href="">All Allocations</a></li>
+                            @else
+                                <li class="nav-item"><a class="nav-link" href="">My Allocations</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">My Choices</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{route('proposals.create')}}">Create a proposal</a></li>
+                            @endif
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <!-- <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->username }} <span class="caret"></span>
-                                </a>
-                                @if(Auth::user()->role === "Supervisor")
-                                    <!-- Create a Topic -->
-                                    <!-- View Proposal Requests -->
-                                @elseif(Auth::user()->role === "Module Leader")
-                                    <!-- Create a Topic -->
-                                    <!-- View Proposal Requests -->
-                                    <!-- All Allocations -->
-                                @else
-                                    <!-- My Allocations -->
-                                    <!-- My Choices -->
-                                    <!-- Create a Proposal -->
-                                @endif
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                </a> -->
+                                
+                                <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> -->
+                                    <!-- <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a> -->
+                                    <a class="nav-link" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
@@ -77,7 +82,7 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
-                                </div>
+                                <!-- </div> -->
                             </li>
                         @endguest
                     </ul>
