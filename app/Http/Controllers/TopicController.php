@@ -53,7 +53,7 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request, $request->hasFile('topicDocuments'));
+        // dd($request);
         if(Auth::user()->role != "Student"){
 
             // Validate the Data

@@ -46,6 +46,7 @@
                                         <th scope="col">Topic Title</th>
                                         <th scope="col">Author</th>
                                         <th scope="col">Views</th>
+                                        <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -54,9 +55,10 @@
                                             <td class="border px-4 py-2">{{$topic->name}}</td>
                                             <td class="border px-4 py-2">{{$topic->description}}</td>
                                             <td class="border px-4 py-2">858</td>
+                                            <td class="border px-4 py-2">derp</td>
                                         </tr>
                                     @empty
-                                        <tr><h4 class="text-center">No topics avaliable</h4></tr>
+                                        <tr scope="row"><td colspan="3"><h4 class="text-center">No topics avaliable</h4></td></tr>
                                     @endforelse
                                 </tbody>
                             </table>

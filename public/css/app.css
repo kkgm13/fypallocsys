@@ -10884,3 +10884,7 @@ a.text-dark:focus {
   color: #fff;
 }
 
+textarea {
+  resize: none;
+}
+

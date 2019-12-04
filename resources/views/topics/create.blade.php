@@ -112,3 +112,7 @@ Create a New Topic
     </form>
 </div>
 @endsection
+@section('js')
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<script src="{{asset('js/tinymce-options.js')}}"></script>
+@endsection
