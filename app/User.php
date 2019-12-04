@@ -37,10 +37,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    //--------------------------------//
+
     /**
      * Topic Associated to a user
      */
     public function topics(){
         return $this->hasMany('App\Topic', 'id');
     }
+
+    /**
+     * Topic assigned to user
+     */
+    public function proposals(){
+        return $this->hasMany('App\Proposal', 'id');
+    }
+
+    //--------------------------------//
 }

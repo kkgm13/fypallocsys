@@ -14,4 +14,6 @@ class Proposal extends Model
     protected $fillable = [
         'name', 'description', 'studentID', 'supervisorID', 'reasoning'
     ];
+
+    //--------------------------------//
 }

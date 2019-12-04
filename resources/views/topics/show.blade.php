@@ -19,7 +19,7 @@
     <p class="pb-2 text-center font-italic">Suitable for CS Students <span class="font-weight-bolder">{{$topic->isMCApprove ? '& CS Multimedia Students' : $topic->isCBApprove ? '& CS Business Students' : $topic->isMCApprove && $topic->isCBApproved ? 'including Multimedia & Business students' : 'ONLY'}}</span></p>
     <hr>
     <h3 class="py-3">Topic Description</h3>
-    <p class="pl-4">{{$topic->description}}</p>
+    <p class="pl-4">{!!$topic->description!!}</p>
     <div class="row">
         <div class="col-md-6">
             <h4 class="py-3">Topic Prequisites</h4>

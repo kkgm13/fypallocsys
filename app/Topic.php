@@ -32,7 +32,7 @@ class Topic extends Model
     /**
      * Interested Students Relationship
      */
-    public function students(){
+    public function interested(){
         return $this->hasMany('App\User', 'studentID');
     }
 

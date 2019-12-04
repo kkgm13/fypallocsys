@@ -15,6 +15,16 @@ class TopicDocument extends Model
         'topicID', 'fileName'
     ];
 
+    //--------------------------------//
+    /**
+     * Document related to topic
+     */
+    public function topic(){
+        return $this->belongsTo('App\Topic', 'topicID');
+    }
+
+    //--------------------------------//
+
     /**
      * List of approved files for Images
      */
