@@ -14,4 +14,11 @@ class TopicDocument extends Model
     protected $fillable = [
         'topicID', 'fileName'
     ];
+
+    /**
+     * List of approved files for Images
+     */
+    public static function approvedImageTypes(){
+        return ['jpeg','jpg','png','bmp',];
+    }
 }

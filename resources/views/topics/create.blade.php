@@ -25,10 +25,21 @@ Create a New Topic
             </div>
         </fieldset>
         <fieldset>
-            <div class="form-group">
-                <label for="description">Topic Description</label>
-                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Topic Description">{{ old('description') }}</textarea>
-            </div>
+            <!-- <div class="row"> -->
+                <!-- <div class="col-12"> -->
+                    <div class="form-group">
+                        <label for="description">Topic Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Topic Description">{{ old('description') }}</textarea>
+                    </div>
+                <!-- </div> -->
+                <!-- <div class="col-lg-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="skillset">Skills Set</label>
+                        <textarea class="form-control" id="skillset" name="skillset" rows="3" placeholder="Topic Skillsets">{{ old('skillset', "<ul></ul>") }}</textarea>
+                    </div>
+                </div> -->
+            <!-- </div> -->
+
             <div class="row">
                 <div class="col-lg-6 col-sm-12">
                     <div class="form-group">
@@ -52,17 +63,17 @@ Create a New Topic
                     <label>Topic Suitablity</label>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="1" id="isMCApprove" name="isMCApprove">
-                        <label class="form-check-label" for="isMCApprove">Suitable for MC Students</label>
+                        <label class="form-check-label" for="isMCApprove">Suitable for Multimedia Students</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="1" id="isCBApprove" name="isCBApprove">
-                        <label class="form-check-label" for="isCBApprove">Suitable for BC Students</label>
+                        <label class="form-check-label" for="isCBApprove">Suitable for Business Students</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="topicDocuments">Related Topic Documents</label>
-                        <input type="file" class="form-control-file" id="topicDocuments" name="topicDocuments" aria-describedby="topicDocuments" multiple>
+                        <label for="topicDocuments[]">Related Topic Documents</label>
+                        <input type="file" class="form-control-file" accept=".jpg, .jpeg, .png, .doc, .docx, .pdf" id="topicDocuments[]" name="topicDocuments[]" aria-describedby="topicDocuments" multiple>
                         <small id="topicDocuments" class="form-text text-muted">If required, upload relevant files and images. Images will be resized when necessary.</small>
                     </div>
                 </div>

@@ -16,7 +16,7 @@
     @endif
     <h1 class="text-center">{{$topic->name}}</h1>
     <p class="pt-2 text-center">Project Supervisor: <a href="mailto:{{$topic->supervisor->email}}">{{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</a></p>
-    <p class="pb-2 text-center font-italic">Suitable for <span class="font-weight-bolder">{{$topic->isMCApprove ? 'CS Multimedia Students' : $topic->isCBApprove ? 'CS Business Students' : $topic->isMCApprove && $topic->isCBApproved ? 'all students including Multimedia & Business students' : 'CS Students'}}</span></p>
+    <p class="pb-2 text-center font-italic">Suitable for CS Students <span class="font-weight-bolder">{{$topic->isMCApprove ? '& CS Multimedia Students' : $topic->isCBApprove ? '& CS Business Students' : $topic->isMCApprove && $topic->isCBApproved ? 'including Multimedia & Business students' : 'ONLY'}}</span></p>
     <hr>
     <h3 class="py-3">Topic Description</h3>
     <p class="pl-4">{{$topic->description}}</p>

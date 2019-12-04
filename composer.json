@@ -1,11 +1,12 @@
 {
-    "name": "laravel/laravel",
+    "name": "astonunieascs/fypalloc",
     "type": "project",
     "description": "Aston University Computer Science Department's Final Year Allocation System",
     "keywords": [
         "framework",
         "laravel",
         "aston",
+        "Aston University",
         "allocation"
     ],
     "license": "MIT",

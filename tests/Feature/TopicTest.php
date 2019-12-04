@@ -4,12 +4,12 @@ namespace Tests\Feature;
 
 use App\User;
 use App\Topic;
+use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Hash;
-use Tests\TestCase;
 
 class TopicTest extends TestCase
 {
@@ -51,9 +51,11 @@ class TopicTest extends TestCase
     }
     
     /** @test */
-    public function a_topic_with_documents_is_added(){
+    public function a_topic_with_one_image_added(){
         
-        Storage::fake('documents');
+        // $this->withoutExceptionHandling();
+
+        Storage::fake('local');
 
         $this->adminUser = User::create([
             'firstName' => "Admin",
@@ -64,10 +66,106 @@ class TopicTest extends TestCase
             'role' => "Module Leader",
             'password' => Hash::make("admin"),
         ]);
+        $fileName = 'imageTest.jpg';
 
-        $file = UploadedFile::fake()->image('imageTest.jpg');
+        $file = UploadedFile::fake()->image($fileName);
 
-        dd($file);
+        $response = $this->actingAs($this->adminUser)->post('/topics', [
+            'name' => 'Topic Name',
+            'description' => "Hello World. I am a description which will state the context of what I am conveying",
+            'supervisorID' => $this->adminUser->id,
+            'isMCApprove' => 1,
+            'isCBApprove' => 1,
+            'topicDocuments' => [$file],
+        ]);
+
+        $topic = Topic::first();
+
+        $this->assertCount(1, Topic::all());
+        $this->assertDatabaseHas('topics', [
+            'name' => 'Topic Name',
+            'isMCApprove' => 1,
+        ]);
+        $this->assertDatabaseHas('topic_documents', [
+            'topicID' => $topic->id,
+            'fileName' => $fileName
+        ]);
+
+        // Storage::disk('local')->assertExists($fileName); // Issue with identifying local disk VS actual public disk in testing
+
+        $response->assertRedirect('/topics/'.$topic->id);
+    }
+
+    /** @test */
+    public function a_topic_with_one_document_added(){
+        
+        // $this->withoutExceptionHandling();
+
+        Storage::fake('local');
+
+        $this->adminUser = User::create([
+            'firstName' => "Admin",
+            'lastName' => 'User',
+            'username' => "admin",
+            'email' => "email@fypalloc.com",
+            'sun' => "123456789",
+            'role' => "Module Leader",
+            'password' => Hash::make("admin"),
+        ]);
+        
+        $fileName = 'documentTest.pdf';
+
+        $file = UploadedFile::fake()->create($fileName);
+
+        $response = $this->actingAs($this->adminUser)->post('/topics', [
+            'name' => 'Topic Name',
+            'description' => "Hello World. I am a description which will state the context of what I am conveying",
+            'supervisorID' => $this->adminUser->id,
+            'isMCApprove' => 1,
+            'isCBApprove' => 1,
+            'topicDocuments' => [$file],
+        ]);
+
+        $topic = Topic::first();
+
+        $this->assertCount(1, Topic::all());
+        $this->assertDatabaseHas('topics', [
+            'name' => 'Topic Name',
+            'isMCApprove' => 1,
+        ]);
+        $this->assertDatabaseHas('topic_documents', [
+            'topicID' => $topic->id,
+            'fileName' => $fileName
+        ]);
+
+        // Storage::disk('local')->assertExists($fileName); // Issue with identifying local disk VS actual public disk in testing
+
+        $response->assertRedirect('/topics/'.$topic->id);
+    }
+
+    /** @test */
+    public function a_topic_with_multiple_documents_added(){
+        
+        // $this->withoutExceptionHandling();
+
+        Storage::fake('local');
+
+        $this->adminUser = User::create([
+            'firstName' => "Admin",
+            'lastName' => 'User',
+            'username' => "admin",
+            'email' => "email@fypalloc.com",
+            'sun' => "123456789",
+            'role' => "Module Leader",
+            'password' => Hash::make("admin"),
+        ]);
+        
+        // Create Array of Files uploaded
+        $file = [];
+        array_push($file, UploadedFile::fake()->image('imageTest.jpg'));
+        array_push($file, UploadedFile::fake()->create('documentTest.pdf'));
+        array_push($file, UploadedFile::fake()->image('imageTest.png'));
+        array_push($file, UploadedFile::fake()->create('documentTest.docx'));
 
         $response = $this->actingAs($this->adminUser)->post('/topics', [
             'name' => 'Topic Name',
@@ -85,11 +183,22 @@ class TopicTest extends TestCase
             'name' => 'Topic Name',
             'isMCApprove' => 1,
         ]);
+
         $this->assertDatabaseHas('topic_documents', [
             'topicID' => $topic->id,
-            'fileName' => $file->hashName()
+            'fileName' => 'imageTest.jpg'
         ]);
-        Storage::disk('documents')->assertExists($file->hashName());
+        $this->assertDatabaseHas('topic_documents', [
+            'topicID' => $topic->id,
+            'fileName' => 'imageTest.png'
+        ]);
+        $this->assertDatabaseHas('topic_documents', [
+            'topicID' => $topic->id,
+            'fileName' => 'documentTest.docx'
+        ]);
+
+        // Storage::disk('local')->assertExists($fileName); // Issue with identifying local disk VS actual public disk in testing
+
         $response->assertRedirect('/topics/'.$topic->id);
     }
 

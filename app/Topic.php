@@ -20,6 +20,8 @@ class Topic extends Model
         'name', 'description', 'studentID', 'supervisorID', 'isMCApprove', 'isCBApprove', 'prequisites', 'isMCApprove', 'isCBApprove'
     ];
 
+    //--------------------------------//
+
     /**
      * Supervisor Relationship
      */
@@ -48,6 +50,8 @@ class Topic extends Model
         return $this->hasMany('App\TopicDocument', 'topicID');
     }
 
+    //--------------------------------//
+
     /**
      * Form Validation Rules for Topic Forms
      */
@@ -60,9 +64,9 @@ class Topic extends Model
             'isMCApprove' => 'sometimes|required|accepted',
             'isCBApprove' => 'sometimes|required|accepted',
             'supervisorID' => 'sometimes|required',
-            'topicDocuments' => 'sometimes|nullable|file|mimes:jpeg,jpg,png,bmp,doc,docx,pdf|max:1048576'
+            'topicDocuments' => 'sometimes|nullable|max:1048576'
         ];
-        //
+        //mimes:jpeg,jpg,png,bmp,doc,docx,pdf
     }
 
     /**

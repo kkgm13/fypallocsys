@@ -66,14 +66,12 @@ class TopicController extends Controller
                 $validateData['supervisorID'] = $request->supervisorID; // Get Supervisor Selected auth
             }
 
-            dd($request->hasFile('topicDocuments'), $request);
-
             // Create the Topic
             $topic = Topic::create($validateData);
 
             // Create the Topic Documents and associate with the topic
             if($request->hasFile('topicDocuments')){
-                
+                (new TopicDocumentController)->store($request);
             }
             // Redirection
             return redirect()->route('topics.show', $topic)->with('status', "The topic has been successfully added");
