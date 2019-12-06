@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Proposal;
 use App\User;
+use App\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,7 +26,13 @@ class ProposalController extends Controller
      */
     public function index()
     {
-        return redirect()->route('home');
+        $proposals = null;
+        if(Auth::user()->role === "Student"){
+            $proposals = Proposal::where('studentID', Auth::id())->get();
+        } else {
+            $proposals = Proposal::where('supervisorID', Auth::id())->get();
+        }
+        return view('proposals.index', ['proposals' => $proposals]);
     }
 
     /**
@@ -38,7 +44,7 @@ class ProposalController extends Controller
     {
         if(Auth::user()->role === "Student"){
             $supervisors = User::where('role', '<>', 'Student')->get();
-            return view('proposals.create', compact($supervisors));
+            return view('proposals.create', ['supervisors' => $supervisors]);
         } else {
             return abort('403', "Forbidden");
         }
@@ -53,12 +59,9 @@ class ProposalController extends Controller
     public function store(Request $request)
     {
         if(Auth::user()->role == "Student"){
-            $validateData = $request->validate([
-                'name' => 'required|string|max:200',
-                'description' => 'required|string',
-                'supervisorID' => 'required',
-                'reasoning' => 'string',
-            ]);
+
+            $validateData = $this->validate($request, Proposal::validationRules(), Proposal::validationMessages()); 
+            
             $validateData['studentID'] = Auth::id();
             // Create proposal
             $proposal = Proposal::create($validateData);

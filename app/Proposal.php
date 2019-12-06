@@ -16,4 +16,54 @@ class Proposal extends Model
     ];
 
     //--------------------------------//
+
+    /**
+     * Proposed supervisor of student's proposal
+     */
+    public function supervisor(){
+        return $this->belongsTo('App\User', 'id');
+    }
+
+    /**
+     * Main proposal person
+     */
+    public function student(){
+        return $this->belongsTo('App\User', 'id');
+    }
+
+    //--------------------------------//
+
+
+    /**
+     * Form Validation Rules for Topic Forms
+     */
+    public static function validationRules(){
+        return [
+            'name' => 'required|string|max:200',
+            'description' => 'required|string',
+            'supervisorID' => 'required|not_in:0',
+            'reasoning' => 'required|string',
+        ];
+    }
+
+    /**
+     * Form Error Messages for Topic Forms
+     */
+    public static function validationMessages(){
+        return [
+            'name.required' => 'A Proposal Name is required.',
+            'description.required' => 'A Proposal Description must be provided',
+            'supervisorID.required' => 'Please select a Proposal Supervisor',
+            'reasoning.required' => 'You must provide a reason to do this proposal and why this supervisor'
+        ];
+    }
+
+    public function accept(){
+
+    }
+
+    public function decline(){
+
+    }
+
 }

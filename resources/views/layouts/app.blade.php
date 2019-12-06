@@ -15,9 +15,10 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
     @yield('css')
 </head>
 <body>
@@ -52,14 +53,14 @@
                         @else
                             @if(Auth::user()->role === "Supervisor")
                                 <li class="nav-item"><a class="nav-link" href="{{ route('topics.create') }}">Create a Topic</a></li>
-                                <li class="nav-item"><a class="nav-link" href="">View Proposal Requests</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{route('proposals.index')}}">View Proposal Requests</a></li>
                             @elseif(Auth::user()->role === "Module Leader")
                                 <li class="nav-item"><a class="nav-link" href="{{ route('topics.create') }}">Create a Topic</a></li>
-                                <li class="nav-item"><a class="nav-link" href="">View Proposal Requests</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{route('proposals.index')}}">View Proposal Requests</a></li>
                                 <li class="nav-item"><a class="nav-link" href="">All Allocations</a></li>
                             @else
                                 <li class="nav-item"><a class="nav-link" href="">My Allocations</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#">My Choices</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{route('choices.mine')}}">My Choices</a></li>
                                 <li class="nav-item"><a class="nav-link" href="{{route('proposals.create')}}">Create a proposal</a></li>
                             @endif
                             <li class="nav-item dropdown">

@@ -95,7 +95,7 @@
 
 tinymce.init({
   selector: 'textarea#description',
-  height: 250,
+  height: 225,
   resize: false,
   menubar: false,
   toolbar: 'undo redo | formatselect fontsizeselect | bold italic underline link removeformat | hr charmap | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code preview ',

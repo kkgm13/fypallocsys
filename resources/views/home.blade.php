@@ -43,8 +43,10 @@
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
+                                        <th scope="col">Supervisor</th>
                                         <th scope="col">Topic Title</th>
-                                        <th scope="col">Author</th>
+                                        <th scope="col">Multimedia Suitable</th>
+                                        <th scope="col">Business Suitable</th>
                                         <th scope="col">Views</th>
                                         <th scope="col">Actions</th>
                                     </tr>
@@ -52,13 +54,15 @@
                                 <tbody>
                                     @forelse($topics as $topic)
                                         <tr scope="row">
-                                            <td class="border px-4 py-2">{{$topic->name}}</td>
-                                            <td class="border px-4 py-2">{{$topic->description}}</td>
-                                            <td class="border px-4 py-2">858</td>
-                                            <td class="border px-4 py-2">derp</td>
+                                            <td>{{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</td>
+                                            <td>{{$topic->name}}</td>
+                                            <td class="text-center"><i class="fas {{$topic->isMCApprove ? 'fa-check':'fa-times'}}"></i></td>
+                                            <td class="text-center"><i class="fas {{$topic->isCBApprove ? 'fa-check':'fa-times'}}"></i></td>
+                                            <td>858</td>
+                                            <td>derp</td>
                                         </tr>
                                     @empty
-                                        <tr scope="row"><td colspan="3"><h4 class="text-center">No topics avaliable</h4></td></tr>
+                                        <tr scope="row"><td colspan="6"><h4 class="text-center">No topics avaliable</h4></td></tr>
                                     @endforelse
                                 </tbody>
                             </table>

@@ -178,9 +178,8 @@ class ProposalTest extends TestCase
         $proposal = Proposal::first();
 
         $this->assertCount(1, Proposal::all());
-
+        $this->assertDatabaseHas('proposals', ['name' => 'Proposal name']);
         $response = $this->get(route('proposals.show', $proposal));
-
         $response->assertOk();
     }
 

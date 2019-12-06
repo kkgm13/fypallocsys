@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Choice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChoiceController extends Controller
 {
@@ -15,6 +16,12 @@ class ChoiceController extends Controller
     public function index()
     {
         //
+        if(Auth::user()->role == "Student"){
+            return view('choices.index');
+        } else {
+            return abort(403, " NOT ALLOWED");
+        }
+
     }
 
     /**

@@ -28,3 +28,5 @@ Route::resources([
     'topics' => 'TopicController',
     'proposals' => 'ProposalController',
 ]);
+
+Route::get('/my-choices', 'ChoiceController@index')->name('choices.mine');

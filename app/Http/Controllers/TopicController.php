@@ -27,7 +27,14 @@ class TopicController extends Controller
      */
     public function index()
     {
-        return redirect()->route('home');
+        if(Auth::user()->role === "Student"){
+            $topics = Topic::all();
+
+            return view('choices.index',['topics' => $topics]);
+        } else {
+            return abort(403, "Forbidden");
+        }
+        
     }
 
     /**
