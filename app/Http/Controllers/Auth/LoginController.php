@@ -46,6 +46,7 @@ class LoginController extends Controller
      */
     public function username()
     {
+
         // Get HTTP Request Input
         $login = request()->input('identity');
         // Filter the Value to get either the email/username
@@ -69,8 +70,8 @@ class LoginController extends Controller
     {
         $messages = [
             'identity.required' => 'Email or username cannot be empty',
-            'email.exists' => 'Email or username already registered',
-            'username.exists' => 'Username is already registered',
+            'email.exists' => 'Email or username cannot be empty',
+            'username.exists' => 'Email or username cannot be empty',
             'password.required' => 'Password cannot be empty',
         ];
 

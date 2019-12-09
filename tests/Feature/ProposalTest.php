@@ -256,8 +256,7 @@ class ProposalTest extends TestCase
 
         $this->assertCount(1, Proposal::all());
 
-        $this->actingAs($this->supervisor)
-            ->decision($proposal);
+        $this->actingAs($this->supervisor);
     }
     // Supervisors rejecting proposal
 }
