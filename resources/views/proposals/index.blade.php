@@ -8,6 +8,11 @@
 @endsection
 @section('content')
 <div class="container mx-auto px-4 w-full">
+    @if (session('status'))
+        <div class="alert alert-success" role="alert">
+            {{ session('status') }}
+        </div>
+    @endif
     <h1 class="text-center">
         @if(Auth::user()->role != "Student")
             Proposal Requests

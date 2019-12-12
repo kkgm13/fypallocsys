@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ProposalSent;
 use App\Proposal;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class ProposalTest extends TestCase
@@ -17,6 +19,7 @@ class ProposalTest extends TestCase
 
     /** @test */
     public function a_proposal_is_added(){
+        Mail::fake();
 
         $this->studentUser = User::create([
             'firstName' => "Student",
@@ -53,6 +56,41 @@ class ProposalTest extends TestCase
        // Redirect
         $response->assertRedirect('/proposals/');
     } 
+
+    public function proposal_sent_to_supervisor(){
+        $this->studentUser = User::create([
+            'firstName' => "Student",
+            'lastName' => "User",
+            'username' => "student",
+            'email' => "student@fypalloc.com",
+            'sun' => "987654321",
+            'role' => "Student",
+            'password' => Hash::make("student"),
+        ]);
+
+        $this->supervisorUser = User::create([
+            'firstName' => "Supervisor",
+            'lastName' => 'User',
+            'username' => "supervisor",
+            'email' => "supervisor@fypalloc.com",
+            'sun' => "2468013579",
+            'role' => "Supervisor",
+            'password' => Hash::make("supervisor"),
+        ]);
+
+        // Submit a proposal as a Student
+        $response = $this->actingAs($this->studentUser)->post('/proposals', [
+            'name' => 'Proposal name',
+            'description' => 'Hello World. I am a description which will state the context of what I am conveying',
+            'studentID' => $this->studentUser,
+            'supervisorID' => $this->supervisorUser->id,
+            'reasoning' => "This is my reason",
+        ]);
+        $proposal = Proposal::first();
+
+        $this->assertCount(1, Proposal::all());
+        // Mail::assertSent(ProposalSent::class, function($mail){return $mail->hasTo('supervisor@fypalloc.com');});
+    }
 
     /** @test */
     public function student_or_supervisor_edits_a_proposal(){

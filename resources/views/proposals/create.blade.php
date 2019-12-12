@@ -53,8 +53,8 @@ Create a Proposal
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="reasoning">Proposal Reasoning</label>
-                        <textarea class="form-control" id="reasoning" name="reasoning" rows="3" aria-describedby="reasoningHelp" placeholder="Proposal Reasoning">{{ old('reasoning') }}</textarea>
+                        <label for="reasoning">Supervior Reasoning</label>
+                        <textarea class="form-control" id="reasoning" name="reasoning" rows="3" aria-describedby="reasoningHelp" placeholder="Supervisor Reasoning">{{ old('reasoning') }}</textarea>
                         <small id="reasoningHelp" class="form-text text-muted">In 100 words or less, please state why you have chosen this supervisor for your proposal.</small>
                     </div>
                 </div>

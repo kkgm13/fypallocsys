@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ProposalAccept;
+use App\Mail\ProposalSent;
 use App\User;
 use App\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ProposalController extends Controller
 {
@@ -65,11 +68,12 @@ class ProposalController extends Controller
             $validateData['studentID'] = Auth::id();
             // Create proposal
             $proposal = Proposal::create($validateData);
-
+            
             // Notify Supervisor about proposal
+            Mail::to($proposal->supervisor->email)->send(new ProposalSent($proposal));
 
             // Redirect
-            return redirect()->route('proposals.index')->with('success', "Your $proposal->name proposal has been successfully sent off to the proposed supervisor");
+            return redirect()->route('proposals.index')->with('status', "Your $proposal->name proposal has been successfully sent off to the proposed supervisor");
         } else {
             return abort('403', "Forbidden");
         }
@@ -142,9 +146,9 @@ class ProposalController extends Controller
     public function decision(Request $request, Proposal $proposal){
         if(Auth::user()->role == "Student" || Auth::id() == $proposal->supervisorID){
             if($request->decision === "accepted"){
-
+                $this->accepted($request, $proposal);
             } else {
-
+                
             }
             return redirect()->route('proposals.index')->with('success', "The proposal has been successfully sent off to the proposed supervisor");;
         } else {
@@ -152,6 +156,25 @@ class ProposalController extends Controller
         }
     }
 
-    // Private accepted
+    /**
+     * Proposal has been accepted
+     * 
+     * @param Request   $request
+     * @param Proposal  $proposal
+     */
+    private function accepted(Request $request, Proposal $proposal){
+
+        //Create Allocation
+        $allocation = null;
+        $allocation->proposalID = $proposal->id;
+        $allocation->superAuth = 1;
+        $allocation->save();
+
+        // Send email to Student
+        Mail::to($proposal->student->email)->send(new ProposalAccept($proposal));
+    }
     // Private rejected
+    private function rejected(Request $request, Proposal $proposal){
+        
+    }
 }

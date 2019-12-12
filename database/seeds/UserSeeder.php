@@ -41,6 +41,7 @@ class UserSeeder extends Seeder
             'email' => "student1@fypalloc.com",
             'sun' => '987654321',
             'role' => "Student",
+            'programme' => "BSc Computer Science",
             'password' => Hash::make('student1'),
         ]);
 
@@ -51,6 +52,7 @@ class UserSeeder extends Seeder
             'email' => "student2@fypalloc.com",
             'sun' => '197461038',
             'role' => "Student",
+            'programme' => "BSc Computer Science with Business",
             'password' => Hash::make('student1'),
         ]);
     }

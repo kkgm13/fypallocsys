@@ -21,14 +21,14 @@ class Proposal extends Model
      * Proposed supervisor of student's proposal
      */
     public function supervisor(){
-        return $this->belongsTo('App\User', 'id');
+        return $this->belongsTo('App\User', 'supervisorID', );
     }
 
     /**
      * Main proposal person
      */
     public function student(){
-        return $this->belongsTo('App\User', 'id');
+        return $this->belongsTo('App\User', 'studentID');
     }
 
     //--------------------------------//
