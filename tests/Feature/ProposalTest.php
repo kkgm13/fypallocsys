@@ -57,7 +57,11 @@ class ProposalTest extends TestCase
         $response->assertRedirect('/proposals/');
     } 
 
+    /** @test */
     public function proposal_sent_to_supervisor(){
+
+        Mail::fake();
+
         $this->studentUser = User::create([
             'firstName' => "Student",
             'lastName' => "User",
@@ -89,7 +93,7 @@ class ProposalTest extends TestCase
         $proposal = Proposal::first();
 
         $this->assertCount(1, Proposal::all());
-        // Mail::assertSent(ProposalSent::class, function($mail){return $mail->hasTo('supervisor@fypalloc.com');});
+        Mail::assertSent(ProposalSent::class, function($mail){return $mail->hasTo('supervisor@fypalloc.com');});
     }
 
     /** @test */
@@ -296,5 +300,40 @@ class ProposalTest extends TestCase
 
         $this->actingAs($this->supervisor);
     }
+
     // Supervisors rejecting proposal
+    public function supervisor_can_reject_proposal(){
+        $this->studentUser = User::create([
+            'firstName' => "Student",
+            'lastName' => "User",
+            'username' => "student",
+            'email' => "student@fypalloc.com",
+            'sun' => "987654321",
+            'role' => "Student",
+            'password' => Hash::make("student"),
+        ]);
+
+        $this->supervisorUser = User::create([
+            'firstName' => "Supervisor",
+            'lastName' => 'User',
+            'username' => "supervisor",
+            'email' => "supervisor@fypalloc.com",
+            'sun' => "2468013579",
+            'role' => "Supervisor",
+            'password' => Hash::make("supervisor"),
+        ]);
+
+        $this->actingAs($this->studentUser)->post('/proposals', [
+            'name' => 'Proposal name',
+            'description' => 'Hello World. I am a description which will state the context of what I am conveying',
+            'studentID' => $this->studentUser,
+            'supervisorID' => $this->supervisorUser->id,
+        ]);
+
+        $proposal = Proposal::first();
+
+        $this->assertCount(1, Proposal::all());
+
+        $this->actingAs($this->supervisor);
+    }
 }

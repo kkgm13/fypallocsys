@@ -5,5 +5,10 @@ Create a New Topic
 @section('content')
 <div class="container mx-auto px-4 w-full">
     <h1 class="text-center">My Topic Choices</h1>
+
+    @forelse($choices as $choice)
+    @empty
+        
+    @endforelse
 </div>
 @endsection

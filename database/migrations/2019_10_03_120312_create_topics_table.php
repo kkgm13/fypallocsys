@@ -23,13 +23,15 @@ class CreateTopicsTable extends Migration
             $table->longText('corequisites')->comment('Topic Corequisites for the year')->nullable();
             $table->boolean('isMCApprove')->comment('Boolean: CS Multimedia Approved')->default(0);
             $table->boolean('isCBApprove')->comment('Boolean: CS Business Approved')->default(0);
-            $table->unsignedBigInteger('secondAssessor')->comment('Foreign Key for ASSESSOR SUPERVISORS')->nullable();
+            $table->unsignedBigInteger('secondAssessID')->comment('Foreign Key for ASSESSOR SUPERVISORS')->nullable();
             $table->timestamps();
 
             // Student Relationship
             $table->foreign('studentID')->references('id')->on('users');
             // Supervisor Relationship
             $table->foreign('supervisorID')->references('id')->on('users');
+            // Second Assessor Information
+            $table->foreign('secondAssessID')->references('id')->on('users');
         });
     }
 

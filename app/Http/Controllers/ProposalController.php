@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Allocation;
 use App\Mail\ProposalAccept;
 use App\Mail\ProposalSent;
 use App\User;
@@ -164,9 +165,9 @@ class ProposalController extends Controller
      */
     private function accepted(Request $request, Proposal $proposal){
 
-        //Create Allocation
-        $allocation = null;
+        $allocation = new Allocation();
         $allocation->proposalID = $proposal->id;
+        
         $allocation->superAuth = 1;
         $allocation->save();
 

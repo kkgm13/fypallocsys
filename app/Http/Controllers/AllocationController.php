@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Allocation;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AllocationController extends Controller
 {
@@ -14,72 +14,10 @@ class AllocationController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Allocation  $allocation
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Allocation $allocation)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Allocation  $allocation
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Allocation $allocation)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Allocation  $allocation
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Allocation $allocation)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Allocation  $allocation
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Allocation $allocation)
-    {
-        //
+        if(Auth::user()->role === "Student"){
+            $allocation = Allocation::where('studentID', Auth::id())->get();
+        } else {
+            $allocation = Allocation::where('supervisorID', Auth::id())->get();
+        }
     }
 }
