@@ -3,7 +3,7 @@
 
 Dear {{$proposal->student->firstName}}, 
 
-This is to inform you that your proposal entitled, "{{$proposal->name}}" has been rejected by {{$proposal->supervisor->firstName.''.$proposal->supervisor->lastName}} due to this reason:
+This is to inform you that your proposal entitled, "{{$proposal->name}}" has unfortunatelybeen rejected by {{$proposal->supervisor->firstName.''.$proposal->supervisor->lastName}} due to the following reason(s):
 
 @component('mail::panel')
 {{$reasoning}}

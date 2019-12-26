@@ -188,7 +188,7 @@ class ProposalTest extends TestCase
         $response2->assertStatus(403);
     }
 
-    // Shown
+    /** @test */
     public function show_proposal_of_a_student_to_directed_supervisor(){
         $this->studentUser = User::create([
             'firstName' => "Student",
@@ -215,14 +215,62 @@ class ProposalTest extends TestCase
             'description' => 'Hello World. I am a description which will state the context of what I am conveying',
             'studentID' => $this->studentUser,
             'supervisorID' => $this->supervisorUser->id,
+            'reasoning' => "This is my reason",
         ]);
 
         $proposal = Proposal::first();
 
         $this->assertCount(1, Proposal::all());
         $this->assertDatabaseHas('proposals', ['name' => 'Proposal name']);
-        $response = $this->get(route('proposals.show', $proposal));
+        $response = $this->actingAs($this->supervisorUser)->get(route('proposals.show', $proposal));
         $response->assertOk();
+    }
+
+    /** @test */
+    public function proposal_seen_by_another_supervisor(){
+        $this->studentUser = User::create([
+            'firstName' => "Student",
+            'lastName' => "User",
+            'username' => "student",
+            'email' => "student@fypalloc.com",
+            'sun' => "987654321",
+            'role' => "Student",
+            'password' => Hash::make("student"),
+        ]);
+
+        $this->supervisorUser1 = User::create([
+            'firstName' => "Supervisor",
+            'lastName' => 'User1',
+            'username' => "supervisor1",
+            'email' => "supervisor1@fypalloc.com",
+            'sun' => "2468013579",
+            'role' => "Supervisor",
+            'password' => Hash::make("supervisor1"),
+        ]);
+        $this->supervisorUser2 = User::create([
+            'firstName' => "Supervisor",
+            'lastName' => 'User2',
+            'username' => "supervisor2",
+            'email' => "supervisor2@fypalloc.com",
+            'sun' => "3191842392",
+            'role' => "Supervisor",
+            'password' => Hash::make("supervisor2"),
+        ]);
+
+        $this->actingAs($this->studentUser)->post('/proposals', [
+            'name' => 'Proposal name',
+            'description' => 'Hello World. I am a description which will state the context of what I am conveying',
+            'studentID' => $this->studentUser,
+            'supervisorID' => $this->supervisorUser1->id,
+            'reasoning' => "This is my reason",
+        ]);
+
+        $proposal = Proposal::first();
+
+        $this->assertCount(1, Proposal::all());
+        $this->assertDatabaseHas('proposals', ['name' => 'Proposal name']);
+        $response = $this->actingAs($this->supervisorUser2)->get(route('proposals.show', $proposal));
+        $response->assertStatus(403);;
     }
 
     /** @test */
@@ -266,6 +314,7 @@ class ProposalTest extends TestCase
     }
 
     // Supervisors accepting proposal
+    /** */
     public function supervisor_can_accept_proposal(){
         $this->studentUser = User::create([
             'firstName' => "Student",
@@ -295,10 +344,9 @@ class ProposalTest extends TestCase
         ]);
 
         $proposal = Proposal::first();
-
         $this->assertCount(1, Proposal::all());
 
-        $this->actingAs($this->supervisor);
+        $this->actingAs($this->supervisor)->;
     }
 
     // Supervisors rejecting proposal

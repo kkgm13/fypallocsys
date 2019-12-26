@@ -12,7 +12,7 @@ class Proposal extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'studentID', 'supervisorID', 'reasoning'
+        'name', 'description', 'studentID', 'supervisorID', 'reasoning', 'hasRejected',
     ];
 
     //--------------------------------//

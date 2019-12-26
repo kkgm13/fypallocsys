@@ -29,4 +29,11 @@ Route::resources([
     'proposals' => 'ProposalController',
 ]);
 
+// Allocation Routing
+Route::get('/allocations', 'AllocationController@index')->name('allocation.index');
+
+// Choices Routing
 Route::get('/my-choices', 'ChoiceController@index')->name('choices.mine');
+
+
+// Decisions Routing

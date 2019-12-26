@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Allocation;
 use App\Mail\ProposalAccept;
+use App\Mail\ProposalReject;
 use App\Mail\ProposalSent;
 use App\User;
 use App\Proposal;
@@ -88,7 +89,11 @@ class ProposalController extends Controller
      */
     public function show(Proposal $proposal)
     {
-        return view('proposals.show', ['proposal' => $proposal]);
+        if($proposal->studentID === Auth::id() || $proposal->supervisorID === Auth::id()){
+            return view('proposals.show', ['proposal' => $proposal]);
+        } else {
+            return abort(403, "Forbidden");
+        }
     }
 
     /**
@@ -145,13 +150,13 @@ class ProposalController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function decision(Request $request, Proposal $proposal){
-        if(Auth::user()->role == "Student" || Auth::id() == $proposal->supervisorID){
+        if(Auth::id() == $proposal->supervisorID){
             if($request->decision === "accepted"){
                 $this->accepted($request, $proposal);
             } else {
-                
+                $this->rejected($request, $proposal);
             }
-            return redirect()->route('proposals.index')->with('success', "The proposal has been successfully sent off to the proposed supervisor");;
+            return redirect()->route('proposals.index')->with('success', "Proposal has been $request->decision. The systme is informing the student.");
         } else {
             return abort(403, "Forbidden");
         }
@@ -167,15 +172,19 @@ class ProposalController extends Controller
 
         $allocation = new Allocation();
         $allocation->proposalID = $proposal->id;
-        
+        $allocation->supervisorID = Auth::id();
+        $allocation->studentID = $proposal->student->id;
         $allocation->superAuth = 1;
         $allocation->save();
 
         // Send email to Student
         Mail::to($proposal->student->email)->send(new ProposalAccept($proposal));
     }
-    // Private rejected
+    
     private function rejected(Request $request, Proposal $proposal){
-        
+        $proposal->update(["hasRejected" => 1]);
+
+        // Send Email to student
+        Mail::to($proposal->student->email)->send(new ProposalReject($proposal));
     }
 }
