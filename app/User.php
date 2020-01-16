@@ -53,5 +53,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Proposal', 'id');
     }
 
+    /**
+     * Choices associated to user
+     */
+    public function choices(){
+        return $this->hasMany('App\Choice', 'id');
+    }
+
     //--------------------------------//
 }

@@ -30,7 +30,7 @@ class TopicController extends Controller
         if(Auth::user()->role === "Student"){
             $topics = Topic::all();
 
-            return view('choices.index',['topics' => $topics]);
+            return view('topics.index',['topics' => $topics]);
         } else {
             return abort(403, "Forbidden");
         }

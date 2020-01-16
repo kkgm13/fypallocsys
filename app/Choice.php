@@ -21,7 +21,7 @@ class Choice extends Model
      * Choice Selected by Student
      */
     public function student(){
-        return $this->hasMany('App\User', 'studentID');
+        return $this->belongsTo('App\User', 'studentID');
     }
 
     /**
@@ -31,7 +31,33 @@ class Choice extends Model
         return $this->belongsTo('App\Topic', 'topicID');
     }
 
+
+
     //--------------------------------//
 
+    /**
+     * Form Validation Rules for Topic Forms
+     */
+    public static function validationRules(){
+        return [
+            'topic' => 'required',
+            'ranking' => 'required|integer|between:1,3',
+            'pitch' => 'required|string|max:600',
+        ];
+    }
+
+    /**
+     * Form Error Messages for Topic Forms
+     */
+    public static function validationMessages(){
+        return [
+            'ranking.required' => 'Please rank this topic based on your preferences.',
+            'ranking.empty' => 'Please rank this topic based on your preferences.',
+            'ranking.between' => 'Please rank this topic between :min to :max.',
+            'pitch.required' => 'Please provide context to why you want this topic.',
+            'pitch.empty' => 'Please provide context to why you want this topic.',
+            'pitch.max' => 'You are over the character limit. Please concise.'
+        ];
+    }
     
 }

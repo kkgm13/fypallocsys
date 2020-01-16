@@ -20,4 +20,6 @@ class AllocationController extends Controller
             $allocation = Allocation::where('supervisorID', Auth::id())->get();
         }
     }
+
+    
 }

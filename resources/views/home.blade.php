@@ -22,51 +22,61 @@
                     @endif
 
                     @if(Auth::user()->role != "Student")
-                        <div class="w-full p-6">
-                            <p class="text-gray-700 py-2">
+                        <div class="w-full">
+                            <p class="py-2">
                                 You are logged in, {{Auth::user()->firstName.' '.Auth::user()->lastName}}!
                             </p>
                             <hr class="py-2">
-                            @if(Auth::user()->role == "Module Leader")
-                                <h4 class="py-1 underline text-lg">All Authorized Topics</h4>
-                            @else 
-                                <h4 class="py-1 underline text-base">Your Topics</h4>
-                            @endif
-                            @forelse($topics as $topic)
-                                <p class="py-2 hover:underline"><a href="{{route('topics.show', $topic)}}">{{$topic->name}}</a></p>
-                            @empty
-                                <p>No Topics Availiable</p>
-                            @endforelse
+                            <div class="row">
+                                <div class="col-md-6">
+                                    @if(Auth::user()->role == "Module Leader")
+                                        <h4 class="py-1 underline text-lg">All Authorized Topics</h4>
+                                    @else 
+                                        <h4 class="py-1 underline text-base">Your Topics</h4>
+                                    @endif
+                                    @forelse($topics as $topic)
+                                        <p class="py-2 hover:underline"><a href="{{route('topics.show', $topic)}}">{{$topic->name}}</a></p>
+                                    @empty
+                                        <p>No Topics Availiable</p>
+                                    @endforelse
+                                </div>
+                                <div class="col-md-6">
+                                    <h4 class="py-1 underline text-base">Student Proposals</h4>
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Student</th>
+                                                <th>Name</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse(Auth::user()->proposals as $proposal)
+                                                <tr>
+                                                    <td>{{$proposal->student->firstName.' '.$proposal->student->lastName}}</td>
+                                                    <td>{{$proposal->name}}</td>
+                                                    <td>
+                                                        <div class="btn-group d-flex" role="group" aria-label="Proposal Settings">
+                                                            <a href="{{route('proposals.show', $proposal)}}" class="btn btn-secondary w-100"><i class="fas fa-search"></i></a>
+                                                            <a onclick="alert('In Development')" class="btn btn-info w-100"><i class="fas fa-plus"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr><td colspan="3"><h5 class="text-center">No Proposals</h5></td></tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     @else
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Supervisor</th>
-                                        <th scope="col">Topic Title</th>
-                                        <th scope="col">Multimedia Suitable</th>
-                                        <th scope="col">Business Suitable</th>
-                                        <th scope="col">Views</th>
-                                        <th scope="col">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($topics as $topic)
-                                        <tr scope="row">
-                                            <td>{{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</td>
-                                            <td>{{$topic->name}}</td>
-                                            <td class="text-center"><i class="fas {{$topic->isMCApprove ? 'fa-check':'fa-times'}}"></i></td>
-                                            <td class="text-center"><i class="fas {{$topic->isCBApprove ? 'fa-check':'fa-times'}}"></i></td>
-                                            <td>858</td>
-                                            <td>derp</td>
-                                        </tr>
-                                    @empty
-                                        <tr scope="row"><td colspan="6"><h4 class="text-center">No topics avaliable</h4></td></tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="w-full p-6">
+                        <p class="text-gray-700 py-2">
+                            You are logged in, {{Auth::user()->firstName.' '.Auth::user()->lastName}}!
+                        </p>
+
+                    </div>
                     @endif
                 </div>
             </div>

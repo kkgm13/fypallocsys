@@ -346,7 +346,10 @@ class ProposalTest extends TestCase
         $proposal = Proposal::first();
         $this->assertCount(1, Proposal::all());
 
-        $this->actingAs($this->supervisor)->;
+        $this->actingAs($this->supervisor)->post('/proposal/accept', [
+            'proposal' => $proposal,
+            'request' => 'accepted',
+        ]);
     }
 
     // Supervisors rejecting proposal
@@ -382,6 +385,6 @@ class ProposalTest extends TestCase
 
         $this->assertCount(1, Proposal::all());
 
-        $this->actingAs($this->supervisor);
+        $this->actingAs($this->supervisor)->post('/proposals/decision', []);
     }
 }

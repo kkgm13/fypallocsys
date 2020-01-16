@@ -64,16 +64,12 @@ class ProposalController extends Controller
     public function store(Request $request)
     {
         if(Auth::user()->role == "Student"){
-
-            $validateData = $this->validate($request, Proposal::validationRules(), Proposal::validationMessages()); 
-            
+            $validateData = $this->validate($request, Proposal::validationRules(), Proposal::validationMessages());
             $validateData['studentID'] = Auth::id();
             // Create proposal
             $proposal = Proposal::create($validateData);
-            
             // Notify Supervisor about proposal
             Mail::to($proposal->supervisor->email)->send(new ProposalSent($proposal));
-
             // Redirect
             return redirect()->route('proposals.index')->with('status', "Your $proposal->name proposal has been successfully sent off to the proposed supervisor");
         } else {
