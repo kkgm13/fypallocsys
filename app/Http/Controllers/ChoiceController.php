@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Allocation;
 use App\Choice;
+use App\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,23 +31,30 @@ class ChoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Topic $topic)
     {
         if(Auth::user()->role == "Student"){
             //If already allocated a topic
             if(is_null(Allocation::where('studentID', Auth::id())->get())){
-                // Alert to user that they are allocated a topic already
+                return response()
             } else {
+                $countSize = Choice::where('studentID', '=', Auth::id())->count();
                 // Advise if a forth choice is made
-                if(Choice::where('studentID', '=', Auth::id())->count() > 3){
+                if($countSize >= 3){
                     // Return and show warning of more than 3
                 } else {
-                    $validateData = $this->validate($request, Choice::validationRules(), Choice::validationMessages()); 
-                    $validateData['studentID'] = Auth::id();
-                    // Notify Supervisor about proposal
-                    $choice = Choice::create($validateData);
+                    // IF working correctly for Pitching
+                    // $validateData = $this->validate($request, Choice::validationRules(), Choice::validationMessages()); 
+                    // $validateData['studentID'] = Auth::id();
+                    // $choice = Choice::create($validateData);
+                    $choice = new Choice();
+                    $choice->topicID = $topic->id;
+                    $choice->studentID = Auth::id();
+                    $choice->ranking = $countSize + 1;
+                    $choice->pitch = null;
+                    $choice->save();
                     // Redirect
-                    return redirect()->route('topics.index')->with('status', "Your choice has been successfully been selected for review.");
+                    return redirect()->route('topics.show', $topic)->with('status', "Your choice has been successfully been selected for review.");
                 }
             }
         } else {
@@ -60,10 +68,7 @@ class ChoiceController extends Controller
             if(Choice::where('studentID', '=', Auth::id())->count() > 3){
                 // Return and show warning of more than 3
             } else {
-                $validateData = $this->validate($request, Choice::validationRules(), Choice::validationMessages()); 
-                $validateData['studentID'] = Auth::id();
-                // Notify Supervisor about proposal
-                $choice = Choice::create($validateData);
+                
                 // Redirect
                 return redirect()->route('topics.index')->with('status', "Your choice has been successfully been selected for review.");
             }

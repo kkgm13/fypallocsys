@@ -34,8 +34,9 @@ Route::get('/allocations', 'AllocationController@index')->name('allocation.index
 
 // Choices Routing
 Route::get('/my-choices', 'ChoiceController@index')->name('choices.mine');
+Route::post('/topics/{topic}/select', 'ChoiceController@store')->name('choices.store');
 
 // Decisions Routing
-Route::get('/proposals/{id}/decision/', 'ProposalController@decision')->name('proposal.decision');
-Route::post('/proposals/{id}/decision/', 'ProposalController@decision')->name('proposal.accepted');
-Route::post('/proposals/{id}/decision/', 'ProposalController@decision')->name('proposal.rejected');
+Route::get('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposal.decision');
+Route::post('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposal.accepted');
+Route::post('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposal.rejected');

@@ -32,7 +32,7 @@ class ProposalSeeder extends Seeder
         Proposal::create([
             'name' => "Proposal 3",
             'description' => "This is a proposal",
-            'studentID' => 1,
+            'studentID' => 3,
             'supervisorID' => 1,
             'reasoning' => "This is my reasoning to do this proposal",
             'hasRejected' => 1

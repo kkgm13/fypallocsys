@@ -47,17 +47,24 @@ class User extends Authenticatable
     }
 
     /**
-     * Topic assigned to user
+     * Topic assigned to Supervisor User
      */
     public function proposals(){
-        return $this->hasMany('App\Proposal', 'id');
+        return $this->hasMany('App\Proposal', 'supervisorID', 'id');
+    }
+
+    /**
+     * Topic assigned to Student
+     */
+    public function proposalSent(){
+        return $this->hasMany('App\Proposal', 'studentID', 'id');
     }
 
     /**
      * Choices associated to user
      */
     public function choices(){
-        return $this->hasMany('App\Choice', 'id');
+        return $this->hasMany('App\Choice', 'studentID', 'id');
     }
 
     //--------------------------------//

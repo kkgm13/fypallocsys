@@ -18,7 +18,7 @@ class CreateChoicesTable extends Migration
             $table->unsignedBigInteger('topicID')->comment('Foreign Key to TOPICS');
             $table->unsignedBigInteger('studentID')->comment('Foreign key to Student USERS');
             $table->integer('ranking')->comment("Student Ranking");
-            $table->string('pitch')->comment("Student Pitch");
+            $table->string('pitch')->nullable()->comment("Student Pitch");
             $table->timestamps();
         });
     }

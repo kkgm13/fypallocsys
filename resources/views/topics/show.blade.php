@@ -42,12 +42,12 @@
         </div>
     </div>
     <br>
-    <h4 class="py-3">Relevant Documents</h4>
-    @forelse($topic->documents as $documents)
+    <h4 class="py-1">Relevant Documents</h4>
+    @forelse($topic->documents as $document)
         @if($loop->first)
             <ul>
         @endif
-            <li><a href="{{asset('/storage/graphics/Logo.png')}}">{{$document->fileName}}</a></li>
+            <li><a href="{{asset('/storage/graphics/'.$document->fileName)}}">{{$document->fileName}}</a></li>
         @if($loop->last)
             </ul>
         @endif
@@ -59,42 +59,28 @@
         <div class="col-md-6 col-sm-12">
             @if(Auth::user()->role === "Student")
                 @if(!is_null($topic->name))
-                <a class="btn btn-success btn-block" data-toggle="modal" data-target="#reasoningModal">Pick this topic</a>
+                <!-- <a class="btn btn-success btn-block" data-toggle="modal" data-target="#reasoningModal">Pick this topic</a> -->
+                <form action="{{route('choices.store', $topic)}}" method="post">
+                @csrf
+                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                    <input type="hidden" name="topic" id="topic" value="{{$topic}}">
+                    <input class="btn btn-success btn-block" type="submit" value="Pick This Topic">
+                </form>
+                <!-- <a class="btn btn-success btn-block">Pick this topic</a> -->
+
                 @else
-                <a class="btn btn-success btn-block">Unselect this topic</a>
+                <a href="{{route('choice.delete')}}" class="btn btn-success btn-block">Unselect this topic</a>
                 @endif
             @else
-                <a class="btn btn-info btn-block" href="#">View Interested Students</a>
+                <a class="btn btn-info btn-block" >View Interested Students</a>
             @endif
         </div>
         <div class="col-md-6 col-sm-12">
             @if(Auth::user()->role === "Student")
-                <a class="btn btn-danger btn-block" href="{{route('home')}}">Back to Topics List</a>
+                <a class="btn btn-danger btn-block" href="{{route('topics.index')}}">Back to Topics List</a>
             @else
                 <a class="btn btn-warning btn-block" href="{{route('topics.edit', $topic)}}">Edit this topic</a>
             @endif
-        </div>
-    </div>
-    <div class="modal fade" id="reasoningModal" tabindex="-1" role="dialog" aria-labelledby="reasoningModalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Reasoning Section</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="" method="post">
-                        @csrf
-                        <input type="text" name="reasoning" id="reasoning">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
         </div>
     </div>
 </div>

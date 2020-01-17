@@ -53,7 +53,7 @@ class UserSeeder extends Seeder
             'sun' => '197461038',
             'role' => "Student",
             'programme' => "BSc Computer Science with Business",
-            'password' => Hash::make('student1'),
+            'password' => Hash::make('student2'),
         ]);
     }
 }

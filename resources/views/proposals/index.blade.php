@@ -31,35 +31,52 @@
     <div class="row">
         <div class="col">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <tr>
-                        <th>
-                        @if(Auth::user()->role != "Student")
-                            Student
-                        @else 
-                            Appointed Supervisor
-                        @endif
-                        </th>
-                        <th>Proposal Name</th>
-                        <th>Proposal Description</th>
-                        <th>Student's Reasoning</th>
-                        <th>Actions</th>
-                    </tr>
-                    <tr>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>{{ Auth::user()->role != "Student" ? "Student" : "Chosen Supervisor"}}</th>
+                            <th>Proposal Name</th>
+                            <th>Proposal Description</th>
+                            <th>Student's Reasoning</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         @forelse($proposals as $proposal)
-                        <td></td>
-                        @empty
-                        <td class="text-center" colspan="5">
                             @if(Auth::user()->role != "Student")
-                                <h4>No proposals requests</h4>
+                                <tr>
                             @else
-                                <h4>You have no proposals.</h4>
-                                <p class="text-muted text-center font-italic">Got a topic proposal that you want to work on?</p>
-                                <a class="btn btn-danger" href="{{route('proposals.create')}}">Back to Topics List</a>
+                                <tr class="{{ !is_null($proposal->hasRejected) ? $proposal->hasRejected ? 'table-danger' : 'table-success' : '' }}">
                             @endif
-                        </td>
+                            <td>{{Auth::user()->role != "Student" ? 
+                                $proposal->student->firstName.' '.$proposal->student->lastName : 
+                                $proposal->supervisor->firstName.' '.$proposal->supervisor->lastName}}</td>
+                            <td>{{$proposal->name}}</td>
+                            <td>{{$proposal->description}}</td>
+                            <td>{{$proposal->reasoning}}</td>
+                            <td>
+                                <div class="btn-group d-flex" role="group" aria-label="Proposal Settings">
+                                    <a href="{{route('proposals.show', $proposal)}}" class="btn btn-secondary w-100"><i class="fas fa-search"></i></a>
+                                    @if(Auth::user()->role != "Student")
+                                        <a onclick="alert('In Development')" class="btn btn-info w-100"><i class="fas fa-plus"></i></a>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td class="text-center" colspan="5">
+                                @if(Auth::user()->role != "Student")
+                                    <h4>No proposals to be looked at</h4>
+                                @else
+                                    <h4>You have no proposals.</h4>
+                                    <p class="text-muted text-center font-italic">Got a topic proposal that you want to work on?</p>
+                                    <a class="btn btn-danger" href="{{route('proposals.create')}}">Click Here to propose</a>
+                                @endif
+                            </td>
+                        </tr>
                         @endforelse
-                    </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

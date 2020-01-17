@@ -11,28 +11,28 @@ Topics List
         </div>
     @endif
     <h1 class="text-center">
-        @if(Auth::user()->role != "Student")
-            Proposal Requests
+        @if(Auth::user()->role == "Student")
+            Avaliable Topics
         @else 
-            My Proposals
+            My Topics
         @endif
     </h1>
     <hr>
     <br>
-    <div class="row px-5">
+    <div class="row px-3 px-lg-5">
         <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover ">
+            <table class="table table-sm table-striped table-bordered table-hover ">
                 <thead class="text-center">
                     <tr>
                         <th scope="col" rowspan="2">Supervisor</th>
                         <th scope="col"rowspan="2">Topic Title</th>
                         <th scope="col"rowspan="2">Topic Description</th>
                         <th colspan="2">Course Suitability</th>
-                        <th scope="col"rowspan="2">Available Actions</th>
+                        <th scope="col"rowspan="2">Actions</th>
                     </tr>
                     <tr>
-                        <th scope="col">Multimedia Students</th>
-                        <th scope="col">Business Students</th>
+                        <th scope="col">Multimedia</th>
+                        <th scope="col">Business</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,7 +46,8 @@ Topics List
                             <td>
                                 <div class="btn-group d-flex" role="group" aria-label="Topic Settings">
                                     <a href="{{route('topics.show', $topic)}}" class="btn btn-secondary w-100"><i class="fas fa-search"></i></a>
-                                    <a onclick="alert('In Development')" class="btn btn-info w-100"><i class="fas fa-plus"></i></a>
+                                    <a href="{{route('choices.store', $topic)}}" class="btn btn-success w-100"><i class="fas fa-plus"></i></a>
+                                    <a class="btn btn-danger w-100"><i class="fas fa-minus"></i></a>
                                 </div>
                             </td>
                         </tr>

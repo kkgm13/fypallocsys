@@ -18,6 +18,16 @@ textarea {
     resize: none;
 }
 
+table {
+    thead {
+        background-color: $astonpurple;
+        color: $white;
+    }
+    td {
+        vertical-align: middle !important;
+    }
+}
+
 // form{
 //     label[for]{
 //         text-decoration: underline;

@@ -10888,3 +10888,12 @@ textarea {
   resize: none;
 }
 
+table thead {
+  background-color: #805ad5;
+  color: #fff;
+}
+
+table td {
+  vertical-align: middle !important;
+}
+

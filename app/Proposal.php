@@ -21,7 +21,7 @@ class Proposal extends Model
      * Proposed supervisor of student's proposal
      */
     public function supervisor(){
-        return $this->belongsTo('App\User', 'supervisorID', );
+        return $this->belongsTo('App\User', 'supervisorID');
     }
 
     /**
