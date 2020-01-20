@@ -37,7 +37,11 @@
                             <th>{{ Auth::user()->role != "Student" ? "Student" : "Chosen Supervisor"}}</th>
                             <th>Proposal Name</th>
                             <th>Proposal Description</th>
-                            <th>Student's Reasoning</th>
+                            @if(Auth::user()->role == "Student")
+                                <th>Student's Reasoning</th>
+                            @else
+                                <th>Proposal Status</th>
+                            @endif
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -46,14 +50,38 @@
                             @if(Auth::user()->role != "Student")
                                 <tr>
                             @else
-                                <tr class="{{ !is_null($proposal->hasRejected) ? $proposal->hasRejected ? 'table-danger' : 'table-success' : '' }}">
+                                <tr class="
+                                @if(!is_null($proposal->hasRejected) && $proposal->hasRead == 1)
+                                    @if($proposal->hasRejected)
+                                        table-danger
+                                    @else 
+                                        table-success
+                                    @endif
+                                @elseif($proposal->hasRead == 1)
+                                    table-info
+                                @endif
+                                ">
                             @endif
                             <td>{{Auth::user()->role != "Student" ? 
                                 $proposal->student->firstName.' '.$proposal->student->lastName : 
                                 $proposal->supervisor->firstName.' '.$proposal->supervisor->lastName}}</td>
                             <td>{{$proposal->name}}</td>
                             <td>{{$proposal->description}}</td>
-                            <td>{{$proposal->reasoning}}</td>
+                            @if(Auth::user()->role == "Student")
+                                @if(!is_null($proposal->hasRejected) && $proposal->hasRead == 1)
+                                    @if($proposal->hasRejected == 1)
+                                        <td>DECLINED</td>
+                                    @else 
+                                        <td>ACCEPTED</td>
+                                    @endif
+                                @elseif($proposal->hasRead == 1)
+                                    <td>In review</td>
+                                @else 
+                                    <td>Sent for review</td>
+                                @endif
+                            @else
+                                <td>{{$proposal->reasoning}}</td>
+                            @endif
                             <td>
                                 <div class="btn-group d-flex" role="group" aria-label="Proposal Settings">
                                     <a href="{{route('proposals.show', $proposal)}}" class="btn btn-secondary w-100"><i class="fas fa-search"></i></a>

@@ -33,10 +33,11 @@ class ChoiceController extends Controller
      */
     public function store(Request $request, Topic $topic)
     {
+        dd($request,$topic);
         if(Auth::user()->role == "Student"){
             //If already allocated a topic
-            if(is_null(Allocation::where('studentID', Auth::id())->get())){
-                return response()
+            if(!is_null(Allocation::where('studentID', Auth::id())->get())){
+                return response()->with('status', 'You already have an Allocation!!');
             } else {
                 $countSize = Choice::where('studentID', '=', Auth::id())->count();
                 // Advise if a forth choice is made
