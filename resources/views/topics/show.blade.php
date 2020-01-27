@@ -11,7 +11,6 @@
     <hr>
     <h3 class="py-3">Topic Description</h3>
     <p class="pl-4">{!!$topic->description!!}</p>
-    <!-- Final Year Conditions -->
     <div class="row">
         <div class="col-md-6">
             <h4 class="py-3">Topic Prequisites</h4>
@@ -59,8 +58,6 @@
                     <input type="hidden" name="topic" id="topic" value="{{$topic}}">
                     <input class="btn btn-success btn-block" type="submit" value="Pick This Topic">
                 </form>
-                <!-- <a class="btn btn-success btn-block">Pick this topic</a> -->
-
                 @else
                 <a href="{{route('choice.delete')}}" class="btn btn-success btn-block">Unselect this topic</a>
                 @endif

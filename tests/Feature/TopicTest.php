@@ -386,14 +386,4 @@ class TopicTest extends TestCase
         $response = $this->get(route('topics.create'));
         $response->assertRedirect('/login');
     }
-
-    /**  */
-    public function student_selecting_topic(){
-
-    }
-
-    /** */
-    public function student_submitting_selected_topics(){
-        
-    }
 }

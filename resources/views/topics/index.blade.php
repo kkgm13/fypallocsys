@@ -46,8 +46,8 @@ Topics List
                             <td>
                                 <div class="btn-group d-flex" role="group" aria-label="Topic Settings">
                                     <a href="{{route('topics.show', $topic)}}" class="btn btn-secondary w-100"><i class="fas fa-search"></i></a>
-                                    <a href="{{route('choices.store', $topic)}}" class="btn btn-success w-100"><i class="fas fa-plus"></i></a>
-                                    <a class="btn btn-danger w-100"><i class="fas fa-minus"></i></a>
+                                    <!-- <a href="{{route('choices.store', $topic)}}" class="btn btn-success w-100"><i class="fas fa-plus"></i></a> -->
+                                    <!-- <a class="btn btn-danger w-100"><i class="fas fa-minus"></i></a> -->
                                 </div>
                             </td>
                         </tr>

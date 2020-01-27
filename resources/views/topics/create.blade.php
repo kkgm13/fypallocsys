@@ -5,22 +5,14 @@ Create a New Topic
 @section('content')
 <div class="container mx-auto px-4 w-full">
     <h1 class="text-center py-1">Create a Topic</h1>
-    @if($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <ul style="margin:0;">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    @includeWhen($errors->any(), 'layouts.form-alerts')
     <form action="{{route('topics.store')}}" method="post" class="py-1" enctype="multipart/form-data">
         <hr>
         @csrf
         <fieldset>
             <div class="form-group">
                 <label for="name">Topic Name</label>
-                <input type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp" placeholder="Topic Name" value="{{old('name')}}">
+                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" aria-describedby="nameHelp" placeholder="Topic Name" value="{{old('name')}}">
                 <small id="nameHelp" class="form-text text-muted">This will be checked against the database for duplicate topics.</small>
             </div>
         </fieldset>
@@ -29,7 +21,7 @@ Create a New Topic
                 <!-- <div class="col-12"> -->
                     <div class="form-group">
                         <label for="description">Topic Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Topic Description">{{ old('description') }}</textarea>
+                        <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3" placeholder="Topic Description">{{ old('description') }}</textarea>
                     </div>
                 <!-- </div> -->
                 <!-- <div class="col-lg-4 col-sm-12">

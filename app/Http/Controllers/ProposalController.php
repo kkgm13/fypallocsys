@@ -71,7 +71,10 @@ class ProposalController extends Controller
             // Notify Supervisor about proposal
             Mail::to($proposal->supervisor->email)->send(new ProposalSent($proposal));
             // Redirect
-            return redirect()->route('proposals.index')->with('status', "Your $proposal->name proposal has been successfully sent off to the proposed supervisor");
+            return redirect()->route('proposals.index')->with([
+                'status' => "Your $proposal->name proposal has been successfully sent off to the proposed supervisor",
+                'type' => 'success',
+            ]);
         } else {
             return abort('403', "Forbidden");
         }
@@ -147,12 +150,8 @@ class ProposalController extends Controller
      */
     public function decision(Request $request, Proposal $proposal){
         if(Auth::id() == $proposal->supervisorID){
-            if($request->decision === "accepted"){
-                $this->accepted($request, $proposal);
-            } else {
-                $this->rejected($request, $proposal);
-            }
-            return redirect()->route('proposals.index')->with('success', "Proposal has been $request->decision. The systme is informing the student.");
+            $request->decision === "accepted" ? $this->accepted($request, $proposal) : $this->rejected($request, $proposal);
+            return redirect()->route('proposals.index')->with('success', "Proposal has been $request->decision. The system is informing the student.");
         } else {
             return abort(403, "Forbidden");
         }
@@ -165,21 +164,13 @@ class ProposalController extends Controller
      * @param Proposal  $proposal
      */
     private function accepted(Request $request, Proposal $proposal){
-
-        $allocation = new Allocation();
-        $allocation->proposalID = $proposal->id;
-        $allocation->supervisorID = Auth::id();
-        $allocation->studentID = $proposal->student->id;
-        $allocation->superAuth = 1;
-        $allocation->save();
-
+        (new AllocationController)->store($request, $proposal);
         // Send email to Student
         Mail::to($proposal->student->email)->send(new ProposalAccept($proposal));
     }
     
     private function rejected(Request $request, Proposal $proposal){
-        $proposal->update(["hasRejected" => 1]);
-
+        $proposal->update(['hasRejected' => 1]);
         // Send Email to student
         Mail::to($proposal->student->email)->send(new ProposalReject($proposal));
     }

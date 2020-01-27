@@ -14,11 +14,7 @@ Dashboard
                 <div class="card-header">You are logged in, {{Auth::user()->firstName.' '.Auth::user()->lastName}}!</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                    @endif
+                    @includeif('layouts.status')
                     <div class="w-100">
                         <div class="row">
                             <div class="col-md-6">

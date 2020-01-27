@@ -31,11 +31,12 @@
             <p class="pl-4">{!!$proposal->description!!}</p>
         </div>
         <div class="col-md-5">
-            <h3>Reason to do the proposal</h3>
+            <h3>Proposal Reasoning</h3>
             <p class="pl-4">{!!$proposal->reasoning!!}</p>
         </div>
     </div>
     <hr>
+    @if(Auth::id() === $proposal->supervisorID || Auth::user()->role === "Module Leader")
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <a href="" class="btn btn-success btn-block">Accept Proposal</a>
@@ -66,5 +67,6 @@
             </div>
         </div>
     </div>
+    @endif
 </div>
 @endsection

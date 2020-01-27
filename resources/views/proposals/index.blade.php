@@ -8,11 +8,7 @@
 @endsection
 @section('content')
 <div class="container mx-auto px-4 w-full">
-    @if (session('status'))
-        <div class="alert alert-success" role="alert">
-            {{ session('status') }}
-        </div>
-    @endif
+    @includeif('layouts.status')
     <h1 class="text-center">
         @if(Auth::user()->role != "Student")
             Proposal Requests
@@ -66,7 +62,7 @@
                                 $proposal->student->firstName.' '.$proposal->student->lastName : 
                                 $proposal->supervisor->firstName.' '.$proposal->supervisor->lastName}}</td>
                             <td>{{$proposal->name}}</td>
-                            <td>{{$proposal->description}}</td>
+                            <td>{{strip_tags($proposal->description)}}</td>
                             @if(Auth::user()->role == "Student")
                                 @if(!is_null($proposal->hasRejected) && $proposal->hasRead == 1)
                                     @if($proposal->hasRejected == 1)

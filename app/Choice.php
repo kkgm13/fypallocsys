@@ -40,7 +40,6 @@ class Choice extends Model
      */
     public static function validationRules(){
         return [
-            'topic' => 'required',
             'ranking' => 'required|integer|between:1,3',
             'pitch' => 'required|string|max:600',
         ];

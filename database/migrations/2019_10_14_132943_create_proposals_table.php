@@ -19,7 +19,8 @@ class CreateProposalsTable extends Migration
             $table->longText('description')->comment('Proposal Description');
             $table->unsignedBigInteger('studentID')->comment('Foreign Key to STUDENT');
             $table->unsignedBigInteger('supervisorID')->comment('Foreign Key to SUPERVISOR');
-            $table->string('reasoning')->nullable()->comment('Proposal Reasoning for Supervisor');
+            $table->longText('prequisites')->nullable()->comment('Prequisites to do this Proposal');
+            $table->string('reasoning')->comment('Proposal Reasoning for Supervisor');
             $table->boolean('hasRead')->comment('Boolean: Intended Supervisor has seen this')->default(0);
             $table->boolean('hasRejected')->nullable()->comment('Boolean: Rejected proposal');
             $table->timestamps();

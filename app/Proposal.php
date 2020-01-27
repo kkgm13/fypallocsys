@@ -12,7 +12,7 @@ class Proposal extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'studentID', 'supervisorID', 'reasoning', 'hasRejected',
+        'name', 'description', 'studentID', 'supervisorID', 'reasoning', 'hasRejected', 'prequisites',
     ];
 
     //--------------------------------//
@@ -42,6 +42,7 @@ class Proposal extends Model
             'name' => 'required|string|max:200',
             'description' => 'required|string',
             'supervisorID' => 'required|not_in:0',
+            'prequisites' => 'sometimes',
             'reasoning' => 'required|string',
         ];
     }

@@ -33,11 +33,14 @@ class ChoiceController extends Controller
      */
     public function store(Request $request, Topic $topic)
     {
-        dd($request,$topic);
         if(Auth::user()->role == "Student"){
+            $aloCheck = Allocation::where('studentID', Auth::id())->get();
             //If already allocated a topic
-            if(!is_null(Allocation::where('studentID', Auth::id())->get())){
-                return response()->with('status', 'You already have an Allocation!!');
+            if(!$aloCheck->isEmpty()){
+                return redirect()->back()->with([
+                    'status' => 'You already have an Topic Allocated',
+                    'type' => 'warning'
+                ]);
             } else {
                 $countSize = Choice::where('studentID', '=', Auth::id())->count();
                 // Advise if a forth choice is made
@@ -69,7 +72,6 @@ class ChoiceController extends Controller
             if(Choice::where('studentID', '=', Auth::id())->count() > 3){
                 // Return and show warning of more than 3
             } else {
-                
                 // Redirect
                 return redirect()->route('topics.index')->with('status', "Your choice has been successfully been selected for review.");
             }
