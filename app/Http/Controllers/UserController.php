@@ -32,6 +32,10 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        dd($request, $user);
+        if(Auth::user()->role != "Student"){
+            dd($request, $user);
+        } else {
+            return abort(401);
+        }
     }
 }
