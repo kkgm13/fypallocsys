@@ -70,6 +70,71 @@ class ChoiceTest extends TestCase
     }
 
     /** */
+    public function student_deselects_a_topic(){
+        // Create Admin User
+        $this->adminUser = User::create([
+            'firstName' => "New Admin",
+            'lastName' => 'User',
+            'username' => "newadmin",
+            'email' => "newemail@fypalloc.com",
+            'sun' => "5647382910",
+            'role' => "Module Leader",
+            'password' => Hash::make("admin"),
+        ]);
+
+        // Create a student
+        $this->studentUser = User::create([
+            'firstName' => "Student",
+            'lastName' => "User",
+            'username' => "student",
+            'email' => "student@fypalloc.com",
+            'sun' => "987654321",
+            'role' => "Student",
+            'password' => Hash::make("student"),
+        ]);
+
+        // Create Supervisor User
+        $this->supervisorUser = User::create([
+            'firstName' => "Supervisor",
+            'lastName' => 'User',
+            'username' => "supervisor",
+            'email' => "supervisor@fypalloc.com",
+            'sun' => "192837465",
+            'role' => "Supervisor",
+            'password' => Hash::make("supervisor"),
+        ]);
+
+        $this->actingAs($this->adminUser)->post('/topics', [
+            'name' => 'Topic Name',
+            'description' => "Hello World. I am a description which will state the context of what I am conveying",
+            'supervisorID' => $this->adminUser->id,
+            'isMCApprove' => 1,
+            'isCBApprove' => 1,
+        ]);
+
+        $topic = Topic::first();
+
+        // Create Choice Selection
+        $this->actingAs($this->studentUser)->post('/topics/'.$topic->id.'/select', [
+            // 'topic' => $topic,
+            'studentID' => $this->studentUser->id,
+            'pitching' => null,
+        ]);
+
+        $this->assertCount(1, Choice::all());
+        $this->assertDatabaseHas('choices', [
+            'topicID' => $topic->id,
+            'studentID' => $this->studentUser->id,
+        ]);
+
+        $this->actingAs($this->studentUser)->post('/topics/'.$topic->id.'/select', [
+            // 'topic' => $topic,
+            'studentID' => $this->studentUser->id,
+            'pitching' => null,
+        ]);
+    }
+
+    /** */
     public function student_selects_topic_with_allocation(){
         // Create Admin User
         $this->adminUser = User::create([

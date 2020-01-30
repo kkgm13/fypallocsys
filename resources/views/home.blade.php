@@ -12,16 +12,15 @@ Dashboard
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">You are logged in, {{Auth::user()->firstName.' '.Auth::user()->lastName}}!</div>
-
                 <div class="card-body">
                     @includeif('layouts.status')
                     <div class="w-100">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 @if(Auth::user()->role != "Student")
                                     <h4 class="py-1 underline text-base">Your Topics</h4>
                                     @forelse($topics as $topic)
-                                        <p class="py-2"><a href="{{route('topics.show', $topic)}}">{{$topic->name}}</a></p>
+                                        <p><a href="{{route('topics.show', $topic)}}">{{$topic->name}}</a></p>
                                     @empty
                                         <p>No Topics Availiable</p>
                                     @endforelse
@@ -34,7 +33,7 @@ Dashboard
                                 @endforelse
                                 @endif
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <h4 class="py-1 underline text-base">{{ Auth::user()->role != "Student" ? "Student Proposals" : "Your Proposals"}}</h4>
                                 @if(Auth::user()->role != "Student")
                                     <table class="table table-bordered table-hover">

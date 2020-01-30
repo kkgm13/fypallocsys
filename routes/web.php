@@ -25,6 +25,7 @@ Auth::routes(['register' => false, 'reset' => false, 'verify' => false, 'confirm
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resources([
+    'users' => 'UserController',
     'topics' => 'TopicController',
     'proposals' => 'ProposalController',
 ]);

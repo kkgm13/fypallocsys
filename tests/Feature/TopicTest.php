@@ -17,9 +17,11 @@ class TopicTest extends TestCase
     
     protected $adminUser, $studentUser, $supervisorUser;
 
-    /** @test */
+    /**
+     * Test if Topic has been added to the Database System
+     * @test
+     */
     public function a_topic_is_added(){
-
         // $this->withoutExceptionHandling();
 
         $this->adminUser = User::create([
@@ -50,9 +52,11 @@ class TopicTest extends TestCase
         ]);
     }
     
-    /** @test */
+    /** 
+     * Topic with an Image Document has been added to the Database System
+     * @test
+     */
     public function a_topic_with_one_image_added(){
-        
         // $this->withoutExceptionHandling();
 
         Storage::fake('local');
@@ -96,7 +100,10 @@ class TopicTest extends TestCase
         $response->assertRedirect('/topics/'.$topic->id);
     }
 
-    /** @test */
+    /**
+     * Topic with a Topic Document has been added to the Database System
+     * @test
+     */
     public function a_topic_with_one_document_added(){
         
         // $this->withoutExceptionHandling();

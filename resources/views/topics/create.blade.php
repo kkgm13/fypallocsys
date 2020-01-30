@@ -103,7 +103,6 @@ Create a New Topic
 </div>
 @endsection
 @section('js')
-<!-- <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script> -->
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="{{asset('js/tinymce-options.js')}}"></script>
 @endsection

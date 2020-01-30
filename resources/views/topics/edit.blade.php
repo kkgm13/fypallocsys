@@ -5,18 +5,11 @@ Create a New Topic
 @section('content')
 <div class="container mx-auto px-4 w-full">
     <h1 class="text-center py-1">Create a Topic</h1>
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul style="margin:0;">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    @includeWhen($errors->any(), 'layouts.form-alerts')
+    <hr>
     <form action="{{route('topics.update', $topic)}}" method="post" class="py-1">
-        <hr>
         @csrf
+        {{method_field('PATCH')}}
         <fieldset>
             <div class="form-group">
                 <label for="name">Topic Name</label>
