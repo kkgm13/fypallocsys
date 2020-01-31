@@ -36,14 +36,14 @@ Create a New Topic
                 <div class="col-lg-6 col-sm-12">
                     <div class="form-group">
                         <label for="prequisites">Topic Prequisites</label>
-                        <textarea class="form-control" id="prequisites" name="prequisites" aria-describedby="prequisitesHelp" rows="3" placeholder="Topic prequisites">{{ old('prequisites') }}</textarea>
+                        <textarea class="form-control @error('prequisites') is-invalid @enderror" id="prequisites" name="prequisites" aria-describedby="prequisitesHelp" rows="3" placeholder="Topic prequisites">{{ old('prequisites') }}</textarea>
                         <small id="prequisitesHelp" class="form-text text-muted">If required, please provide module prequisites needed for this module.</small>
                     </div>
                 </div>
                 <div class="col-lg-6 col-sm-12">
                     <div class="form-group">
                         <label for="corequisites">Topic Corequisites</label>
-                        <textarea class="form-control" id="corequisites" name="corequisites" aria-describedby="coquisitesHelp" placeholder="Topic Corequisites" rows="3">{{ old('corequisites') }}</textarea>
+                        <textarea class="form-control @error('corequisites') is-invalid @enderror" id="corequisites" name="corequisites" aria-describedby="coquisitesHelp" placeholder="Topic Corequisites" rows="3">{{ old('corequisites') }}</textarea>
                         <small id="coquisitesHelp" class="form-text text-muted">If necessary, please provide all module corequisites needed during student's final year.</small>
                     </div>
                 </div>
@@ -54,11 +54,11 @@ Create a New Topic
                 <div class="col-md-6">
                     <label>Topic Suitablity</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="1" id="isMCApprove" name="isMCApprove">
+                        <input class="form-check-input @error('isMCApprove') is-invalid @enderror" type="checkbox" value="1" id="isMCApprove" name="isMCApprove">
                         <label class="form-check-label" for="isMCApprove">Suitable for Multimedia Students</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="1" id="isCBApprove" name="isCBApprove">
+                        <input class="form-check-input @error('isCBApprove') is-invalid @enderror" type="checkbox" value="1" id="isCBApprove" name="isCBApprove">
                         <label class="form-check-label" for="isCBApprove">Suitable for Business Students</label>
                     </div>
                 </div>

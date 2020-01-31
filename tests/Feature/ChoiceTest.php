@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Allocation;
 use App\Choice;
 use App\Topic;
 use App\User;
@@ -134,8 +135,9 @@ class ChoiceTest extends TestCase
         ]);
     }
 
-    /** */
-    public function student_selects_topic_with_allocation(){
+    /** @test */
+    public function student_selects_topic_with_topic_allocation(){
+        $this->withoutExceptionHandling();
         // Create Admin User
         $this->adminUser = User::create([
             'firstName' => "New Admin",
@@ -174,17 +176,36 @@ class ChoiceTest extends TestCase
             'name' => 'Topic Name',
             'description' => "Hello World. I am a description which will state the context of what I am conveying",
             'supervisorID' => $this->adminUser->id,
-            'isMCApprove' => 1,
+            'isMCApprove' => 0,
             'isCBApprove' => 1,
         ]);
 
+        $first = Topic::first();
+        $this->assertCount(1, Topic::all());
+
          // Post Recording acting as the Supervisor
-         $this->actingAs($this->supervisorID)->post('/topics', [
+        $this->actingAs($this->adminUser)->post('/topics', [
             'name' => 'Topic Name 2',
             'description' => "Hello World. I am another description which will state the context of what I am conveying",
-            'supervisorID' => $this->supervisorID->id,
+            'supervisorID' => $this->adminUser->id,
             'isMCApprove' => 1,
             'isCBApprove' => 0,
         ]);
+        $this->assertCount(2, Topic::all());
+
+        $second = Topic::where('supervisorID', $this->adminUser->id)->get();
+
+        dd($second);
+
+        // $save = Allocation::create([
+        //     'studentID' => $this->studentUser->id,
+        //     'supervisorID' => $this->adminUser->id,
+        //     'proposalID' => null,
+        //     'topicID' => $first->id,
+        //     'superAuth' => 1,
+        //     'modAuth' => 0,
+        // ]);
+
+        // dd($save);
     }
 }
