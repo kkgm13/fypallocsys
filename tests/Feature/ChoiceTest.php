@@ -193,7 +193,7 @@ class ChoiceTest extends TestCase
         ]);
         $this->assertCount(2, Topic::all());
 
-        $second = Topic::where('supervisorID', $this->adminUser->id)->get();
+        $second = Topic::where('name', 'Topic Name 2')->get();
 
         dd($second);
 
