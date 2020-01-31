@@ -61,8 +61,8 @@ class Topic extends Model
             'description' => 'required|string',
             'prequisites' => 'sometimes|nullable|string',
             'corequisites' => 'sometimes|nullable|string',
-            'isMCApprove' => 'sometimes|required|accepted',
-            'isCBApprove' => 'sometimes|required|accepted',
+            'isMCApprove' => 'sometimes',
+            'isCBApprove' => 'sometimes',
             'supervisorID' => 'sometimes|required',
             'topicDocuments' => 'sometimes|nullable|max:1048576'
         ];
