@@ -28,6 +28,7 @@ Route::resources([
     'users' => 'UserController',
     'topics' => 'TopicController',
     'proposals' => 'ProposalController',
+    // 'choices' => 'ChoiceController',
 ]);
 
 // Allocation Routing
@@ -36,6 +37,8 @@ Route::get('/allocations', 'AllocationController@index')->name('allocation.index
 // Choices Routing
 Route::get('/my-choices', 'ChoiceController@index')->name('choices.mine');
 Route::post('/topics/{topic}/select', 'ChoiceController@store')->name('choices.store');
+Route::post('/topics/{topic}/deselect', 'ChoiceController@destroy')->name('choices.destroy');
+Route::delete('/topics/{topic}/deselect', 'ChoiceController@destroy')->name('choices.destroy');
 
 // Decisions Routing
 Route::get('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposal.decision');

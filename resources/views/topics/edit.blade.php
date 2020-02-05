@@ -1,15 +1,15 @@
 @extends('layouts.app')
 @section('title')
-Create a New Topic
+Edit {{$topic->name}}
 @endsection
 @section('content')
 <div class="container mx-auto px-4 w-full">
-    <h1 class="text-center py-1">Create a Topic</h1>
+    <h1 class="text-center py-1">Edit Topic {{$topic->name}}</h1>
     @includeWhen($errors->any(), 'layouts.form-alerts')
     <hr>
     <form action="{{route('topics.update', $topic)}}" method="post" class="py-1">
         @csrf
-        {{method_field('PATCH')}}
+        @method('PUT')
         <fieldset>
             <div class="form-group">
                 <label for="name">Topic Name</label>

@@ -114,6 +114,7 @@ class ChoiceTest extends TestCase
         ]);
 
         $topic = Topic::first();
+        $this->assertCount(1, Topic::all());
 
         // Create Choice Selection
         $this->actingAs($this->studentUser)->post('/topics/'.$topic->id.'/select', [
@@ -126,12 +127,6 @@ class ChoiceTest extends TestCase
         $this->assertDatabaseHas('choices', [
             'topicID' => $topic->id,
             'studentID' => $this->studentUser->id,
-        ]);
-
-        $this->actingAs($this->studentUser)->post('/topics/'.$topic->id.'/select', [
-            // 'topic' => $topic,
-            'studentID' => $this->studentUser->id,
-            'pitching' => null,
         ]);
     }
 
@@ -195,17 +190,25 @@ class ChoiceTest extends TestCase
 
         $second = Topic::where('name', 'Topic Name 2')->get();
 
-        dd($second);
+        // dd($second);
 
-        // $save = Allocation::create([
-        //     'studentID' => $this->studentUser->id,
-        //     'supervisorID' => $this->adminUser->id,
-        //     'proposalID' => null,
-        //     'topicID' => $first->id,
-        //     'superAuth' => 1,
-        //     'modAuth' => 0,
-        // ]);
+        $alloc = Allocation::create([
+            'studentID' => $this->studentUser->id,
+            'supervisorID' => $this->adminUser->id,
+            'proposalID' => null,
+            'topicID' => $first->id,
+            'superAuth' => 1,
+            'modAuth' => 0,
+        ]);
+        $alloc->assertCreated();
+        $this->assertCount(1, Allocation::all());
 
-        // dd($save);
+        $response = $this->actingAs($this->studentUser)->post('/topics/'.$second->id.'/select', [
+            // 'topic' => $topic,
+            'studentID' => $this->studentUser->id,
+            'pitching' => null,
+        ]);
+
+        $response->assertSeeText('');
     }
 }

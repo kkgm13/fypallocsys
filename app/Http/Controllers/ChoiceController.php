@@ -37,20 +37,19 @@ class ChoiceController extends Controller
             $aloCheck = Allocation::where('studentID', Auth::id())->get();
             //If already allocated a topic
             if(!$aloCheck->isEmpty()){
+                // Message User with an allocation provided
                 return redirect()->back()->with([
                     'status' => 'You already have an Topic Allocated',
                     'type' => 'warning'
                 ]);
             } else {
                 $countSize = Choice::where('studentID', '=', Auth::id())->count();
-                // Advise if a forth choice is made
                 if($countSize >= 3){
-                    // Return and show warning of more than 3
+                    return redirect()->back()->with([
+                        'status' => 'You are making more choices than allowed. Please review your choices.',
+                        'type' => 'info'
+                    ]);
                 } else {
-                    // IF working correctly for Pitching
-                    // $validateData = $this->validate($request, Choice::validationRules(), Choice::validationMessages()); 
-                    // $validateData['studentID'] = Auth::id();
-                    // $choice = Choice::create($validateData);
                     $choice = new Choice();
                     $choice->topicID = $topic->id;
                     $choice->studentID = Auth::id();
@@ -58,7 +57,10 @@ class ChoiceController extends Controller
                     $choice->pitch = null;
                     $choice->save();
                     // Redirect
-                    return redirect()->route('topics.show', $topic)->with('status', "Your choice has been successfully been selected for review.");
+                    return redirect()->route('topics.show', $topic)->with([
+                        'status' => "Your have chosen $topic->name as a potential topic. This has been sent for review.", 
+                        'type' => "success"
+                    ]);
                 }
             }
         } else {
@@ -73,7 +75,10 @@ class ChoiceController extends Controller
                 // Return and show warning of more than 3
             } else {
                 // Redirect
-                return redirect()->route('topics.index')->with('status', "Your choice has been successfully been selected for review.");
+                return redirect()->route('topics.index')->with([
+                    'status' => "Your choice has been successfully been selected for review.",
+                    'type' => 'success'
+                ]);
             }
         } else {
             return abort('403', "Forbidden");
@@ -81,10 +86,20 @@ class ChoiceController extends Controller
     }
 
 
-    public function delete(Choice $choice){
+    /**
+     * 
+     */
+    public function destroy(Topic $topic){
         if(Auth::user()->role == "Student"){
-            // If student selects this topic
+            // Find associated choice based on Current user and provided 
+            $choice = Choice::where('topicID', $topic->id)->where('studentID', Auth::id())->first();
             //Delete choice 
+            $choice->delete();
+            // Redirect back to user
+            return redirect()->route('topic.index')->with([
+                'status' => "Your topic choice has been removed.",
+                'type' => 'success'
+            ]);
         } else {
             return abort('403', "Forbidden");
         }

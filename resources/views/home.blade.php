@@ -3,7 +3,7 @@
 @if(Auth::user()->role != "Student")
 Staff Dashboard
 @else
-Dashboard
+Student Dashboard
 @endif
 @endsection
 @section('content')
@@ -27,10 +27,23 @@ Dashboard
                                 @else
                                     <h4 class="py-1 underline text-base">Your Topic Choices</h4>
                                     @forelse(Auth::user()->choices as $choice)
+                                        @if($loop->first)
+                                            @if(count(Auth::user()->choices) <=3)
+                                                <p>You have {{count(Auth::user()->choices)}} topic(s) chosen for review.</p>
+                                            @else 
+                                                <p>You have the <span class="font-weight-bold">maximum</span> amount of topic choices.</p>
+                                            @endif
+                                        @endif
+                                        <div class="btn-group d-flex" role="group" aria-label="Choice Settings">
+                                            <a href="{{route('choices.mine')}}" class="btn btn-secondary w-100">View My Choices</a>
+                                            @if($loop->count <= 3 || $loop->count > 0)
+                                                <a href="{{route('topics.index')}}" class="btn btn-info w-100">Find More Topics</a>
+                                            @endif
+                                        </div>
                                     @empty
                                         <p>You have no chosen topics.</p>
                                         <a href="{{route('topics.index')}}" class="btn btn-secondary w-100">View Available Topics</a>
-                                @endforelse
+                                    @endforelse
                                 @endif
                             </div>
                             <div class="col-lg-6">
@@ -91,4 +104,5 @@ Dashboard
             </div>
         </div>
     </div>
-    @endsection
+</div>
+@endsection

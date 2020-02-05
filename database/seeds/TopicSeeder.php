@@ -50,7 +50,7 @@ class TopicSeeder extends Seeder
             'supervisorID' => 1,
             'prequisites' => "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
             "corequisites" => "CS3040",
-            "isMCApprove" => 0,
+            "isMCApprove" => 1,
             "isCBApprove" => 1,
         ]);
 

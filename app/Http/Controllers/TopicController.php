@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Choice;
 use App\Topic;
 use App\User;
 use Illuminate\Http\Request;
@@ -95,7 +96,8 @@ class TopicController extends Controller
      */
     public function show(Topic $topic)
     {
-        return view('topics.show', ['topic' => $topic]);
+        $choice = Choice::where('topicID', $topic->id)->where('studentID', Auth::id())->first();
+        return view('topics.show', ['topic' => $topic, 'choice' => $choice]);
     }
 
     /**
@@ -155,7 +157,10 @@ class TopicController extends Controller
     {
         if(Auth::id() === $topic->supervisorID || Auth::user()->role === "Module Leader"){
             $topic->delete();
-            return redirect()->route('topics.index')->with('success', "The topic has been successfully deleted");
+            return redirect()->route('topics.index')->with([
+                'success' => "The topic has been successfully deleted", 
+                'type' => "success"
+            ]);
         } else {
             return abort(403, "Forbidden");
         }

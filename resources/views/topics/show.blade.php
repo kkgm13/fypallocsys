@@ -50,16 +50,23 @@
     <div class="row">
         <div class="col-md-6 col-sm-12">
             @if(Auth::user()->role === "Student")
-                @if(!is_null($topic->name))
-                <!-- <a class="btn btn-success btn-block" data-toggle="modal" data-target="#reasoningModal">Pick this topic</a> -->
-                <form action="{{route('choices.store', $topic)}}" method="post">
-                @csrf
-                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                    <input type="hidden" name="topic" id="topic" value="{{$topic}}">
-                    <input class="btn btn-success btn-block" type="submit" value="Pick This Topic">
-                </form>
+            <!-- $choice->studentID == Auth::id() -->
+                @if(is_null($topic->name))
+                    <!-- If Auth User has created a choice based on th -->
+                    <form action="{{route('choices.destroy', $topic)}}" method="post">
+                        @method('delete')
+                        @csrf                        
+                        <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                        <input type="hidden" name="topic" id="topic" value="{{$topic}}">
+                        <input class="btn btn-warning btn-block" type="submit" value="Unpick this Topic">
+                    </form>
                 @else
-                <a href="{{route('choice.delete')}}" class="btn btn-success btn-block">Unselect this topic</a>
+                    <form action="{{route('choices.store', $topic)}}" method="post">
+                        @csrf
+                        <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                        <input type="hidden" name="topic" id="topic" value="{{$topic}}">
+                        <input class="btn btn-success btn-block" type="submit" value="Pick This Topic">
+                    </form>
                 @endif
             @else
                 <a class="btn btn-info btn-block" >View Interested Students</a>
