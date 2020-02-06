@@ -33,7 +33,7 @@
                             <th>{{ Auth::user()->role != "Student" ? "Student" : "Chosen Supervisor"}}</th>
                             <th>Proposal Name</th>
                             <th>Proposal Description</th>
-                            @if(Auth::user()->role == "Student")
+                            @if(Auth::user()->role != "Student")
                                 <th>Student's Reasoning</th>
                             @else
                                 <th>Proposal Status</th>

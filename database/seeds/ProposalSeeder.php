@@ -17,6 +17,7 @@ class ProposalSeeder extends Seeder
             'description' => "This is a proposal",
             'studentID' => 3,
             'supervisorID' => 1,
+            'hasRead' => 1,
             'reasoning' => "This is my reasoning to do this proposal",
         ]);
 
@@ -25,6 +26,7 @@ class ProposalSeeder extends Seeder
             'description' => "This is a proposal",
             'studentID' => 4,
             'supervisorID' => 2,
+            'hasRead' => 1,
             'reasoning' => "This is my reasoning to do this proposal",
             'hasRejected' => 0
         ]);
@@ -34,6 +36,37 @@ class ProposalSeeder extends Seeder
             'description' => "This is a proposal",
             'studentID' => 3,
             'supervisorID' => 1,
+            'hasRead' => 0,
+            'reasoning' => "This is my reasoning to do this proposal",
+            'hasRejected' => 1
+        ]);
+
+        Proposal::create([
+            'name' => "Proposal 4",
+            'description' => "This is a proposal",
+            'studentID' => 4,
+            'supervisorID' => 2,
+            'hasRead' => 1,
+            'reasoning' => "This is my reasoning to do this proposal",
+            'hasRejected' => 0
+        ]);
+
+        Proposal::create([
+            'name' => "Proposal 5",
+            'description' => "This is a proposal",
+            'studentID' => 4,
+            'supervisorID' => 1,
+            'hasRead' => 1,
+            'reasoning' => "This is my reasoning to do this proposal",
+            'hasRejected' => 1
+        ]);
+
+        Proposal::create([
+            'name' => "Proposal 6",
+            'description' => "This is a proposal",
+            'studentID' => 3,
+            'supervisorID' => 2,
+            'hasRead' => 1,
             'reasoning' => "This is my reasoning to do this proposal",
             'hasRejected' => 1
         ]);

@@ -26,24 +26,25 @@ Student Dashboard
                                     @endforelse
                                 @else
                                     <h4 class="py-1 underline text-base">Your Topic Choices</h4>
-                                    @forelse(Auth::user()->choices as $choice)
-                                        @if($loop->first)
-                                            @if(count(Auth::user()->choices) <=3)
-                                                <p>You have {{count(Auth::user()->choices)}} topic(s) chosen for review.</p>
-                                            @else 
-                                                <p>You have the <span class="font-weight-bold">maximum</span> amount of topic choices.</p>
-                                            @endif
+                                    @if(Auth::user()->choices->count() > 0)
+                                        @if(count(Auth::user()->choices) <=3)
+                                            <p>You have {{count(Auth::user()->choices)}} topic(s) chosen for review.</p>
+                                        @else 
+                                            <p>You have the <span class="font-weight-bold">maximum</span> amount of topic choices.</p>
                                         @endif
                                         <div class="btn-group d-flex" role="group" aria-label="Choice Settings">
-                                            <a href="{{route('choices.mine')}}" class="btn btn-secondary w-100">View My Choices</a>
-                                            @if($loop->count <= 3 || $loop->count > 0)
+                                            @if(Auth::user()->choices->count() <= 3 || Auth::user()->choices->count() == 0)
+                                                <a href="{{route('choices.mine')}}" class="btn btn-secondary w-100">View My Choices</a>
+                                            @endif
+
+                                            @if(Auth::user()->choices->count() <= 2)
                                                 <a href="{{route('topics.index')}}" class="btn btn-info w-100">Find More Topics</a>
                                             @endif
                                         </div>
-                                    @empty
+                                    @else 
                                         <p>You have no chosen topics.</p>
                                         <a href="{{route('topics.index')}}" class="btn btn-secondary w-100">View Available Topics</a>
-                                    @endforelse
+                                    @endif
                                 @endif
                             </div>
                             <div class="col-lg-6">

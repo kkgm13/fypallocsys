@@ -96,8 +96,8 @@ class TopicController extends Controller
      */
     public function show(Topic $topic)
     {
-        $choice = Choice::where('topicID', $topic->id)->where('studentID', Auth::id())->first();
-        return view('topics.show', ['topic' => $topic, 'choice' => $choice]);
+        $studentChoices = Choice::where('topicID', $topic->id)->pluck('studentID')->toArray();
+        return view('topics.show', ['topic' => $topic, 'choices' => $studentChoices]);
     }
 
     /**

@@ -50,8 +50,7 @@
     <div class="row">
         <div class="col-md-6 col-sm-12">
             @if(Auth::user()->role === "Student")
-            <!-- $choice->studentID == Auth::id() -->
-                @if(is_null($topic->name))
+                @if(in_array(Auth::id(), $choices))
                     <!-- If Auth User has created a choice based on th -->
                     <form action="{{route('choices.destroy', $topic)}}" method="post">
                         @method('delete')

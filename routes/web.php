@@ -28,7 +28,7 @@ Route::resources([
     'users' => 'UserController',
     'topics' => 'TopicController',
     'proposals' => 'ProposalController',
-    // 'choices' => 'ChoiceController',
+    'choices' => 'ChoiceController',
 ]);
 
 // Allocation Routing

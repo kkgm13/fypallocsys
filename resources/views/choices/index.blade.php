@@ -8,14 +8,14 @@ Topics Interested
     <hr>
     <div class="row px-3">
         <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover ">
-                <thead>
+            <table class="table table-striped table-bordered table-hover table-sm">
+                <thead class="">
                     <tr>
                         <th>Topic Name</th>
                         <th>Supervisor</th>
                         <th class="d-none d-md-block d-lg-none">Topic Description</th>
-                        <th>Topic Ranking</th>
-                        <th>Actions</th>
+                        <th>Your Ranking</th>
+                        <th>Options</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,8 +27,18 @@ Topics Interested
                         <td>{{$choice->ranking}}</td>
                         <td>
                             <div class="btn-group d-flex" role="group" aria-label="Choice Settings">
-                                <a href="{{route('topics.show', $choice->topic)}}" class="btn btn-secondary w-100"><i class="fas fa-search"></i></a>
-                                <a onclick="alert('In Development')" class="btn btn-info w-100"><i class="fas fa-caret-up"></i></a>
+                                <a href="{{route('topics.show', $choice->topic)}}" class="btn btn-secondary"><i class="fas fa-search"></i></a>
+                                <a href="{{route('topics.destroy', $choice->topic)}}" class="btn btn-danger"><i class="fas fa-times"></i></a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group-vertical d-flex">
+                                @if(!$loop->first)
+                                <a onclick="alert('In Development')" class="btn btn-info"><i class="fas fa-caret-up"></i></a>
+                                @endif
+                                @if(!$loop->last)
+                                <a onclick="alert('In Development')" class="btn btn-info"><i class="fas fa-caret-down"></i></a>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -48,4 +58,6 @@ Topics Interested
         </div>
     </div>
 </div>
+@endsection
+@section('js')
 @endsection

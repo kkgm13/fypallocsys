@@ -55,5 +55,16 @@ class UserSeeder extends Seeder
             'programme' => "BSc Computer Science with Business",
             'password' => Hash::make('student2'),
         ]);
+
+        User::create([
+            'firstName' => "Guest",
+            'lastName' => 'User',
+            'username' => "guest",
+            'email' => "guest@fypalloc.com",
+            'sun' => '000000000',
+            'role' => "Student",
+            'programme' => "Guest Mode",
+            'password' => Hash::make('guest'),
+        ]);
     }
 }

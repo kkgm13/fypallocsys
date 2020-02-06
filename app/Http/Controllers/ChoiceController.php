@@ -45,11 +45,13 @@ class ChoiceController extends Controller
             } else {
                 $countSize = Choice::where('studentID', '=', Auth::id())->count();
                 if($countSize >= 3){
+                    // Notify user with full list of choices
                     return redirect()->back()->with([
                         'status' => 'You are making more choices than allowed. Please review your choices.',
                         'type' => 'info'
                     ]);
                 } else {
+                    // Create Choice for student
                     $choice = new Choice();
                     $choice->topicID = $topic->id;
                     $choice->studentID = Auth::id();
@@ -69,17 +71,16 @@ class ChoiceController extends Controller
     }
 
     public function update(Request $request, Choice $choice){
-        if(Auth::user()->role == "Student"){
-            // Advise if a forth choice is made
-            if(Choice::where('studentID', '=', Auth::id())->count() > 3){
-                // Return and show warning of more than 3
-            } else {
-                // Redirect
-                return redirect()->route('topics.index')->with([
-                    'status' => "Your choice has been successfully been selected for review.",
-                    'type' => 'success'
-                ]);
-            }
+        if(Auth::user()->role === "Student"){
+            $validateData = $request->validate([
+                'ranking' => 'required|numeric|between:1,3'
+            ]);
+
+            $choice->update($validateData);
+            return redirect()->route('topics.index')->with([
+                'status' => "Your choice has been successfully been selected for review.",
+                'type' => 'success'
+            ]);
         } else {
             return abort('403', "Forbidden");
         }
@@ -96,7 +97,7 @@ class ChoiceController extends Controller
             //Delete choice 
             $choice->delete();
             // Redirect back to user
-            return redirect()->route('topic.index')->with([
+            return redirect()->route('topics.index')->with([
                 'status' => "Your topic choice has been removed.",
                 'type' => 'success'
             ]);
