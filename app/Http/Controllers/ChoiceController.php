@@ -59,8 +59,8 @@ class ChoiceController extends Controller
                     $choice->pitch = null;
                     $choice->save();
                     // Redirect
-                    return redirect()->route('topics.show', $topic)->with([
-                        'status' => "Your have chosen $topic->name as a potential topic. This has been sent for review.", 
+                    return redirect()->back()->with([
+                        'status' => "Your have chosen $topic->name as a potential topic.", 
                         'type' => "success"
                     ]);
                 }
@@ -97,9 +97,9 @@ class ChoiceController extends Controller
             //Delete choice 
             $choice->delete();
             // Redirect back to user
-            return redirect()->route('topics.index')->with([
-                'status' => "Your topic choice has been removed.",
-                'type' => 'success'
+            return redirect()->back()->with([
+                'status' => "Your topic choice of $topic->name has been removed.",
+                'type' => 'info'
             ]);
         } else {
             return abort('403', "Forbidden");

@@ -17,5 +17,20 @@ class Allocation extends Model
 
     //--------------------------------//
 
+    /**
+     * Get the associated Allocated Topic
+     */
+    public function topic(){
+        return $this->belongsTo('App\Topic', 'topicID');
+    }
+    
+
+     /**
+      * Get the associated Allocated Proposal
+      */
+    public function proposal(){
+        return $this->belongsTo('App\Proposal', 'proposalID');
+    }
+
     //--------------------------------//
 }

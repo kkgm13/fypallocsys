@@ -16,11 +16,13 @@ class AllocationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        $allocation = null;
         if(Auth::user()->role === "Student"){
-            $allocation = Allocation::where('studentID', Auth::id())->get();
+            $allocation = Allocation::where('studentID', Auth::id())->first();
         } else {
             $allocation = Allocation::where('supervisorID', Auth::id())->get();
         }
+        return view('allocations.index', ['allocation' => $allocation]);
     }
 
 

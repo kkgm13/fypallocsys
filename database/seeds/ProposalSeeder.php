@@ -38,7 +38,6 @@ class ProposalSeeder extends Seeder
             'supervisorID' => 1,
             'hasRead' => 0,
             'reasoning' => "This is my reasoning to do this proposal",
-            'hasRejected' => 1
         ]);
 
         Proposal::create([

@@ -32,8 +32,8 @@ class Topic extends Model
     /**
      * Interested Students Relationship
      */
-    public function interested(){
-        return $this->hasMany('App\User', 'studentID');
+    public function choices(){
+        return $this->hasMany('App\Choice', 'id');
     }
 
     /**

@@ -89,6 +89,10 @@ class ProposalController extends Controller
     public function show(Proposal $proposal)
     {
         if($proposal->studentID === Auth::id() || $proposal->supervisorID === Auth::id()){
+            // If Proposed Supervisor is reviewing for the first time, update hasRead
+            if($proposal->supervisorID === Auth::id() && $proposal->hasRead === 0){
+                $proposal->update(['hasRead' => 1]);
+            }
             return view('proposals.show', ['proposal' => $proposal]);
         } else {
             return abort(403, "Forbidden");

@@ -4,25 +4,19 @@
 @endsection
 @section('content')
 <div class="container">
-    @if (session('status'))
-        <div class="alert alert-success" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            {{ session('status') }}
-        </div>
-    @endif
-    @if(!is_null($proposal->hasRejected))
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            <strong>Decision:</strong>{{$proposal->hasRejected ? " Proposal is Rejected." : "Proposal is Approved."}}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+    @include('layouts.form-alerts')
+    @if(Auth::user()->role === "Student")
+        @if(!is_null($proposal->hasRejected) && $proposal->hasRead == 1)
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>Decision:</strong>{{$proposal->hasRejected ? " Proposal is Rejected." : "Proposal is Approved."}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
     @endif
     <h1 class="text-center">{{$proposal->name}}</h1>
     <p class="pt-2 text-center">Proposal Owner: <a href="mailto:{{$proposal->student->email}}">{{$proposal->student->firstName.' '.$proposal->student->lastName}}</a></p>
-
     <p class="pt-2 text-center"></p>
     <hr>
     <div class="row">
@@ -42,9 +36,11 @@
             <a href="" class="btn btn-success btn-block">Accept Proposal</a>
         </div>
         <div class="col-md-6 col-sm-12">
-            <a class="btn btn-danger btn-block" data-toggle="modal" data-target="#rejectProposal">Reject Proposal</a>
+            <a class="btn btn-danger btn-block" data-toggle="modal" data-target="#rejectingProposal">Reject Proposal</a>
         </div>
     </div>
+    @endif
+    @if(Auth::user()->role != "Student")
     <div class="modal fade" id="rejectProposal" tabindex="-1" role="dialog" aria-labelledby="rejectProposalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">

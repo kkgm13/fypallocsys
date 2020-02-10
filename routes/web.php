@@ -21,9 +21,9 @@ Route::get('/', function () {
 
 // Auth Routes with particular auth parameters removed
 Auth::routes(['register' => false, 'reset' => false, 'verify' => false, 'confirm' => false]);
-
 Route::get('/home', 'HomeController@index')->name('home');
 
+// Route Resources with pre-defeined CRUD
 Route::resources([
     'users' => 'UserController',
     'topics' => 'TopicController',
@@ -31,16 +31,20 @@ Route::resources([
     'choices' => 'ChoiceController',
 ]);
 
-// Allocation Routing
-Route::get('/allocations', 'AllocationController@index')->name('allocation.index');
+// Allocation Custom Routing
+Route::get('/allocations', 'AllocationController@index')->name('allocations.index');
 
-// Choices Routing
+// Choices Custom Routing
 Route::get('/my-choices', 'ChoiceController@index')->name('choices.mine');
 Route::post('/topics/{topic}/select', 'ChoiceController@store')->name('choices.store');
+    // Form Bypass
+Route::get('topics/{topic}/select', 'ChoiceController@store')->name('choices.store');
 Route::post('/topics/{topic}/deselect', 'ChoiceController@destroy')->name('choices.destroy');
+    // Form Bypass
+Route::get('topics/{topic}/deselect', 'ChoiceController@destroy')->name('choices.destroy');
 Route::delete('/topics/{topic}/deselect', 'ChoiceController@destroy')->name('choices.destroy');
 
-// Decisions Routing
+// Decisions Custom Routing
 Route::get('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposal.decision');
 Route::post('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposal.accepted');
 Route::post('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposal.rejected');

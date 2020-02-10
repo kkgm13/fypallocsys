@@ -20,8 +20,8 @@ class Choice extends Model
     /**
      * Choice Selected by Student
      */
-    public function student(){
-        return $this->belongsTo('App\User', 'studentID');
+    public function interestedStudents(){
+        return $this->hasMany('App\User', 'id','studentID');
     }
 
     /**

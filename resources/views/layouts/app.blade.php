@@ -57,9 +57,9 @@
                             @elseif(Auth::user()->role === "Module Leader")
                                 <li class="nav-item"><a class="nav-link" href="{{ route('topics.create') }}">Create a Topic</a></li>
                                 <li class="nav-item"><a class="nav-link" href="{{route('proposals.index')}}">View Proposal Requests</a></li>
-                                <li class="nav-item"><a class="nav-link" href="">All Allocations</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{route('allocations.index')}}">All Allocations</a></li>
                             @else
-                                <li class="nav-item"><a class="nav-link" href="">My Allocations</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{route('allocations.index')}}">My Allocations</a></li>
                                 <li class="nav-item"><a class="nav-link" href="{{route('choices.mine')}}">My Choices</a></li>
                                 <li class="nav-item"><a class="nav-link" href="{{route('proposals.create')}}">Create a proposal</a></li>
                             @endif
