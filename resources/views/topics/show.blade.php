@@ -91,16 +91,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    @php
-                        
-                    @endphp
-                    @if($topic->name === null)
-                    @else
-                    @endif
+                    @forelse($topic->interested as $student)
+                        <p><span class="font-weight-bold">{{$student->firstName.' '.$student->lastName}}</span><br><span class="pl-3">SUN ID: {{$student->sun}}</span></p>
+                    @empty
+                        <h6>No Students</h6>
+                    @endforelse
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>

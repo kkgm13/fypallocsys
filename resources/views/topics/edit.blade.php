@@ -4,7 +4,7 @@ Edit {{$topic->name}}
 @endsection
 @section('content')
 <div class="container mx-auto px-4 w-full">
-    <h1 class="text-center py-1">Edit Topic {{$topic->name}}</h1>
+    <h1 class="text-center py-1">Edit {{$topic->name}}</h1>
     @includeWhen($errors->any(), 'layouts.form-alerts')
     <hr>
     <form action="{{route('topics.update', $topic)}}" method="post" class="py-1">
@@ -82,4 +82,8 @@ Edit {{$topic->name}}
         </div>
     </form>
 </div>
+@endsection
+@section('js')
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="{{asset('js/tinymce-options.js')}}"></script>
 @endsection

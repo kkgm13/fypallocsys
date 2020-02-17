@@ -31,10 +31,10 @@ Edit Profile
                 <fieldset>
                     <legend>Topic Allocation System Information</legend>
                     <div class="form-group">
-                        <label for="bio">Topic bio</label>
+                        <label for="bio">Supervisor Bio</label>
                         <textarea class="form-control @error('bio') is-invalid @enderror" id="description" name="bio" rows="3" placeholder="Topic bio">{{ old('bio', $user->bio) }}</textarea>
                     </div>
-                </fieldset>
+                </fieldset> 
             </div>
         </div>   
         <hr>

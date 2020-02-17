@@ -20,7 +20,11 @@ Student Dashboard
                                 @if(Auth::user()->role != "Student")
                                     <h4 class="py-1 underline text-base">Your Topics</h4>
                                     @forelse($topics as $topic)
-                                        <p><a href="{{route('topics.show', $topic)}}">{{$topic->name}}</a></p>
+                                        <p><a href="{{route('topics.show', $topic)}}">{{$topic->name}}
+                                        @if(Auth::user()->role === "Module Leader")
+                                        <span>- {{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</span>
+                                        @endif
+                                        </a></p>
                                     @empty
                                         <p>No Topics Availiable</p>
                                     @endforelse
