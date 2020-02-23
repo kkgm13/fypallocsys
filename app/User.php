@@ -67,5 +67,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Choice', 'studentID', 'id');
     }
 
+    /**
+     * Get the associated allocation assigned
+     */
+    public function allocation(){
+        return $this->belongsTo('App\Allocation', 'id', 'studentID');
+    }
+
     //--------------------------------//
 }

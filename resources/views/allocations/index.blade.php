@@ -12,18 +12,28 @@ My Allocation
     <hr>
     <div class="row">
         @if(Auth::user()->role != "Student")
-        
-        @else
-            <div class="jumbotron px-3">
-                <h4 class="text-center">Congratulations, you are allocated with the following:</h4>
-                <h5 class="text-center">
-                    @if(!is_null($allocation->topic))
-                        {{$allocation->topic->name}}
-                    @elseif(!is_null($allocation->proposal))
-                        {{$allocation->proposal->name}}
-                    @endif
-                </h5>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered">
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Topic Name</th>
+                        <th>Supervisor Name</th>
+                    </tr>
+                    @forelse($allocation as $alloc)
+                        <tr>
+                            <td>{{$alloc->student->firstName.' '.$alloc->student->lastName}}</td>
+                            <td>{{$alloc->topic->name}}</td>
+                            <td>{{$alloc->supervisor->firstName.' '.$alloc->supervisor->lastName}}</td>
+                        </tr>
+                    @empty
+                    <tr><td colspan="3"><h3 class="text-center">There are currently no official topic allocations.</h3></td></th>
+                    @endforelse
+                </table>
+
             </div>
+            
+        @else
+            @include('allocations.studentview', ['allocation' => $allocation])
         @endif
     </div>
 </div>

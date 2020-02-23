@@ -45,9 +45,14 @@ Student Dashboard
                                                 <a href="{{route('topics.index')}}" class="btn btn-info w-100">Find More Topics</a>
                                             @endif
                                         </div>
-                                    @else 
-                                        <p>You have no chosen topics.</p>
-                                        <a href="{{route('topics.index')}}" class="btn btn-secondary w-100">View Available Topics</a>
+                                    @else
+                                        @if(!is_null(Auth::user()->allocation))
+                                            <p>You have an allocation provided</p>
+                                            <a href="{{route('allocations.index')}}" class="btn btn-secondary w-100">View Available Topics</a>
+                                        @else
+                                            <p>You have no chosen topics.</p>
+                                            <a href="{{route('topics.index')}}" class="btn btn-secondary w-100">View Available Topics</a>
+                                        @endif
                                     @endif
                                 @endif
                             </div>
@@ -83,24 +88,6 @@ Student Dashboard
                                 @else
                                     <p>You have made {{count(Auth::user()->proposalSent)}} proposal(s).</p>
                                     <a href="{{route('proposals.index')}}" class="btn btn-secondary w-100">View Proposal progress</a>
-                                    @forelse(Auth::user()->proposalSent as $proposal)
-                                        <!-- <tr class="{{ !is_null($proposal->hasRejected) ? $proposal->hasRejected ? 'table-danger' : 'table-success' : '' }}">
-                                            <td>{{$proposal->supervisor->firstName.' '.$proposal->supervisor->lastName}}</td>
-                                            <td>{{$proposal->name}}</td>
-                                            <td>
-                                                <div class="btn-group d-flex" role="group" aria-label="Proposal Settings">
-                                                    <a href="{{route('proposals.show', $proposal)}}" class="btn btn-secondary w-100"><i class="fas fa-search"></i></a>
-                                                    <a onclick="alert('In Development')" class="btn btn-info w-100"><i class="fas fa-plus"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr> -->
-                                    @empty
-                                        <!-- <tr>
-                                            <td colspan="3">
-                                                <h5 class="text-center">No Proposals</h5>
-                                            </td>
-                                        </tr> -->
-                                    @endforelse
                                 @endif
                             </div>
                         </div>

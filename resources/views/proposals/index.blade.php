@@ -8,7 +8,7 @@
 @endsection
 @section('content')
 <div class="container mx-auto px-4 w-full">
-    @includeif('layouts.status')
+    @includeif('layouts.status', ['status'])
     <h1 class="text-center">
         @if(Auth::user()->role != "Student")
             Proposal Requests

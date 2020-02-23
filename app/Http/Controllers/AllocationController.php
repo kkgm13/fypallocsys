@@ -19,8 +19,10 @@ class AllocationController extends Controller
         $allocation = null;
         if(Auth::user()->role === "Student"){
             $allocation = Allocation::where('studentID', Auth::id())->first();
-        } else {
+        } else if(Auth::user()->role == "Supervisor"){
             $allocation = Allocation::where('supervisorID', Auth::id())->get();
+        } else {
+            $allocation = Allocation::with(['student', 'supervisor', 'topic', 'proposal'])->get();
         }
         return view('allocations.index', ['allocation' => $allocation]);
     }
@@ -43,6 +45,6 @@ class AllocationController extends Controller
         $allocation->studentID = $proposal->student->id;
         $allocation->superAuth = 1;
         $allocation->save();
+        return $allocation;
     }
-    
 }

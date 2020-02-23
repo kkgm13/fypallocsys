@@ -33,7 +33,12 @@
     @if(Auth::id() === $proposal->supervisorID || Auth::user()->role === "Module Leader")
     <div class="row">
         <div class="col-md-6 col-sm-12">
-            <a href="" class="btn btn-success btn-block">Accept Proposal</a>
+            <form action="{{route('proposals.decision', $proposal)}}" method="post">
+                @csrf
+                <input type="hidden" id="decision" name="decision" value="accepted">
+                <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                <input class="btn btn-success btn-block" type="submit" value="Accept Proposal">
+            </form>
         </div>
         <div class="col-md-6 col-sm-12">
             <a class="btn btn-danger btn-block" data-toggle="modal" data-target="#rejectingProposal">Reject Proposal</a>
