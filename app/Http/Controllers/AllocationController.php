@@ -43,6 +43,7 @@ class AllocationController extends Controller
         $allocation->studentID = $proposal->student->id;
         $allocation->superAuth = 1;
         $allocation->save();
+        return $allocation;
     }
     
 }

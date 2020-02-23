@@ -168,9 +168,10 @@ class ProposalController extends Controller
      * @param Proposal  $proposal
      */
     private function accepted(Request $request, Proposal $proposal){
-        (new AllocationController)->store($request, $proposal);
+        $allocation = (new AllocationController)->store($request, $proposal);
         // Send email to Student
-        Mail::to($proposal->student->email)->send(new ProposalAccept($proposal));
+        // Intelesense throws this as an error for some reason
+        Mail::to($proposal->student->email)->send(new ProposalAccept($allocation));
     }
     
     private function rejected(Request $request, Proposal $proposal){

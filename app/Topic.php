@@ -17,7 +17,7 @@ class Topic extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'studentID', 'supervisorID', 'isMCApprove', 'isCBApprove', 'prequisites', 'isMCApprove', 'isCBApprove'
+        'name', 'description', 'studentID', 'supervisorID', 'isMCApprove', 'isCBApprove', 'prequisites', 'isMCApprove', 'isCBApprove', 'isSecApprove'
     ];
 
     //--------------------------------//
@@ -78,7 +78,7 @@ class Topic extends Model
             'description.required' => 'A Topic Description is required.',
             'name.unique' => 'This topic name is already being used by a different supervisor.',
             'topicDocuments.mimes' => 'Supported files only are JPEG, PNG & BMP images, Word and PDF documents only ',
-            'topicDocuments.max' => 'The Document is large to save. Make sure it\'s within 128MB',
+            'topicDocuments.max' => 'The Document is too large to save. Make sure it\'s within 128MB',
         ];
     }
 }

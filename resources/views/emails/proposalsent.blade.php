@@ -8,7 +8,7 @@ Supervisor Selection Reasoning:<br>
 
 Please login to learn more about the proposal and either accept or reject the proposal.
 <!-- Check Button URL -->
-@component('mail::button', ['url' => '/'])
+@component('mail::button', ['url' => '/proposals/{{$proposal->id}}'])
 Learn More
 @endcomponent
 
