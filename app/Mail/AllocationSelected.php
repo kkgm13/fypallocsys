@@ -33,7 +33,8 @@ class AllocationSelected extends Mailable
     {
         return $this->markdown('emails.allocationsselected')
             ->subject('CS3010: And so it begins...')
-            ->with([])
-            ->replyTo($this->allocation->supervisor['email']);
+            ->with(['allocation' => $this->allocation])
+            ->replyTo($this->allocation->supervisor['email'])
+            ->cc($this->allocation->supervisor['email']);
     }
 }
