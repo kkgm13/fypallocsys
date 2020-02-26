@@ -45,8 +45,4 @@ Route::get('topics/{topic}/deselect', 'ChoiceController@destroy')->name('choices
 Route::delete('/topics/{topic}/deselect', 'ChoiceController@destroy')->name('choices.destroy');
 
 // Decisions Custom Routing
-Route::get('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposal.decision');
-Route::post('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposal.accepted');
-Route::get('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposal.accepted');
-Route::post('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposal.rejected');
-Route::get('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposal.accepted');
+Route::post('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposals.decision');

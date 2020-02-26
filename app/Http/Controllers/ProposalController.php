@@ -155,7 +155,10 @@ class ProposalController extends Controller
     public function decision(Request $request, Proposal $proposal){
         if(Auth::id() == $proposal->supervisorID){
             $request->decision === "accepted" ? $this->accepted($request, $proposal) : $this->rejected($request, $proposal);
-            return redirect()->route('proposals.index')->with('success', "Proposal has been $request->decision. The system is informing the student.");
+            return redirect()->route('proposals.index')->with([
+                'status' => "Proposal has been $request->decision. The system is informing the student.",
+                'type' => 'success',
+            ]);
         } else {
             return abort(403, "Forbidden");
         }
@@ -164,18 +167,25 @@ class ProposalController extends Controller
     /**
      * Proposal has been accepted
      * 
-     * @param Request   $request
-     * @param Proposal  $proposal
+     * @param Request Request
+     * @param Proposal Proposal Data
      */
     private function accepted(Request $request, Proposal $proposal){
-        (new AllocationController)->store($request, $proposal);
+        $allocation = (new AllocationController)->store($request, $proposal);
         // Send email to Student
-        Mail::to($proposal->student->email)->send(new ProposalAccept($proposal));
+        // Intelesense throws this as an error for some reason
+        Mail::to($proposal->student->email)->send(new ProposalAccept($allocation));
     }
     
+    /**
+     * Proposal has been Rejected
+     * 
+     * @param Request Request
+     * @param Proposal Proposal Data
+     */
     private function rejected(Request $request, Proposal $proposal){
         $proposal->update(['hasRejected' => 1]);
         // Send Email to student
-        Mail::to($proposal->student->email)->send(new ProposalReject($proposal));
+        Mail::to($proposal->student->email)->send(new ProposalReject($proposal, null));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Proposal;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -18,9 +19,10 @@ class ProposalReject extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Proposal $proposal, string $reasoning = null)
     {
-        //
+        $this->proposal = $proposal;
+        $this->reasoning = $reasoning;
     }
 
     /**
@@ -32,7 +34,6 @@ class ProposalReject extends Mailable
     {
         return $this->markdown('emails.proposalrejected')
             ->subject('A decision is made with your proposal')
-            ->with(['proposal' => $this->proposal, 'reasoning' => $this->reasoning])
-            ;
+            ->with(['proposal' => $this->proposal, 'reasoning' => $this->reasoning]);
     }
 }

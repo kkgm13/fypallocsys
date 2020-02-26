@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Allocation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -17,9 +18,9 @@ class ProposalAccept extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Allocation $allocation)
     {
-        //
+        $this->allocation = $allocation;
     }
 
     /**
@@ -32,6 +33,7 @@ class ProposalAccept extends Mailable
         return $this->markdown('emails.proposalaccepted')
             ->subject('A decision is made with your proposal')
             ->with(["allocation" => $this->allocation])
-            ->replyTo($this->allocation->supervisor['email']);
+            ->replyTo($this->allocation->supervisor['email'])
+            ;
     }
 }

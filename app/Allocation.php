@@ -24,6 +24,19 @@ class Allocation extends Model
         return $this->belongsTo('App\Topic', 'topicID');
     }
     
+    /**
+     * Get the Associated Student
+     */
+    public function student(){
+        return $this->belongsTo('App\User', 'studentID');
+    }
+
+    /**
+     * Get the Associated Supervisor
+     */
+    public function supervisor(){
+        return $this->belongsTo('App\User', 'supervisorID');
+    }
 
      /**
       * Get the associated Allocated Proposal
