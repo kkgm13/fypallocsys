@@ -82,9 +82,9 @@
                                 <div class="btn-group d-flex" role="group" aria-label="Proposal Settings">
                                     <a href="{{route('proposals.show', $proposal)}}" class="btn btn-secondary w-100"><i class="fas fa-search"></i></a>
                                     <a href="mailto:"></a>
-                                    <a href="mailto:{{$proposal->supervisor->email}}" class="btn btn-info w-100"><i class="fas fa-envelope"></i></a>
+                                    <a href="mailto:{{Auth::user()->role != 'Student'? $proposal->student->email : $proposal->supervisor->email}}" class="btn btn-info w-100"><i class="fas fa-envelope"></i></a>
                                     @if(Auth::user()->role != "Student")
-                                        <a onclick="alert('In Development')" class="btn btn-info w-100"><i class="fas fa-plus"></i></a>
+                                        <!-- <a onclick="alert('In Development')" class="btn btn-info w-100"><i class="fas fa-plus"></i></a> -->
                                     @endif
                                 </div>
                             </td>

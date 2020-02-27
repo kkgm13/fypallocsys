@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Allocation;
+use App\Mail\ProposalAccept;
+use App\Mail\ProposalReject;
 use App\Mail\ProposalSent;
 use App\Proposal;
 use App\User;
@@ -50,11 +53,7 @@ class ProposalTest extends TestCase
             'reasoning' => "This is my reason",
         ]);
         $proposal = Proposal::first();
-
         $this->assertCount(1, Proposal::all());
-        // $this->actingAs($this->supervisorUser)->get(route('proposals.show'));
-       // Redirect
-        $response->assertRedirect('/proposals/');
     } 
 
     /** @test */
@@ -93,7 +92,7 @@ class ProposalTest extends TestCase
         $proposal = Proposal::first();
 
         $this->assertCount(1, Proposal::all());
-        Mail::assertSent(ProposalSent::class, function($mail){return $mail->hasTo('supervisor@fypalloc.com');});
+        Mail::assertSent(ProposalSent::class, function($mail){return $mail->hasTo($this->supervisorUser->email);});
     }
 
     /** @test */
@@ -268,6 +267,7 @@ class ProposalTest extends TestCase
         $proposal = Proposal::first();
 
         $this->assertCount(1, Proposal::all());
+
         $this->assertDatabaseHas('proposals', ['name' => 'Proposal name']);
         $response = $this->actingAs($this->supervisorUser2)->get(route('proposals.show', $proposal));
         $response->assertStatus(403);;
@@ -314,8 +314,11 @@ class ProposalTest extends TestCase
     }
 
     // Supervisors accepting proposal
-    /** */
+    /** @test */
     public function supervisor_can_accept_proposal(){
+        
+        Mail::fake();
+
         $this->studentUser = User::create([
             'firstName' => "Student",
             'lastName' => "User",
@@ -337,23 +340,36 @@ class ProposalTest extends TestCase
         ]);
 
         $this->actingAs($this->studentUser)->post('/proposals', [
-            'name' => 'Proposal name',
-            'description' => 'Hello World. I am a description which will state the context of what I am conveying',
+            'name' => "Proposal name",
+            'description' => "Hello World. I am a description which will state the context of what I am conveying",
+            'prequisites' => null,
             'studentID' => $this->studentUser,
             'supervisorID' => $this->supervisorUser->id,
+            'reasoning' => "This is my reason"
         ]);
 
         $proposal = Proposal::first();
         $this->assertCount(1, Proposal::all());
 
-        $this->actingAs($this->supervisor)->post('/proposal/accept', [
+        $this->actingAs($this->supervisorUser)->post('/proposals/'.$proposal->id.'/decision/', [
             'proposal' => $proposal,
-            'request' => 'accepted',
+            'decision' => 'accepted',
         ]);
+        $this->assertCount(1, Allocation::all());
+        $this->assertDatabaseHas('allocations', [
+            'studentID' => $this->studentUser->id,
+            'supervisorID' => $this->supervisorUser->id,
+            'proposalID' => $proposal->id
+        ]);
+        Mail::assertSent(ProposalAccept::class, function($mail){return $mail->hasTo($this->studentUser->email);});
+
     }
 
     // Supervisors rejecting proposal
+    /** @test */
     public function supervisor_can_reject_proposal(){
+        Mail::fake();
+
         $this->studentUser = User::create([
             'firstName' => "Student",
             'lastName' => "User",
@@ -375,16 +391,27 @@ class ProposalTest extends TestCase
         ]);
 
         $this->actingAs($this->studentUser)->post('/proposals', [
-            'name' => 'Proposal name',
-            'description' => 'Hello World. I am a description which will state the context of what I am conveying',
+            'name' => "Proposal name",
+            'description' => "Hello World. I am a description which will state the context of what I am conveying",
+            'prequisites' => null,
             'studentID' => $this->studentUser,
             'supervisorID' => $this->supervisorUser->id,
+            'reasoning' => "This is my reason"
         ]);
 
         $proposal = Proposal::first();
-
         $this->assertCount(1, Proposal::all());
 
-        $this->actingAs($this->supervisor)->post('/proposals/decision', []);
+        $this->actingAs($this->supervisorUser)->post('/proposals/'.$proposal->id.'/decision/', [
+            'proposal' => $proposal,
+            'decision' => 'rejected',
+        ]);
+        $this->assertNotCount(1, Allocation::all());
+        $this->assertDatabaseHas('proposals', [
+            'name' => "Proposal Name",
+            'hasRejected' => 1
+        ]);
+
+        Mail::assertSent(ProposalReject::class, function($mail){return $mail->hasTo($this->studentUser->email);});
     }
 }

@@ -4,6 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Allocation Model
+ *  
+ *  This is the model that takes the official topic allocations of both students and supervisors.
+ */
 class Allocation extends Model
 {
     /**

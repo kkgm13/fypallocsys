@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Allocation;
 use App\Choice;
 use App\Topic;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -70,6 +71,12 @@ class ChoiceController extends Controller
         }
     }
 
+    /**
+     * Update the Choice by its ranking in storage
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Choice $choice
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, Choice $choice){
         if(Auth::user()->role === "Student"){
             $validateData = $request->validate([
@@ -78,7 +85,7 @@ class ChoiceController extends Controller
 
             $choice->update($validateData);
             return redirect()->route('topics.index')->with([
-                'status' => "Your choice has been successfully been selected for review.",
+                'status' => "Your choices in ranking have been updated",
                 'type' => 'success'
             ]);
         } else {
@@ -88,7 +95,9 @@ class ChoiceController extends Controller
 
 
     /**
-     * 
+     * Delete this choice from storage
+     * @param \App\Choice $choice
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Topic $topic){
         if(Auth::user()->role == "Student"){
@@ -103,6 +112,41 @@ class ChoiceController extends Controller
             ]);
         } else {
             return abort('403', "Forbidden");
+        }
+    }
+
+    /**
+     * Allocate the Student to the topic
+     */
+    public function allocate(Request $request, User $user){
+        if(Auth::user()->role != "Student"){
+            $aloCheck = Allocation::where('studentID', Auth::id())->get();
+            //If already allocated a topic
+            if(!$aloCheck->isEmpty()){
+                // Message User with an allocation provided
+                return redirect()->back()->with([
+                    'status' => 'You already have an Topic Allocated',
+                    'type' => 'warning'
+                ]);
+            } else {
+                $countSize = Choice::where('studentID', '=', Auth::id())->count();
+                if($countSize >= 3){
+                    // Notify user with full list of choices
+                    return redirect()->back()->with([
+                        'status' => 'You are making more choices than allowed. Please review your choices.',
+                        'type' => 'info'
+                    ]);
+                } else {
+
+                    // Redirect
+                    return redirect()->back()->with([
+                        'status' => "Your have chosen $topic->name as a potential topic.", 
+                        'type' => "success"
+                    ]);
+                }
+            }
+        } else {
+            return abort(404, "Not Found");
         }
     }
 }

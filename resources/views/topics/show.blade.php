@@ -92,7 +92,8 @@
                 </div>
                 <div class="modal-body">
                     @forelse($topic->interested as $student)
-                        <p><span class="font-weight-bold">{{$student->firstName.' '.$student->lastName}}</span><br><span class="pl-3">SUN ID: {{$student->sun}}</span></p>
+                        <p class="mb-1"><span class="font-weight-bold">{{$student->firstName.' '.$student->lastName}}</span><br><span class="pl-3">SUN ID: {{$student->sun}}</span></p>
+                        <a class="mb-3 btn btn-success w-100" href="#">Select Student</a>
                     @empty
                         <h6>No Students</h6>
                     @endforelse

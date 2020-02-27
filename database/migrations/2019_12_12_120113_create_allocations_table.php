@@ -17,7 +17,7 @@ class CreateAllocationsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('studentID')->comment('Foreign key to STUDENT');
             $table->unsignedBigInteger('supervisorID')->comment('Foreign Key to SUPERVISOR');
-            $table->unsignedBigInteger('proposalID')->nullable()->comment('Foreign Key to Proposals');
+            $table->unsignedBigInteger('proposalID')->nullable()->comment('Foreign Key to Proposals')->unique();
             $table->unsignedBigInteger('topicID')->nullable()->comment('Foreign Key to Proposals');
             $table->boolean('superAuth')->default(0)->comment('Supervisor Authorized');
             $table->boolean('modAuth')->default(0)->comment('Module Leader Authorized');

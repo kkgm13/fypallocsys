@@ -12,26 +12,11 @@ My Allocation
     <hr>
     <div class="row">
         @if(Auth::user()->role != "Student")
-            <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered">
-                    <tr>
-                        <th>Student Name</th>
-                        <th>Topic Name</th>
-                        <th>Supervisor Name</th>
-                    </tr>
-                    @forelse($allocation as $alloc)
-                        <tr>
-                            <td>{{$alloc->student->firstName.' '.$alloc->student->lastName}}</td>
-                            <td>{{$alloc->topic->name}}</td>
-                            <td>{{$alloc->supervisor->firstName.' '.$alloc->supervisor->lastName}}</td>
-                        </tr>
-                    @empty
-                    <tr><td colspan="3"><h3 class="text-center">There are currently no official topic allocations.</h3></td></th>
-                    @endforelse
-                </table>
-
-            </div>
-            
+            @if(Auth::user()->role == "Supervisor")
+                @include('allocations.supervisorview', ['allocations' => $allocation])
+            @else
+                @include('allocations.moduleleaderview', ['allocation' => $allocation])
+            @endif
         @else
             @include('allocations.studentview', ['allocation' => $allocation])
         @endif
