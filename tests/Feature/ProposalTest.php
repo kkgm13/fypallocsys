@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Allocation;
-use App\Mail\ProposalAccept;
+use App\Mail\AllocatedLetter;
 use App\Mail\ProposalReject;
 use App\Mail\ProposalSent;
 use App\Proposal;
@@ -361,7 +361,7 @@ class ProposalTest extends TestCase
             'supervisorID' => $this->supervisorUser->id,
             'proposalID' => $proposal->id
         ]);
-        Mail::assertSent(ProposalAccept::class, function($mail){return $mail->hasTo($this->studentUser->email);});
+        Mail::assertSent(AllocatedLetter::class, function($mail){return $mail->hasTo($this->studentUser->email);});
 
     }
 

@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 <div class="container">
-    @include('layouts.form-alerts')
+    @include('layouts.status')
     @if(Auth::user()->role === "Student")
         @if(!is_null($proposal->hasRejected) && $proposal->hasRead == 1)
             <div class="alert alert-info alert-dismissible fade show" role="alert">

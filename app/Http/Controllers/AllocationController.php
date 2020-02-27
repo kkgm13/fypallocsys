@@ -38,7 +38,6 @@ class AllocationController extends Controller
         return view('allocations.index', ['allocation' => $allocation]);
     }
 
-
     /**
      * Store a newly selected choice in storage.
      *

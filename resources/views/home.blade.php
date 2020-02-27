@@ -8,14 +8,15 @@ Student Dashboard
 @endsection
 @section('content')
 <div class="container">
+    @includeif('layouts.status')
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">You are logged in, {{Auth::user()->firstName.' '.Auth::user()->lastName}}!</div>
                 <div class="card-body">
-                    @includeif('layouts.status')
                     <div class="w-100">
                         <div class="row">
+                            <!-- Left Side -->
                             <div class="col-lg-6">
                                 @if(Auth::user()->role != "Student")
                                     <h4 class="py-1 underline text-base">Your Topics</h4>
@@ -30,7 +31,10 @@ Student Dashboard
                                     @endforelse
                                 @else
                                     <h4 class="py-1 underline text-base">Your Topic Choices</h4>
-                                    @if(Auth::user()->choices->count() > 0)
+                                    @if(!is_null(Auth::user()->allocation))
+                                        <p>You have an allocation provided</p>
+                                        <a href="{{route('allocations.index')}}" class="btn btn-secondary w-100">View Allocation</a>
+                                    @elseif(Auth::user()->choices->count() > 0)
                                         @if(count(Auth::user()->choices) <=3)
                                             <p>You have {{count(Auth::user()->choices)}} topic(s) chosen for review.</p>
                                         @else 
@@ -46,16 +50,12 @@ Student Dashboard
                                             @endif
                                         </div>
                                     @else
-                                        @if(!is_null(Auth::user()->allocation))
-                                            <p>You have an allocation provided</p>
-                                            <a href="{{route('allocations.index')}}" class="btn btn-secondary w-100">View Available Topics</a>
-                                        @else
-                                            <p>You have no chosen topics.</p>
-                                            <a href="{{route('topics.index')}}" class="btn btn-secondary w-100">View Available Topics</a>
-                                        @endif
+                                        <p>You have no chosen topics.</p>
+                                        <a href="{{route('topics.index')}}" class="btn btn-secondary w-100">View Available Topics</a>
                                     @endif
                                 @endif
                             </div>
+                            <!-- Right Side -->
                             <div class="col-lg-6">
                                 <h4 class="py-1 underline text-base">{{ Auth::user()->role != "Student" ? "Student Proposals" : "Your Proposals"}}</h4>
                                 @if(Auth::user()->role != "Student")
@@ -85,6 +85,7 @@ Student Dashboard
                                             @endforelse
                                         </tbody>
                                     </table>
+                                    <a href="{{route('proposals.index')}}" class="btn btn-secondary w-100">View All Proposals</a>
                                 @else
                                     <p>You have made {{count(Auth::user()->proposalSent)}} proposal(s).</p>
                                     <a href="{{route('proposals.index')}}" class="btn btn-secondary w-100">View Proposal progress</a>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Allocation;
+use App\Mail\AllocatedLetter;
 use App\Mail\ProposalAccept;
 use App\Mail\ProposalReject;
 use App\Mail\ProposalSent;
@@ -154,11 +155,21 @@ class ProposalController extends Controller
      */
     public function decision(Request $request, Proposal $proposal){
         if(Auth::id() == $proposal->supervisorID){
-            $request->decision === "accepted" ? $this->accepted($request, $proposal) : $this->rejected($request, $proposal);
-            return redirect()->route('proposals.index')->with([
-                'status' => "Proposal has been $request->decision. The system is informing the student.",
-                'type' => 'success',
-            ]);
+            $aloCheck = Allocation::where('studentID', $proposal->student->id)->get();
+            //If already allocated a topic
+            if(!$aloCheck->isEmpty()){
+                // Message User with an allocation provided
+                return redirect()->back()->with([
+                    'status' => 'Student has been already allocated an Topic',
+                    'type' => 'warning'
+                ]);
+            } else {
+                $request->decision === "accepted" ? $this->accepted($request, $proposal) : $this->rejected($request, $proposal);
+                return redirect()->route('proposals.index')->with([
+                    'status' => "Proposal has been $request->decision. The system is informing the student.",
+                    'type' => 'success',
+                ]);   
+            }
         } else {
             return abort(403, "Forbidden");
         }
@@ -174,7 +185,7 @@ class ProposalController extends Controller
         $allocation = (new AllocationController)->store($request, $proposal);
         // Send email to Student
         // Intelesense throws this as an error for some reason
-        Mail::to($proposal->student->email)->send(new ProposalAccept($allocation));
+        Mail::to($proposal->student->email)->send(new AllocatedLetter($allocation));
     }
     
     /**

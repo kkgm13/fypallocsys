@@ -14,7 +14,7 @@
                 <td>{{is_null($alloc->topic) ? "Proposal" : "Topic" }}</td>
             </tr>
         @empty
-        <tr><td colspan="3"><h3 class="text-center">There are currently no official topic allocations.</h3></td></th>
+        <tr><td colspan="4"><h3 class="text-center">There are currently no official topic allocations.</h3></td></th>
         @endforelse
     </table>
 </div>

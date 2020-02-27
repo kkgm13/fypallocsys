@@ -11,6 +11,17 @@ use Illuminate\Support\Facades\Auth;
 
 class ChoiceController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -93,10 +104,9 @@ class ChoiceController extends Controller
         }
     }
 
-
     /**
      * Delete this choice from storage
-     * @param \App\Choice $choice
+     * @param \App\Topic $topic
      * @return \Illuminate\Http\Response
      */
     public function destroy(Topic $topic){
@@ -112,41 +122,6 @@ class ChoiceController extends Controller
             ]);
         } else {
             return abort('403', "Forbidden");
-        }
-    }
-
-    /**
-     * Allocate the Student to the topic
-     */
-    public function allocate(Request $request, User $user){
-        if(Auth::user()->role != "Student"){
-            $aloCheck = Allocation::where('studentID', Auth::id())->get();
-            //If already allocated a topic
-            if(!$aloCheck->isEmpty()){
-                // Message User with an allocation provided
-                return redirect()->back()->with([
-                    'status' => 'You already have an Topic Allocated',
-                    'type' => 'warning'
-                ]);
-            } else {
-                $countSize = Choice::where('studentID', '=', Auth::id())->count();
-                if($countSize >= 3){
-                    // Notify user with full list of choices
-                    return redirect()->back()->with([
-                        'status' => 'You are making more choices than allowed. Please review your choices.',
-                        'type' => 'info'
-                    ]);
-                } else {
-
-                    // Redirect
-                    return redirect()->back()->with([
-                        'status' => "Your have chosen $topic->name as a potential topic.", 
-                        'type' => "success"
-                    ]);
-                }
-            }
-        } else {
-            return abort(404, "Not Found");
         }
     }
 }
