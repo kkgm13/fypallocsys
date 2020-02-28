@@ -134,12 +134,10 @@ class TopicController extends Controller
                 'name' => 'required|string|max:200',
                 'description' => 'required|string',
             ]);
-
             // Get Current auth user
             if(Auth::user()->role == "Module Leader"){
                 $validateData['supervisorID'] = $request->supervisorID; // Get Supervisor Selected auth
             }
-
             // Create the Topic
             $topic->update($validateData);
 

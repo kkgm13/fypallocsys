@@ -33,6 +33,7 @@ Route::resources([
 
 // Allocation Custom Routing
 Route::get('/allocations', 'AllocationController@index')->name('allocations.index');
+Route::get('/allocations/unallocated', 'AllocationController@unallocated')->name('allocations.unallocated');
 
 // Choices Custom Routing
 Route::get('/my-choices', 'ChoiceController@index')->name('choices.mine');

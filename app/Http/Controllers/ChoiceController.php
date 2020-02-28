@@ -95,7 +95,7 @@ class ChoiceController extends Controller
             ]);
 
             $choice->update($validateData);
-            return redirect()->route('topics.index')->with([
+            return redirect()->back()->with([
                 'status' => "Your choices in ranking have been updated",
                 'type' => 'success'
             ]);

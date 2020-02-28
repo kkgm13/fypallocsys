@@ -10,6 +10,13 @@ My Allocation
 <div class="container">
     <h1 class="text-center">{{Auth::user()->role === "Module Leader" ? "All Allocations" : "My Allocation"}}</h1>
     <hr>
+    @if(Auth::user()->role == "Module Leader")
+        <div class="row my-2">
+            <div class="col-6">
+                <a class="btn btn-primary" href="{{route('allocations.unallocated')}}">See All Unallocated Students</a>
+            </div>
+        </div>
+    @endif
     <div class="row">
         @if(Auth::user()->role != "Student")
             @if(Auth::user()->role == "Supervisor")

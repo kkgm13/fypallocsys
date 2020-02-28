@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Allocation;
 use App\Proposal;
 use App\Topic;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,6 +37,18 @@ class AllocationController extends Controller
             $allocation = Allocation::with(['student', 'supervisor', 'topic', 'proposal'])->get();
         }
         return view('allocations.index', ['allocation' => $allocation]);
+    }
+
+    public function unallocated(){
+        if(Auth::user()->role === "Module Leader"){
+            $unalloc = User::leftJoin('allocations', 'users.id', '=', 'allocations.studentID')
+                ->where('role', "Student")
+                
+                ->get();
+            dd($unalloc);
+        } else {
+            return abort(404, "Not Found");
+        }
     }
 
     /**
