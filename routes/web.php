@@ -48,3 +48,6 @@ Route::delete('/topics/{topic}/deselect', 'ChoiceController@destroy')->name('cho
 // Decisions Custom Routing
 Route::post('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposals.decision');
 Route::post('/topics/{topic}/allocate', 'TopicController@allocate')->name('topics.allocate');
+Route::get('/test', function(){
+    return null;
+});

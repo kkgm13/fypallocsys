@@ -46,11 +46,18 @@ class AllocationController extends Controller
      */
     public function unallocated(){
         if(Auth::user()->role === "Module Leader"){
-            $unalloc = User::leftJoin('allocations', 'users.id', '=', 'allocations.studentID')
-                ->where('role', "Student")
-                ->whereNot()
-                ->get();
-            dd($unalloc);
+            // Student that doesn't have a topic
+            $unallocStudents = User::where('role', "Student")
+            ->where('username','<>', "Guest")
+            ->whereNotExists(function($query){
+                $query->select('*')
+                ->from('allocations')
+                ->whereRaw('users.id = allocations.studentID')
+                ->where('allocations.studentID', "<>", "users");
+            })->get();
+            $unallocTopics = Topic::leftJoin('allocations', 'topics.id', '=', 'allocations.topicID')
+            ->get();
+            dd($unallocStudents, $unallocTopics );
         } else {
             return abort(404, "Not Found");
         }
