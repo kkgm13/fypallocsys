@@ -39,11 +39,16 @@ class AllocationController extends Controller
         return view('allocations.index', ['allocation' => $allocation]);
     }
 
+    /**
+     * Display a listing of Unallocated Topic / User Resources
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function unallocated(){
         if(Auth::user()->role === "Module Leader"){
             $unalloc = User::leftJoin('allocations', 'users.id', '=', 'allocations.studentID')
                 ->where('role', "Student")
-                
+                ->whereNot()
                 ->get();
             dd($unalloc);
         } else {
