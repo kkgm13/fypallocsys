@@ -26,9 +26,12 @@ Topics Interested
                         <td>
                             <div class="btn-group d-flex" role="group" aria-label="Choice Settings">
                                 <a href="{{route('topics.show', $choice->topic)}}" class="btn btn-secondary"><i class="fas fa-search"></i></a>
+                                @if(is_null(Auth::user()->allocation))
                                 <a href="{{route('choices.destroy', $choice->topic)}}" class="btn btn-danger"><i class="fas fa-times"></i></a>
+                                @endif
                             </div>
                         </td>
+                        @if(is_null(Auth::user()->allocation))
                         <td>
                             <div class="btn-group-vertical d-flex">
                                 @if(!$loop->first)
@@ -39,6 +42,7 @@ Topics Interested
                                 @endif
                             </div>
                         </td>
+                        @endif
                     </tr>
                 @empty
                     <tr class="text-center">

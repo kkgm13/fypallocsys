@@ -55,9 +55,15 @@ class AllocationController extends Controller
                 ->whereRaw('users.id = allocations.studentID')
                 ->where('allocations.studentID', "<>", "users");
             })->get();
-            $unallocTopics = Topic::leftJoin('allocations', 'topics.id', '=', 'allocations.topicID')
+            // Topics that haven't been taken by students
+            $unallocTopics = Topic::whereNotExists(function($query){
+                $query->select('*')
+                ->from('allocations')
+                ->whereRaw('topics.id = allocations.topicID')
+                ->where('allocations.topicID', "<>", "topics");
+            })
             ->get();
-            dd($unallocStudents, $unallocTopics );
+            return view('allocations.index',['unallocStudents' => $unallocStudents, 'unallocTopics' => $unallocTopics]);
         } else {
             return abort(404, "Not Found");
         }

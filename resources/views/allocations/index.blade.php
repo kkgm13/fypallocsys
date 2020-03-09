@@ -12,8 +12,12 @@ My Allocation
     <hr>
     @if(Auth::user()->role == "Module Leader")
         <div class="row my-2">
-            <div class="col-6">
-                <a class="btn btn-primary" href="{{route('allocations.unallocated')}}">See All Unallocated Students</a>
+            <div class="col">
+                <div class="btn-group w-100" role="group" aria-label="Basic example">
+                    <a class="btn btn-success" href="{{route('allocations.index')}}">See All Allocated</a>
+                    <a class="btn btn-warning" href="">See All Unallocated Topics</a>
+                    <a class="btn btn-danger" href="{{route('allocations.unallocated')}}">See All Unallocated Students</a>
+                </div>
             </div>
         </div>
     @endif
@@ -21,6 +25,8 @@ My Allocation
         @if(Auth::user()->role != "Student")
             @if(Auth::user()->role == "Supervisor")
                 @include('allocations.supervisorview', ['allocations' => $allocation])
+            @elseif(Request::is('allocations/unallocated'))
+                @include('allocations.unallocated', ['unallocStudents' => $unallocStudents, 'unallocTopics' => $unallocTopics])
             @else
                 @include('allocations.moduleleaderview', ['allocation' => $allocation])
             @endif

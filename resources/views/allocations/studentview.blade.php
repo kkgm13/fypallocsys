@@ -8,7 +8,12 @@
                 {{$allocation->proposal->name}}
             @endif
         </h2>
-
+        <h4 class="text-center">with your supervisor being:</h5>
+        <h3 class="text-center">
+            @if(!is_null($allocation->topic))
+                {{$allocation->supervisor->firstName.' '.$allocation->supervisor->lastName}}
+            @endif
+        </h2>
         <div class="text-center py-2">
             @if(!is_null($allocation->proposal))
                 <a href="{{route('proposals.show', $allocation->proposal)}}" class="btn btn-secondary">Proposal Details</a>

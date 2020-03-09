@@ -47,6 +47,7 @@
         <p class="pl-4">No Documents available</p>
     @endforelse
     <hr>
+    @if(Auth::user()->role == "Student" && is_null(Auth::user()->allocation))
     <div class="row">
         <div class="col-md-6 col-sm-12">
             @if(Auth::user()->role === "Student")
@@ -80,6 +81,7 @@
             @endif
         </div>
     </div>
+    @endif
     @if(AUth::user()->role != "Student")
     <div class="modal fade" id="interestedList" tabindex="-1" role="dialog" aria-labelledby="interestedList" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable" role="document">

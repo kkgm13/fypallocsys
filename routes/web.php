@@ -49,5 +49,6 @@ Route::delete('/topics/{topic}/deselect', 'ChoiceController@destroy')->name('cho
 Route::post('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposals.decision');
 Route::post('/topics/{topic}/allocate', 'TopicController@allocate')->name('topics.allocate');
 Route::get('/test', function(){
-    return null;
+    $proposal = \App\Proposal::first();
+    return new \App\Mail\ProposalSent($proposal);
 });
