@@ -76,7 +76,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" onsubmit="return confirm('By officially allocating this student, you, the module leader, are happy with having this student assigned to this topic and also the topic supervisor be their assigned personal tutor during the student\'s final year.')">
+                <form action="{{route('topics.allocate', $topic)}}" method="post" onsubmit="return confirm('By officially allocating this student, you, the module leader, are happy with having this student assigned to this topic and also the topic supervisor be their assigned personal tutor during the student\'s final year.')">
                     @csrf
                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                     <table class="table table-borderless">
@@ -92,7 +92,7 @@
                         </tr>
                         @empty
                             <td>
-                                <h6>No Students</h6>
+                                <h6>All students have been allocated</h6>
                             </td>
                         @endforelse
                     </table>
