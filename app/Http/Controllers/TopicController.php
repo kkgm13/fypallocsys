@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Allocation;
 use App\Choice;
+use App\Mail\AllocatedLetter;
 use App\Topic;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class TopicController extends Controller
 {
@@ -114,7 +117,6 @@ class TopicController extends Controller
         } else {
             return abort(403, "Forbidden");
         }
-        
     }
 
     /**
@@ -132,12 +134,10 @@ class TopicController extends Controller
                 'name' => 'required|string|max:200',
                 'description' => 'required|string',
             ]);
-
             // Get Current auth user
             if(Auth::user()->role == "Module Leader"){
                 $validateData['supervisorID'] = $request->supervisorID; // Get Supervisor Selected auth
             }
-
             // Create the Topic
             $topic->update($validateData);
 
@@ -165,4 +165,45 @@ class TopicController extends Controller
             return abort(403, "Forbidden");
         }
     }
+
+    /**
+     * Allocate the Student to the topic
+     */
+    public function allocate(Request $request, Topic $topic){
+        if(Auth::user()->role != "Student"){
+            $user = json_decode($request->user);
+            $aloCheck = Allocation::where('studentID', $user->id)->get();
+            //If already allocated
+            if(!$aloCheck->isEmpty()){
+                // Message User with an allocation provided
+                return redirect()->back()->with([
+                    'status' => 'Student has been already allocated',
+                    'type' => 'warning'
+                ]);
+            } else {
+                // Create Allocation
+                $allocation = new Allocation();
+                $allocation->studentID = $user->id;
+                $allocation->topicID = $topic->id;
+                $allocation->supervisorID = $topic->supervisor->id;
+                $allocation->superAuth = 1;
+                $allocation->save();
+
+                // Update the Topic
+                $topic->update(['studentID'=> $user->id]);
+
+                // Notify Student
+                Mail::to($allocation->student->email)->send(new AllocatedLetter($allocation));
+                // Redirect
+                return redirect()->route('home')->with([
+                    'status' => "You have chosen student for this topic. The system is informing the student.",
+                    'type' => 'success',
+                ]);
+            }
+        } else {
+            return abort(404, "Not Found");
+        }
+    }
+
+    // private function 
 }

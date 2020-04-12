@@ -28,14 +28,17 @@ class HomeController extends Controller
     {
         $topics = null; $proposals = null;
         if(Auth::user()->role == "Module Leader"){
+            // Module Leader Version
             $topics = Topic::all();
-            $proposals = Proposal::all();
+            $proposals = Proposal::latest()->get();
         } else if (Auth::user()->role == "Supervisor"){
+            // Supervisor Version
             $topics = Topic::where('supervisorID', '=', Auth::id())->get();
-            $proposals = Proposal::where('supervisorID', '=', Auth::id())->get();
+            $proposals = Proposal::where('supervisorID', '=', Auth::id())->latest()->take(3)->get();
         } else {
-            $topics = Topic::all();
-            $proposals = Proposal::where('studentID', '=', Auth::id())->get();
+            // Student Version
+            $topics = null;
+            $proposals = Proposal::where('studentID', '=', Auth::id())->latest()->take(3)->get();
         }
         return view('home', ['topics' => $topics, 'proposals' => $proposals]);
     }

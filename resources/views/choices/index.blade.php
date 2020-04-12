@@ -13,7 +13,6 @@ Topics Interested
                     <tr>
                         <th>Topic Name</th>
                         <th>Supervisor</th>
-                        <th class="d-none d-md-block d-lg-none">Topic Description</th>
                         <th>Your Ranking</th>
                         <th>Options</th>
                     </tr>
@@ -23,14 +22,16 @@ Topics Interested
                     <tr>
                         <td>{{$choice->topic->name}}</td>
                         <td>{{$choice['topic']->supervisor->firstName.' '.$choice['topic']->supervisor->lastName}}</td>
-                        <td class="d-none d-md-block d-lg-none">{{substr($choice->topic->description, 0, 90)."..."}}</td>
                         <td>{{$choice->ranking}}</td>
                         <td>
                             <div class="btn-group d-flex" role="group" aria-label="Choice Settings">
                                 <a href="{{route('topics.show', $choice->topic)}}" class="btn btn-secondary"><i class="fas fa-search"></i></a>
-                                <a href="{{route('topics.destroy', $choice->topic)}}" class="btn btn-danger"><i class="fas fa-times"></i></a>
+                                @if(is_null(Auth::user()->allocation))
+                                <a href="{{route('choices.destroy', $choice->topic)}}" class="btn btn-danger"><i class="fas fa-times"></i></a>
+                                @endif
                             </div>
                         </td>
+                        @if(is_null(Auth::user()->allocation))
                         <td>
                             <div class="btn-group-vertical d-flex">
                                 @if(!$loop->first)
@@ -41,6 +42,7 @@ Topics Interested
                                 @endif
                             </div>
                         </td>
+                        @endif
                     </tr>
                 @empty
                     <tr class="text-center">

@@ -79,14 +79,6 @@ Create a New Topic
                     @endforeach
                 </select>
             </div>
-            <!-- <div class="form-group">
-                <label for="supervisorID">Secondary Assessor Supervisor</label>
-                <select class="form-control" id="supervisorID" name="supervisorID" disabled>
-                    @foreach($supervisors as $supervisor)
-                        <option value="{{$supervisor->id}}">{{$supervisor->firstName." ". $supervisor->lastName}}</option>
-                    @endforeach
-                </select>
-            </div> -->
         </fieldset>
         @endif
         <hr>

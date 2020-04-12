@@ -5,11 +5,23 @@ namespace App\Http\Controllers;
 use App\Allocation;
 use App\Proposal;
 use App\Topic;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AllocationController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -19,12 +31,43 @@ class AllocationController extends Controller
         $allocation = null;
         if(Auth::user()->role === "Student"){
             $allocation = Allocation::where('studentID', Auth::id())->first();
-        } else {
+        } else if(Auth::user()->role == "Supervisor"){
             $allocation = Allocation::where('supervisorID', Auth::id())->get();
+        } else {
+            $allocation = Allocation::with(['student', 'supervisor', 'topic', 'proposal'])->get();
         }
         return view('allocations.index', ['allocation' => $allocation]);
     }
 
+    /**
+     * Display a listing of Unallocated Topic / User Resources
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function unallocated(){
+        if(Auth::user()->role === "Module Leader"){
+            // Student that doesn't have a topic
+            $unallocStudents = User::where('role', "Student")
+            ->where('username','<>', "Guest")
+            ->whereNotExists(function($query){
+                $query->select('*')
+                ->from('allocations')
+                ->whereRaw('users.id = allocations.studentID')
+                ->where('allocations.studentID', "<>", "users");
+            })->get();
+            // Topics that haven't been taken by students
+            $unallocTopics = Topic::whereNotExists(function($query){
+                $query->select('*')
+                ->from('allocations')
+                ->whereRaw('topics.id = allocations.topicID')
+                ->where('allocations.topicID', "<>", "topics");
+            })
+            ->get();
+            return view('allocations.index',['unallocStudents' => $unallocStudents, 'unallocTopics' => $unallocTopics]);
+        } else {
+            return abort(404, "Not Found");
+        }
+    }
 
     /**
      * Store a newly selected choice in storage.
@@ -45,5 +88,4 @@ class AllocationController extends Controller
         $allocation->save();
         return $allocation;
     }
-    
 }

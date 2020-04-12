@@ -8,11 +8,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ProposalAccept extends Mailable
+class AllocatedLetter extends Mailable
 {
     use Queueable, SerializesModels;
 
     protected $allocation;
+
     /**
      * Create a new message instance.
      *
@@ -30,9 +31,9 @@ class ProposalAccept extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.proposalaccepted')
-            ->subject('A decision is made with your proposal')
-            ->with(["allocation" => $this->allocation])
-            ->replyTo($this->allocation->supervisor['email']);
+        return $this->markdown('emails.allocatedletter')
+                ->subject('CS3010: And so it begins...')
+                ->with(["allocation" => $this->allocation])
+                ->replyTo($this->allocation->supervisor['email']);
     }
 }

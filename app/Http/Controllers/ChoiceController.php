@@ -5,11 +5,23 @@ namespace App\Http\Controllers;
 use App\Allocation;
 use App\Choice;
 use App\Topic;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ChoiceController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -70,6 +82,12 @@ class ChoiceController extends Controller
         }
     }
 
+    /**
+     * Update the Choice by its ranking in storage
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Choice $choice
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, Choice $choice){
         if(Auth::user()->role === "Student"){
             $validateData = $request->validate([
@@ -77,8 +95,8 @@ class ChoiceController extends Controller
             ]);
 
             $choice->update($validateData);
-            return redirect()->route('topics.index')->with([
-                'status' => "Your choice has been successfully been selected for review.",
+            return redirect()->back()->with([
+                'status' => "Your choices in ranking have been updated",
                 'type' => 'success'
             ]);
         } else {
@@ -86,9 +104,10 @@ class ChoiceController extends Controller
         }
     }
 
-
     /**
-     * 
+     * Delete this choice from storage
+     * @param \App\Topic $topic
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Topic $topic){
         if(Auth::user()->role == "Student"){

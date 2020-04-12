@@ -10,20 +10,28 @@ My Allocation
 <div class="container">
     <h1 class="text-center">{{Auth::user()->role === "Module Leader" ? "All Allocations" : "My Allocation"}}</h1>
     <hr>
+    @if(Auth::user()->role == "Module Leader")
+        <div class="row my-2">
+            <div class="col">
+                <div class="btn-group w-100" role="group" aria-label="Basic example">
+                    <a class="btn btn-success" href="{{route('allocations.index')}}">See All Allocated</a>
+                    <a class="btn btn-warning" href="">See All Unallocated Topics</a>
+                    <a class="btn btn-danger" href="{{route('allocations.unallocated')}}">See All Unallocated Students</a>
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="row">
         @if(Auth::user()->role != "Student")
-        
+            @if(Auth::user()->role == "Supervisor")
+                @include('allocations.supervisorview', ['allocations' => $allocation])
+            @elseif(Request::is('allocations/unallocated'))
+                @include('allocations.unallocated', ['unallocStudents' => $unallocStudents, 'unallocTopics' => $unallocTopics])
+            @else
+                @include('allocations.moduleleaderview', ['allocation' => $allocation])
+            @endif
         @else
-            <div class="jumbotron px-3">
-                <h4 class="text-center">Congratulations, you are allocated with the following:</h4>
-                <h5 class="text-center">
-                    @if(!is_null($allocation->topic))
-                        {{$allocation->topic->name}}
-                    @elseif(!is_null($allocation->proposal))
-                        {{$allocation->proposal->name}}
-                    @endif
-                </h5>
-            </div>
+            @include('allocations.studentview', ['allocation' => $allocation])
         @endif
     </div>
 </div>

@@ -8,14 +8,15 @@ Student Dashboard
 @endsection
 @section('content')
 <div class="container">
+    @includeif('layouts.status')
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">You are logged in, {{Auth::user()->firstName.' '.Auth::user()->lastName}}!</div>
                 <div class="card-body">
-                    @includeif('layouts.status')
                     <div class="w-100">
                         <div class="row">
+                            <!-- Left Side -->
                             <div class="col-lg-6">
                                 @if(Auth::user()->role != "Student")
                                     <h4 class="py-1 underline text-base">Your Topics</h4>
@@ -30,7 +31,10 @@ Student Dashboard
                                     @endforelse
                                 @else
                                     <h4 class="py-1 underline text-base">Your Topic Choices</h4>
-                                    @if(Auth::user()->choices->count() > 0)
+                                    @if(!is_null(Auth::user()->allocation))
+                                        <p>You have an allocation provided</p>
+                                        <a href="{{route('allocations.index')}}" class="btn btn-secondary w-100">View Allocation</a>
+                                    @elseif(Auth::user()->choices->count() > 0)
                                         @if(count(Auth::user()->choices) <=3)
                                             <p>You have {{count(Auth::user()->choices)}} topic(s) chosen for review.</p>
                                         @else 
@@ -45,12 +49,13 @@ Student Dashboard
                                                 <a href="{{route('topics.index')}}" class="btn btn-info w-100">Find More Topics</a>
                                             @endif
                                         </div>
-                                    @else 
+                                    @else
                                         <p>You have no chosen topics.</p>
                                         <a href="{{route('topics.index')}}" class="btn btn-secondary w-100">View Available Topics</a>
                                     @endif
                                 @endif
                             </div>
+                            <!-- Right Side -->
                             <div class="col-lg-6">
                                 <h4 class="py-1 underline text-base">{{ Auth::user()->role != "Student" ? "Student Proposals" : "Your Proposals"}}</h4>
                                 @if(Auth::user()->role != "Student")
@@ -80,27 +85,10 @@ Student Dashboard
                                             @endforelse
                                         </tbody>
                                     </table>
+                                    <a href="{{route('proposals.index')}}" class="btn btn-secondary w-100">View All Proposals</a>
                                 @else
                                     <p>You have made {{count(Auth::user()->proposalSent)}} proposal(s).</p>
                                     <a href="{{route('proposals.index')}}" class="btn btn-secondary w-100">View Proposal progress</a>
-                                    @forelse(Auth::user()->proposalSent as $proposal)
-                                        <!-- <tr class="{{ !is_null($proposal->hasRejected) ? $proposal->hasRejected ? 'table-danger' : 'table-success' : '' }}">
-                                            <td>{{$proposal->supervisor->firstName.' '.$proposal->supervisor->lastName}}</td>
-                                            <td>{{$proposal->name}}</td>
-                                            <td>
-                                                <div class="btn-group d-flex" role="group" aria-label="Proposal Settings">
-                                                    <a href="{{route('proposals.show', $proposal)}}" class="btn btn-secondary w-100"><i class="fas fa-search"></i></a>
-                                                    <a onclick="alert('In Development')" class="btn btn-info w-100"><i class="fas fa-plus"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr> -->
-                                    @empty
-                                        <!-- <tr>
-                                            <td colspan="3">
-                                                <h5 class="text-center">No Proposals</h5>
-                                            </td>
-                                        </tr> -->
-                                    @endforelse
                                 @endif
                             </div>
                         </div>

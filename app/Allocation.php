@@ -4,6 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Allocation Model
+ *  
+ *  This is the model that takes the official topic allocations of both students and supervisors.
+ */
 class Allocation extends Model
 {
     /**
@@ -23,19 +28,19 @@ class Allocation extends Model
     public function topic(){
         return $this->belongsTo('App\Topic', 'topicID');
     }
-
+    
     /**
-     * Get the associated Supervisor
-     */
-    public function supervisor(){
-        return $this->belongsTo('App\User', 'supervisorID');
-    }
-
-    /**
-     * Get the Associated Student to the Allocation
+     * Get the Associated Student
      */
     public function student(){
         return $this->belongsTo('App\User', 'studentID');
+    }
+
+    /**
+     * Get the Associated Supervisor
+     */
+    public function supervisor(){
+        return $this->belongsTo('App\User', 'supervisorID');
     }
 
      /**
