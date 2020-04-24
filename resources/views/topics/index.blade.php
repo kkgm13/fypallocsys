@@ -36,7 +36,7 @@ Topics List
                             <tr scope="row">
                                 <td>{{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</td>
                                 <td>{{$topic->name}}</td>
-                                <td>{{substr($topic->description, 0, 100)."..."}}</td>
+                                <td>{{strip_tags(substr($topic->description, 0, 100)."..."))}}</td>
                                 <td class="text-center"><i class="fas {{$topic->isMCApprove ? 'fa-check':'fa-times'}}"></i></td>
                                 <td class="text-center"><i class="fas {{$topic->isCBApprove ? 'fa-check':'fa-times'}}"></i></td>
                                 <td>

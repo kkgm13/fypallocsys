@@ -28,6 +28,8 @@ class CreateCyberSecurityAdditionColumn extends Migration
      */
     public function down()
     {
-        Schema::dropColumn(['isSecApprove']);
+        Schema::table('topics', function(Blueprint $table){
+            $table->dropColumn(['isSecApprove']);
+        });
     }
 }

@@ -6,7 +6,7 @@
 <div class="container">
     @includeif('layouts.status')
     <h1 class="text-center">{{$topic->name}}</h1>
-    <p class="pt-2 text-center">Project Supervisor: <a href="mailto:{{$topic->supervisor->email}}">{{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</a></p>
+    <p class="pt-2 text-center">Project Supervisor: <a href="" data-toggle="modal" data-target="#supervisor-bio">{{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</a> <i class="fas fa-search"></i></p>
     <p class="pb-2 text-center font-italic">Suitable for CS Students <span class="font-weight-bolder">{{$topic->isMCApprove ? '& CS Multimedia Students' : $topic->isCBApprove ? '& CS Business Students' : $topic->isMCApprove && $topic->isCBApproved ? 'including Multimedia & Business students' : 'ONLY'}}</span></p>
     <hr>
     <h3 class="py-3">Topic Description</h3>
@@ -82,7 +82,7 @@
         </div>
     </div>
     @endif
-    @if(AUth::user()->role != "Student")
+    @if(Auth::user()->role != "Student")
     <div class="modal fade" id="interestedList" tabindex="-1" role="dialog" aria-labelledby="interestedList" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
@@ -114,6 +114,28 @@
                             @endforelse
                         </table>
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @else
+    <div class="modal fade" id="supervisor-bio" tabindex="-1" role="dialog" aria-labelledby="supervisor-bio" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalScrollableTitle">Supervisor Bio</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3>{{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</h3>
+                    <p><a href="mailto:{{$topic->supervisor->email}}"><i class="fas fa-envelope"></i></a> Questions? Email Me</p>
+                    <hr>
+                    <p>{{strip_tags($topic->supervisor->bio)}}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

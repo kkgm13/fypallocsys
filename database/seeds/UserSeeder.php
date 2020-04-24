@@ -22,6 +22,7 @@ class UserSeeder extends Seeder
             'sun' => null,
             'role' => "Module Leader",
             'password' => Hash::make('admin'),
+            'bio' => "This is my bio. I am the main head of the system",
         ]);
 
         User::create([
@@ -32,6 +33,7 @@ class UserSeeder extends Seeder
             'sun' => null,
             'role' => "Supervisor",
             'password' => Hash::make("supervisor"),
+            'bio' => "This is my bio. I focus on tech stuff",
         ]);
 
         User::create([
