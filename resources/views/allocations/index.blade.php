@@ -31,7 +31,15 @@ My Allocation
                 @include('allocations.moduleleaderview', ['allocation' => $allocation])
             @endif
         @else
-            @include('allocations.studentview', ['allocation' => $allocation])
+            @if(!is_null(Auth::user()->allocation))
+                @include('allocations.studentview', ['allocation' => $allocation])
+            @else
+                <div class="col">
+                    <h2 class="text-center">You have no allocations as of yet.</h2>
+                    <p class="text-muted text-center font-italic">Choose a <a href="{{route('topics.index')}}">supervisor-provided topic</a> or <a href="{{route('proposals.create')}}">propose your own topic</a>.</p>
+                    
+                </div>
+            @endif
         @endif
     </div>
 </div>
