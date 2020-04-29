@@ -1,21 +1,25 @@
 <div class="col-12">
     <hr>
     <div class="table-responsive">
-        <table class="table table-striped table-hover table-bordered">
-            <tr>
-                <th>Topic Name</th>
-                <th>Supervisor</th>
-                <th>Select Student</th>
-            </tr>
-            @forelse($unallocTopics as $topic)
+        <table class="table table-hover table-bordered">
+            <thead>
                 <tr>
-                    <td>{{$topic->name}}</td>
-                    <td>{{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</td>
-                    <td><a class="btn btn-info btn-block mb-2" data-toggle="modal" data-target="#studentList">List of Students</a></td>
+                    <th>Topic Name</th>
+                    <th>Supervisor</th>
+                    <th>Select Student</th>
                 </tr>
-            @empty
-            <tr><td colspan="4"><h3 class="text-center">There are currently no official topic allocations.</h3></td></th>
-            @endforelse
+            </thead>
+            <tbody>
+                @forelse($unallocTopics as $topic)
+                    <tr>
+                        <td>{{$topic->name}}</td>
+                        <td>{{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</td>
+                        <td><a class="btn btn-info btn-block mb-2" data-toggle="modal" data-target="#studentList">List of Students</a></td>
+                    </tr>
+                @empty
+                <tr><td colspan="4"><h3 class="text-center">There are currently no official topic allocations.</h3></td></th>
+                @endforelse
+            </tbody>
         </table>
     </div>
 </div>

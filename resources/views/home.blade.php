@@ -19,7 +19,7 @@ Student Dashboard
                             <!-- Left Side -->
                             <div class="col-lg-6">
                                 @if(Auth::user()->role != "Student")
-                                    <h4 class="py-1 underline text-base">Your Topics</h4>
+                                    <h4 class="py-1 underline text-base">{{Auth::user()->role == "Supervisor" ? "My Topics" : "All Topics"}}</h4>
                                     @forelse($topics as $topic)
                                         <p><a href="{{route('topics.show', $topic)}}">{{$topic->name}}
                                         @if(Auth::user()->role === "Module Leader")

@@ -47,7 +47,7 @@
         <p class="pl-4">No Documents available</p>
     @endforelse
     <hr>
-    @if(Auth::user()->role == "Student" && is_null(Auth::user()->allocation))
+    @if(is_null(Auth::user()->allocation))
     <div class="row">
         <div class="col-md-6 col-sm-12">
             @if(Auth::user()->role === "Student")
