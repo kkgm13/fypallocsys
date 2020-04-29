@@ -1,4 +1,5 @@
 <div class="col">
+    <hr>
     <div class="table-responsive">
         <table class="table table-striped table-hover table-bordered">
             <tr>

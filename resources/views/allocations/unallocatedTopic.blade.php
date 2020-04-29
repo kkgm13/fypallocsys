@@ -1,5 +1,4 @@
 <div class="col-12">
-    <h4 class="text-center">Unallocated Topics</h4>
     <hr>
     <div class="table-responsive">
         <table class="table table-striped table-hover table-bordered">

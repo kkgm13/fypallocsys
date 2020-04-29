@@ -33,8 +33,8 @@ Route::resources([
 
 // Allocation Custom Routing
 Route::get('/allocations', 'AllocationController@index')->name('allocations.index');
-Route::get('/allocations/unallocatedstudents', 'AllocationController@unallocatedStudent')->name('allocations.unallocatedStudent');
-Route::get('/allocations/unallocatedtopics', 'AllocationController@unallocatedTopic')->name('allocations.unallocatedTopic');
+Route::get('/allocations/unallocated/students', 'AllocationController@unallocatedStudent')->name('allocations.unallocatedStudent');
+Route::get('/allocations/unallocated/topics', 'AllocationController@unallocatedTopic')->name('allocations.unallocatedTopic');
 
 // Choices Custom Routing
 Route::get('/my-choices', 'ChoiceController@index')->name('choices.mine');

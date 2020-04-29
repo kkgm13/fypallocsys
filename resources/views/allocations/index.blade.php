@@ -1,14 +1,32 @@
 @extends('layouts.app')
 @section('title')
 @if(Auth::user()->role === "Module Leader")
+@if(Request::is('allocations/unallocated/topics'))
+Unallocated Topics
+@elseif(Request::is('allocations/unallocated/students'))
+Unallocated Students
+@else
 All Allocations
+@endif
 @else 
 My Allocation
 @endif
 @endsection
 @section('content')
 <div class="container">
-    <h1 class="text-center">{{Auth::user()->role === "Module Leader" ? "All Allocations" : "My Allocation"}}</h1>
+    <h1 class="text-center">
+    @if(Auth::user()->role === "Module Leader")
+        @if(Request::is('allocations/unallocated/topics'))
+        Unallocated Topics
+        @elseif(Request::is('allocations/unallocated/students'))
+        Unallocated Students
+        @else
+        All Allocations
+        @endif
+    @else 
+    My Allocation
+    @endif
+    </h1>
     <hr>
     @if(Auth::user()->role == "Module Leader")
         <div class="row my-2">
@@ -35,13 +53,9 @@ My Allocation
         @elseif(Auth::user()->role == "Supervisor")
             @include('allocations.supervisorview', ['allocations' => $allocation])
         @else
-            @php
-                Request
-            @endphp
-
-            @if(Request::is('/allocations/unallocatedtopics'))
+            @if(Request::is('allocations/unallocated/topics'))
                 @include('allocations.unallocatedTopic', ['unallocTopics' => $unallocTopics])
-            @elseif(Request::is('/allocations/unallocatedstudents'))
+            @elseif(Request::is('allocations/unallocated/students'))
                 @include('allocations.unallocatedStudent', ['unallocStudents' => $unallocStudents])
             @else
                 @include('allocations.moduleleaderview', ['allocation' => $allocation])
