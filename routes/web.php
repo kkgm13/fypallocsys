@@ -33,7 +33,8 @@ Route::resources([
 
 // Allocation Custom Routing
 Route::get('/allocations', 'AllocationController@index')->name('allocations.index');
-Route::get('/allocations/unallocated', 'AllocationController@unallocated')->name('allocations.unallocated');
+Route::get('/allocations/unallocatedstudents', 'AllocationController@unallocatedStudent')->name('allocations.unallocatedStudent');
+Route::get('/allocations/unallocatedtopics', 'AllocationController@unallocatedTopic')->name('allocations.unallocatedTopic');
 
 // Choices Custom Routing
 Route::get('/my-choices', 'ChoiceController@index')->name('choices.mine');
@@ -48,7 +49,3 @@ Route::delete('/topics/{topic}/deselect', 'ChoiceController@destroy')->name('cho
 // Decisions Custom Routing
 Route::post('/proposals/{proposal}/decision/', 'ProposalController@decision')->name('proposals.decision');
 Route::post('/topics/{topic}/allocate', 'TopicController@allocate')->name('topics.allocate');
-Route::get('/test', function(){
-    $proposal = \App\Proposal::first();
-    return new \App\Mail\ProposalSent($proposal);
-});

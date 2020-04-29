@@ -40,11 +40,32 @@ class AllocationController extends Controller
     }
 
     /**
-     * Display a listing of Unallocated Topic / User Resources
+     * Display a listing of Unallocated Topic Resource
      * 
      * @return \Illuminate\Http\Response
      */
-    public function unallocated(){
+    public function unallocatedTopic(){
+        if(Auth::user()->role === "Module Leader"){
+            // Topics that haven't been taken by students
+            $unallocTopics = Topic::whereNotExists(function($query){
+                $query->select('*')
+                ->from('allocations')
+                ->whereRaw('topics.id = allocations.topicID')
+                ->where('allocations.topicID', "<>", "topics");
+            })
+            ->get();
+            return view('allocations.index',['unallocTopics' => $unallocTopics]);
+        } else {
+            return abort(404, "Not Found");
+        }
+    }
+
+    /**
+     * Display a listing of Unallocated Students Resource
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function unallocatedStudent(){
         if(Auth::user()->role === "Module Leader"){
             // Student that doesn't have a topic
             $unallocStudents = User::where('role', "Student")
@@ -55,15 +76,7 @@ class AllocationController extends Controller
                 ->whereRaw('users.id = allocations.studentID')
                 ->where('allocations.studentID', "<>", "users");
             })->get();
-            // Topics that haven't been taken by students
-            $unallocTopics = Topic::whereNotExists(function($query){
-                $query->select('*')
-                ->from('allocations')
-                ->whereRaw('topics.id = allocations.topicID')
-                ->where('allocations.topicID', "<>", "topics");
-            })
-            ->get();
-            return view('allocations.index',['unallocStudents' => $unallocStudents, 'unallocTopics' => $unallocTopics]);
+            return view('allocations.index',['unallocStudents' => $unallocStudents]);
         } else {
             return abort(404, "Not Found");
         }
