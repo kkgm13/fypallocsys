@@ -39,6 +39,11 @@ class HomeController extends Controller
             // Student Version
             $topics = null;
             $proposals = Proposal::where('studentID', '=', Auth::id())->latest()->take(3)->get();
+            // if(!is_null(Auth::user()->allocation)){
+
+            // } else {
+
+            // }
         }
         return view('home', ['topics' => $topics, 'proposals' => $proposals]);
     }
