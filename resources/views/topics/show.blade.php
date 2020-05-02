@@ -102,6 +102,7 @@
                                 <td>
                                     <span class="font-weight-bold">{{$student->firstName.' '.$student->lastName}}</span><br><span class="pl-3">SUN ID: {{$student->sun}}</span>
                                 </td>
+                                <td>{{"Choice Rank: ".$topic['interested'][$loop->index]['choices']->where('topicID', $topic->id)->first()->ranking}}</td>
                                 <td>
                                     <input type="hidden" name="user" id="user" value="{{$student}}">
                                     <input class="mb-3 btn btn-success float-right" type="submit" value="Allocate">
