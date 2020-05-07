@@ -6,7 +6,7 @@
 <div class="container">
     @includeif('layouts.status')
     <h1 class="text-center">{{$topic->name}}</h1>
-    <p class="pt-2 text-center">Project Supervisor: <a href="" data-toggle="modal" data-target="#supervisor-bio">{{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</a> <i class="fas fa-search"></i></p>
+    <p class="pt-2 text-center">Project Supervisor: <a href="#" data-toggle="modal" data-target="#supervisorBio">{{$topic->supervisor->firstName.' '.$topic->supervisor->lastName}}</a> <i class="fas fa-search"></i></p>
     <p class="pb-2 text-center font-italic">Suitable for CS Students <span class="font-weight-bolder">{{$topic->isMCApprove ? '& CS Multimedia Students' : $topic->isCBApprove ? '& CS Business Students' : $topic->isMCApprove && $topic->isCBApproved ? 'including Multimedia & Business students' : 'ONLY'}}</span></p>
     <hr>
     <h3 class="py-3">Topic Description</h3>
@@ -39,7 +39,7 @@
         @if($loop->first)
             <ul>
         @endif
-            <li><a href="{{asset('/storage/graphics/'.$document->fileName)}}">{{$document->fileName}}</a></li>
+            <li><a href="{{asset('/storage/documents/'.$document->fileName)}}">{{$document->fileName}}</a></li>
         @if($loop->last)
             </ul>
         @endif
@@ -122,8 +122,8 @@
             </div>
         </div>
     </div>
-    @else
-    <div class="modal fade" id="supervisor-bio" tabindex="-1" role="dialog" aria-labelledby="supervisor-bio" aria-hidden="true">
+    @endif
+    <div class="modal fade" id="supervisorBio" tabindex="-1" role="dialog" aria-labelledby="supervisorBio" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -144,6 +144,5 @@
             </div>
         </div>
     </div>
-    @endif
 </div>
 @endsection

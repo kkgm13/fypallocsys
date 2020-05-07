@@ -85,7 +85,10 @@ class TopicController extends Controller
                 (new TopicDocumentController)->store($request);
             }
             // Redirection
-            return redirect()->route('topics.show', $topic)->with('status', "The topic has been successfully added");
+            return redirect()->route('topics.show', $topic)->with([
+                'status', "The topic has been successfully added",
+                'type' => 'success',
+            ]);
         } else {
             return abort('403', "You are unauthorized");
         }
@@ -141,7 +144,10 @@ class TopicController extends Controller
             // Create the Topic
             $topic->update($validateData);
 
-            return redirect()->route('topics.show', $topic)->with('status', "The topic has been successfully updated");
+            return redirect()->route('topics.show', $topic)->with([
+                'status', "The topic has been successfully updated",
+                'type' => 'success',
+            ]);
         } else {
             return abort(403, "Forbidden");
         }
