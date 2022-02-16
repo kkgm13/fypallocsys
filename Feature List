@@ -1,0 +1,23 @@
+List
+--------
+1) WYSIWIG Editor | DONE
+    1.1) Preview Mechanism | Embedded
+2) Prerequisite & Co-requisite Split | Done 
+3) Student Perspective: Supervisor Bio | Done [Proper implementation of viewing bio]
+4) Topic File/Document Uploader | V1 complete
+5) Topics and proposals Identifiers | Somewhat on hold
+6) Modern Design | Doned
+    6.1) Indication between MC/CB | Done
+7) Proper dashboard | V1 Complete
+8) Topic Additional information as Optional (Need to understand difference between description and this)
+9) MC/CB Suitability Help/suggestions [Student side to interpret is done; Unknown to supervisors]
+
+Future implementation
+-------
+Multiple students’ allocations (Investigating Options)
+Skills Set Filter (Doable but require additional checks with tagging)
+Controversial: Past students to post reflective experience about the system. (Will require a complete review)
+Diary Uploads (Would require some sort of implemenetation and custom cluster implementation)
+Allow to cross reference with other supervisors (related project)
+	[Allow uniqueness of the system, but requires additional information with previous topics used] (Check if possible, with Laravel validation)
+In-table Cell editing (Doable but requires paid system)

@@ -33,7 +33,6 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         if(Auth::user()->role != "Student"){
-            // dd($request, $user);
             $validateData = $request->validate([
                 'bio' => 'nullable|string',
             ]);
